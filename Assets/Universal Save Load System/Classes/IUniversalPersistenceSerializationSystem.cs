@@ -4,9 +4,9 @@ using UnityEngine;
 
 interface IUniversalSerializedPersistenceSystem
 {
-    List<UserDefinedData> Serialize();
+    List<UserDefinedData> Serialize(GameObject providedObject);
 
-    void Deserialize(List<UserDefinedData> data);
+    void Deserialize(List<UserDefinedData> serializedMonoData, GameObject providedObject);
 
     void UniSave();
 

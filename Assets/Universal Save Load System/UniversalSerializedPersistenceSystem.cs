@@ -44,6 +44,7 @@ class UniversalSerializedPersistenceSystem : MonoBehaviour
     public List<object> saveableItems = new List<object>();
     #endregion
 
+    #region Update
     public void Update()
     {
         if (SaveData == true)
@@ -68,6 +69,7 @@ class UniversalSerializedPersistenceSystem : MonoBehaviour
             LoadData = false;
         }
     }
+    #endregion
 
     #region Save Load Zone
     public static void QueueItemToSave(GameObject saveObject)
@@ -77,6 +79,7 @@ class UniversalSerializedPersistenceSystem : MonoBehaviour
 
         SerializableData serializableData = new SerializableData();
 
+        #region Serilaize Object
         #region Serialize Unity classes and types
         serializableData.name = Serialize(saveObject.name);
         serializableData.activeInHierarchy = Serialize(saveObject.activeInHierarchy);
@@ -95,14 +98,58 @@ class UniversalSerializedPersistenceSystem : MonoBehaviour
 
             System.Type thisType = monoItem.GetType();
             MethodInfo theMethod = thisType.GetMethod("Serialize");
-
-            serializableData.serializedScripts = (List<UserDefinedData>)theMethod.Invoke(monoItem, null);
+            object[] parameters = new object[1] { saveObject };
+            serializableData.serializedScripts = (List<UserDefinedData>)theMethod.Invoke(monoItem, parameters);
             break;
         }
+        #endregion
+        #endregion
+
+        #region Serilaize Objects Children
+        SerializeAllChildren(saveObject.transform, saveObject.transform, ref serializableData);
         #endregion
 
         serializableDataSet.data.Add(serializableData);
         saveObject.BroadcastMessage("SaveMessage", SendMessageOptions.DontRequireReceiver);
+    }
+
+    private static void SerializeAllChildren(Transform rootParent, Transform parent, ref SerializableData serializableData)
+    {
+        foreach (Transform t in parent)
+        {
+            GameObject saveObject = t.gameObject;
+            SerializableChildData serializableChildData = new SerializableChildData();
+
+            Camera cam;
+            AudioListener audioListener;
+
+            #region Serialize Unity classes and types
+            serializableChildData.name = Serialize(saveObject.name);
+            serializableChildData.activeInHierarchy = Serialize(saveObject.activeInHierarchy);
+            serializableChildData.sTransform = Serialize(new STransform().Serielize(saveObject.transform));
+            serializableChildData.sCamera = (cam = saveObject.GetComponent<Camera>()) != null ? Serialize(new SCamera().Serielize(cam)) : null;
+            serializableChildData.sAudioListener = (audioListener = saveObject.GetComponent<AudioListener>()) != null ? Serialize(new SAudioListener().Serielize(audioListener)) : null;
+            #endregion
+
+            #region Serialize User Defined Classes
+            MonoBehaviour[] saveableScripts = parent.GetComponents<MonoBehaviour>();
+
+            foreach (var monoItem in saveableScripts)
+            {
+                if (monoItem is IUniversalSerializedPersistenceSystem == false)
+                    continue;
+
+                System.Type thisType = monoItem.GetType();
+                MethodInfo theMethod = thisType.GetMethod("Serialize");
+                object[] parameters = new object[1] { saveObject };
+                serializableChildData.serializedScripts = (List<UserDefinedData>)theMethod.Invoke(monoItem, parameters);
+                break;
+            }
+            #endregion
+
+            serializableData.serializableChildData.Add(serializableChildData);
+            SerializeAllChildren(rootParent, t, ref serializableData);
+        }
     }
 
     public static void Save()
@@ -129,11 +176,11 @@ class UniversalSerializedPersistenceSystem : MonoBehaviour
 
         for (int i = 0; i < serializableDataSet.data.Count; i++)
         {
-            string sName = (string)Deserialize(serializableDataSet.data[i].name);
-
             for (int j = 0; j < gameObjectsDataSet.Count; j++)
             {
                 GameObject currentObj = gameObjectsDataSet[j];
+
+                string sName = (string)Deserialize(serializableDataSet.data[i].name);
 
                 if (currentObj.name == sName)
                 {
@@ -170,14 +217,23 @@ class UniversalSerializedPersistenceSystem : MonoBehaviour
 
                         System.Type thisType = monoItem.GetType();
                         MethodInfo theMethod = thisType.GetMethod("Deserialize");
-                        object[] param = new object[1] {
-                            serializableDataSet.data[i].serializedScripts
+                        object[] param = new object[2] {
+                            serializableDataSet.data[i].serializedScripts,
+                            currentObj
                         };
 
                         theMethod.Invoke(monoItem, param);
                         break;
                     }
                     #endregion
+
+                    #region Deserialize All Children
+                    int childIndex = -1;
+                    DeserializeAllChildren(currentObj.transform, currentObj.transform, serializableDataSet.data[i], ref childIndex);
+                    #endregion
+
+                    gameObjectsDataSet.RemoveAt(j);
+                    break;
                 }
             }
         }
@@ -187,6 +243,63 @@ class UniversalSerializedPersistenceSystem : MonoBehaviour
 
         Debug.Log("Load was successful!");
     }
+
+    private static void DeserializeAllChildren(Transform rootParent, Transform parent, SerializableData serializableData, ref int childIndex)
+    {
+        foreach (Transform t in parent)
+        {
+            SerializableChildData serializableChildData  = serializableData.serializableChildData[++childIndex];
+            GameObject currentObj = t.gameObject;
+
+            #region Deserialize Unity classes and types
+            #region Deserialize transform
+            STransform sTrans = (STransform)Deserialize(serializableChildData.sTransform);
+            sTrans.Deserielize(ref currentObj);
+            #endregion
+
+            #region Deserialize Camera
+            if (serializableChildData.sCamera.Length > 0)
+            {
+                SCamera sCamera = (SCamera)Deserialize(serializableChildData.sCamera);
+                sCamera.Deserielize(ref currentObj);
+            }
+            #endregion
+
+            #region Deserialize Audio Listener
+            if (serializableChildData.sAudioListener.Length > 0)
+            {
+                SAudioListener sAudioListener = (SAudioListener)Deserialize(serializableChildData.sAudioListener);
+                sAudioListener.Deserielize(ref currentObj);
+            }
+            #endregion
+            #endregion
+
+            #region Deserialize User Defined Classes
+            MonoBehaviour[] saveableScripts = parent.gameObject.GetComponents<MonoBehaviour>();
+
+            foreach (var monoItem in saveableScripts)
+            {
+                if (monoItem is IUniversalSerializedPersistenceSystem == false)
+                    continue;
+
+                System.Type thisType = monoItem.GetType();
+                MethodInfo theMethod = thisType.GetMethod("Deserialize");
+                object[] param = new object[2] {
+                    serializableChildData.serializedScripts,
+                    currentObj
+                };
+
+                theMethod.Invoke(monoItem, param);
+                break;
+            }
+            #endregion
+
+            #region Deserialize All Children
+            DeserializeAllChildren(rootParent, t, serializableData, ref childIndex);
+            #endregion
+        }
+    }
+
     #endregion
 
     #region Serialize/Deserialize Zone

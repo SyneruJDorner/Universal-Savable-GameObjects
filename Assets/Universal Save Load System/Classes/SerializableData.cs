@@ -14,11 +14,31 @@ public class SerializableData
 
     //public byte[] serializedData;
     public List<UserDefinedData> serializedScripts = new List<UserDefinedData>();
+
+    //Children info
+    public List<SerializableChildData> serializableChildData = new List<SerializableChildData>();
+}
+
+[System.Serializable]
+public class SerializableChildData
+{
+    public byte[] name;
+    public byte[] activeInHierarchy;
+    public byte[] sTransform;// = new STransform();
+    public byte[] sCamera;// = new SCamera();
+    public byte[] sAudioListener;// = new SAudioListener();
+
+    //public byte[] serializedData;
+    public List<UserDefinedData> serializedScripts = new List<UserDefinedData>();
+
+    //Children info
+    //public List<SerializableData> serializedChildrenData = new List<SerializableData>();
 }
 
 [System.Serializable]
 public class UserDefinedData
 {
+    public string gameObjectName;
     public string scriptName;
     public byte[] serializedData;
 }

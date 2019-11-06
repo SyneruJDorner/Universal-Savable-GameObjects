@@ -11,24 +11,26 @@ class SavableGameObject : MonoBehaviour, IUniversalSerializedPersistenceSystem
     private List<UserDefinedData> serializedMonoData = new List<UserDefinedData>();
     [HideInInspector] public List<UnityEngine.Object> monoScripts = new List<UnityEngine.Object>();
 
-    public List<UserDefinedData> Serialize()
+    public List<UserDefinedData> Serialize(GameObject providedObject)
     {
-        monoScripts = gameObject.GetComponents<MonoBehaviour>().ToList<UnityEngine.Object>();
+        monoScripts = providedObject.GetComponents<MonoBehaviour>().ToList<UnityEngine.Object>();
 
         foreach (UnityEngine.Object script in monoScripts)
         {
             var type = Type.GetType(script.GetType().ToString());
+            Debug.Log(type + " on item " + script.name);
             object item = Convert.ChangeType(script, type);
-            serializedMonoData.Add(new UserDefinedData() { scriptName = type.ToString(), serializedData = UniversalSerializedPersistenceSystem.SerializeMonoObject(item)});
+            serializedMonoData.Add(new UserDefinedData() { gameObjectName = script.name, scriptName = type.ToString(), serializedData = UniversalSerializedPersistenceSystem.SerializeMonoObject(item)});
         }
 
         monoScripts.Clear();
+
         return serializedMonoData;
     }
 
-    public void Deserialize(List<UserDefinedData> serializedMonoData)
+    public void Deserialize(List<UserDefinedData> serializedMonoData, GameObject providedObject)
     {
-        monoScripts = gameObject.GetComponents<MonoBehaviour>().ToList<UnityEngine.Object>();
+        monoScripts = providedObject.GetComponents<MonoBehaviour>().ToList<UnityEngine.Object>();
 
         foreach (var data in serializedMonoData)
         {
@@ -60,6 +62,6 @@ class SavableGameObject : MonoBehaviour, IUniversalSerializedPersistenceSystem
 
     public void SaveMessage()
     {
-        Debug.Log("Preparing to save: " + gameObject.name);
+        //Debug.Log("Preparing to save: " + gameObject.name);
     }
 }
