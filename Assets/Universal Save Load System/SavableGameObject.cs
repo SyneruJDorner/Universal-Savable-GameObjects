@@ -16,19 +16,15 @@ public class SavableGameObject : MonoBehaviour, IUniversalSerializedPersistenceS
 {
     #region Unique ID
     // System guid we use for comparison and generation
-    System.Guid guid = System.Guid.Empty;
+    Guid guid = Guid.Empty;
 
-    // Unity's serialization system doesn't know about System.Guid, so we convert to a byte array
-    // Fun fact, we tried using strings at first, but that allocated memory and was twice as slow
+    // Unity's serialization system doesn't know about Guid, so we convert to a string
     [SerializeField]
-    private byte[] serializedGuid;
-    [SerializeField]
-    public string _serializedGuid;
-
+    public string serializedGuid;
 
     public bool IsGuidAssigned()
     {
-        return guid != System.Guid.Empty;
+        return guid != Guid.Empty;
     }
 
 
@@ -47,9 +43,8 @@ public class SavableGameObject : MonoBehaviour, IUniversalSerializedPersistenceS
             }
             Undo.RecordObject(this, "Added GUID");
 #endif
-            guid = System.Guid.NewGuid();
-            serializedGuid = guid.ToByteArray();
-            _serializedGuid = guid.ToString();
+            guid = Guid.NewGuid();
+            serializedGuid = guid.ToString();
 
 #if UNITY_EDITOR
             // If we are creating a new GUID for a prefab instance of a prefab, but we have somehow lost our prefab connection
@@ -60,21 +55,20 @@ public class SavableGameObject : MonoBehaviour, IUniversalSerializedPersistenceS
             }
 #endif
         }
-        else if (guid == System.Guid.Empty)
+        else if (guid == Guid.Empty)
         {
             // otherwise, we should set our system guid to our serialized guid
-            guid = new System.Guid(serializedGuid);
+            guid = new Guid(serializedGuid);
         }
 
         // register with the GUID Manager so that other components can access this
-        if (guid != System.Guid.Empty)
+        if (guid != Guid.Empty)
         {
             if (!GuidManager.Add(this))
             {
                 // if registration fails, we probably have a duplicate or invalid GUID, get us a new one.
                 serializedGuid = null;
-                _serializedGuid = null;
-                guid = System.Guid.Empty;
+                guid = Guid.Empty;
                 CreateGuid();
             }
         }
@@ -120,16 +114,14 @@ public class SavableGameObject : MonoBehaviour, IUniversalSerializedPersistenceS
         if (IsAssetOnDisk())
         {
             serializedGuid = null;
-            _serializedGuid = null;
-            guid = System.Guid.Empty;
+            guid = Guid.Empty;
         }
         else
 #endif
         {
-            if (guid != System.Guid.Empty)
+            if (guid != Guid.Empty)
             {
-                serializedGuid = guid.ToByteArray();
-                _serializedGuid = guid.ToString();
+                serializedGuid = guid.ToString();
             }
         }
     }
@@ -138,9 +130,7 @@ public class SavableGameObject : MonoBehaviour, IUniversalSerializedPersistenceS
     public void OnAfterDeserialize()
     {
         if (serializedGuid != null && serializedGuid.Length == 16)
-        {
-            guid = new System.Guid(serializedGuid);
-        }
+            guid = new Guid(serializedGuid);
     }
 
     void Awake()
@@ -156,8 +146,7 @@ public class SavableGameObject : MonoBehaviour, IUniversalSerializedPersistenceS
         if (IsAssetOnDisk())
         {
             serializedGuid = null;
-            _serializedGuid = null;
-            guid = System.Guid.Empty;
+            guid = Guid.Empty;
         }
         else
 #endif
@@ -167,11 +156,11 @@ public class SavableGameObject : MonoBehaviour, IUniversalSerializedPersistenceS
     }
 
     // Never return an invalid GUID
-    public System.Guid GetGuid()
+    public Guid GetGuid()
     {
-        if (guid == System.Guid.Empty && serializedGuid != null && serializedGuid.Length == 16)
+        if (guid == Guid.Empty && serializedGuid != null && serializedGuid.Length == 16)
         {
-            guid = new System.Guid(serializedGuid);
+            guid = new Guid(serializedGuid);
         }
 
         return guid;
@@ -184,49 +173,8 @@ public class SavableGameObject : MonoBehaviour, IUniversalSerializedPersistenceS
     }
     #endregion
 
-    /*
-    #region Unique ID
-    [SerializeField]
-    private string guidAsString;
-
-    private Guid _guid;
-    public Guid guid
-    {
-        get
-        {
-            if (_guid == Guid.Empty ||
-                 !String.IsNullOrEmpty(guidAsString))
-            {
-                _guid = new Guid(guidAsString);
-            }
-            return _guid;
-        }
-    }
-
-    public void Generate()
-    {
-        _guid = Guid.NewGuid();
-        guidAsString = guid.ToString();
-    }
-    #endregion
-    */
-
     private List<UserDefinedData> serializedMonoData = new List<UserDefinedData>();
     [HideInInspector] public List<UnityEngine.Object> monoScripts = new List<UnityEngine.Object>();
-
-    /*
-    public void OnValidate()
-    {
-        if (String.IsNullOrEmpty(guidAsString))
-            Generate();
-    }
-
-    public void Awake()
-    {
-        if (String.IsNullOrEmpty(guidAsString))
-            Generate();
-    }
-    */
 
     public List<UserDefinedData> Serialize(GameObject providedObject)
     {
@@ -235,9 +183,8 @@ public class SavableGameObject : MonoBehaviour, IUniversalSerializedPersistenceS
         foreach (UnityEngine.Object script in monoScripts)
         {
             var type = Type.GetType(script.GetType().ToString());
-            Debug.Log(type + " on item " + script.name);
             object item = Convert.ChangeType(script, type);
-            serializedMonoData.Add(new UserDefinedData() { gameObjectName = script.name, scriptName = type.ToString(), serializedData = UniversalSerializedPersistenceSystem.SerializeMonoObject(item)});
+            serializedMonoData.Add(new UserDefinedData() { ID = serializedGuid, scriptName = type.ToString(), serializedData = UniversalSerializedPersistenceSystem.SerializeMonoObject(item)});
         }
 
         monoScripts.Clear();
@@ -269,12 +216,12 @@ public class SavableGameObject : MonoBehaviour, IUniversalSerializedPersistenceS
 
     public void UniSave()
     {
-        UniversalSerializedPersistenceSystem.QueueItemToSave(gameObject);
+        UniversalSerializedPersistenceSystem.QueueItemToSave(gameObject, serializedGuid);
     }
 
     public void UniLoad()
     {
-        UniversalSerializedPersistenceSystem.QueueItemToLoad(gameObject);
+        UniversalSerializedPersistenceSystem.QueueItemToLoad(gameObject, serializedGuid);
     }
 
     public void SaveMessage()

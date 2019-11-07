@@ -35,13 +35,20 @@ class UniversalSerializedPersistenceSystem : MonoBehaviour
     public bool SaveData = false;
     public bool LoadData = false;
 
-    private static string fileName = "PersistentDataSave.json";
+    public static string fileName = "PersistentDataSave.json";
     private static string FilePath => Path.Combine(Application.streamingAssetsPath, fileName);
 
     private static SerializableDataSet serializableDataSet = new SerializableDataSet();
-    private static List<GameObject> gameObjectsDataSet = new List<GameObject>();
+    private static List<QueuedItem> gameObjectsDataSet = new List<QueuedItem>();
 
     public List<object> saveableItems = new List<object>();
+
+    [System.Serializable]
+    public struct QueuedItem
+    {
+        public string ID;
+        public GameObject saveObject;
+    }
     #endregion
 
     #region Update
@@ -72,7 +79,7 @@ class UniversalSerializedPersistenceSystem : MonoBehaviour
     #endregion
 
     #region Save Load Zone
-    public static void QueueItemToSave(GameObject saveObject)
+    public static void QueueItemToSave(GameObject saveObject, string serializedGuid)
     {
         Camera cam;
         AudioListener audioListener;
@@ -81,7 +88,7 @@ class UniversalSerializedPersistenceSystem : MonoBehaviour
 
         #region Serilaize Object
         #region Serialize Unity classes and types
-        serializableData.name = Serialize(saveObject.name);
+        serializableData.ID = Serialize(serializedGuid);
         serializableData.activeInHierarchy = Serialize(saveObject.activeInHierarchy);
         serializableData.sTransform = Serialize(new STransform().Serielize(saveObject.transform));
         serializableData.sCamera = (cam = saveObject.GetComponent<Camera>()) != null ? Serialize(new SCamera().Serielize(cam)) : null;
@@ -106,14 +113,14 @@ class UniversalSerializedPersistenceSystem : MonoBehaviour
         #endregion
 
         #region Serilaize Objects Children
-        SerializeAllChildren(saveObject.transform, saveObject.transform, ref serializableData);
+        SerializeAllChildren(serializedGuid, saveObject.transform, saveObject.transform, ref serializableData);
         #endregion
 
         serializableDataSet.data.Add(serializableData);
         saveObject.BroadcastMessage("SaveMessage", SendMessageOptions.DontRequireReceiver);
     }
 
-    private static void SerializeAllChildren(Transform rootParent, Transform parent, ref SerializableData serializableData)
+    private static void SerializeAllChildren(string serializedGuid, Transform rootParent, Transform parent, ref SerializableData serializableData)
     {
         foreach (Transform t in parent)
         {
@@ -124,7 +131,7 @@ class UniversalSerializedPersistenceSystem : MonoBehaviour
             AudioListener audioListener;
 
             #region Serialize Unity classes and types
-            serializableChildData.name = Serialize(saveObject.name);
+            serializableChildData.rootParentID = Serialize(serializedGuid);
             serializableChildData.activeInHierarchy = Serialize(saveObject.activeInHierarchy);
             serializableChildData.sTransform = Serialize(new STransform().Serielize(saveObject.transform));
             serializableChildData.sCamera = (cam = saveObject.GetComponent<Camera>()) != null ? Serialize(new SCamera().Serielize(cam)) : null;
@@ -148,7 +155,7 @@ class UniversalSerializedPersistenceSystem : MonoBehaviour
             #endregion
 
             serializableData.serializableChildData.Add(serializableChildData);
-            SerializeAllChildren(rootParent, t, ref serializableData);
+            SerializeAllChildren(serializedGuid, rootParent, t, ref serializableData);
         }
     }
 
@@ -161,9 +168,9 @@ class UniversalSerializedPersistenceSystem : MonoBehaviour
         Debug.Log("Save was successful!");
     }
 
-    public static void QueueItemToLoad(GameObject saveObject)
+    public static void QueueItemToLoad(GameObject saveObject, string serializedGuid)
     {
-        gameObjectsDataSet.Add(saveObject);
+        gameObjectsDataSet.Add(new QueuedItem() { ID = serializedGuid, saveObject = saveObject });
         saveObject.BroadcastMessage("SaveMessage", SendMessageOptions.DontRequireReceiver);
     }
 
@@ -178,23 +185,23 @@ class UniversalSerializedPersistenceSystem : MonoBehaviour
         {
             for (int j = 0; j < gameObjectsDataSet.Count; j++)
             {
-                GameObject currentObj = gameObjectsDataSet[j];
+                QueuedItem queuedItem = gameObjectsDataSet[j];
 
-                string sName = (string)Deserialize(serializableDataSet.data[i].name);
+                string sID = (string)Deserialize(serializableDataSet.data[i].ID);
 
-                if (currentObj.name == sName)
+                if (queuedItem.ID == sID)
                 {
                     #region Deserialize Unity classes and types
                     #region Deserialize transform
                     STransform sTrans = (STransform)Deserialize(serializableDataSet.data[i].sTransform);
-                    sTrans.Deserielize(ref currentObj);
+                    sTrans.Deserielize(ref queuedItem.saveObject);
                     #endregion
 
                     #region Deserialize Camera
                     if (serializableDataSet.data[i].sCamera.Length > 0)
                     {
                         SCamera sCamera = (SCamera)Deserialize(serializableDataSet.data[i].sCamera);
-                        sCamera.Deserielize(ref currentObj);
+                        sCamera.Deserielize(ref queuedItem.saveObject);
                     }
                     #endregion
 
@@ -202,13 +209,13 @@ class UniversalSerializedPersistenceSystem : MonoBehaviour
                     if (serializableDataSet.data[i].sAudioListener.Length > 0)
                     {
                         SAudioListener sAudioListener = (SAudioListener)Deserialize(serializableDataSet.data[i].sAudioListener);
-                        sAudioListener.Deserielize(ref currentObj);
+                        sAudioListener.Deserielize(ref queuedItem.saveObject);
                     }
                     #endregion
                     #endregion
 
                     #region Deserialize User Defined Classes
-                    MonoBehaviour[] saveableScripts = currentObj.GetComponents<MonoBehaviour>();
+                    MonoBehaviour[] saveableScripts = queuedItem.saveObject.GetComponents<MonoBehaviour>();
 
                     foreach (var monoItem in saveableScripts)
                     {
@@ -219,7 +226,7 @@ class UniversalSerializedPersistenceSystem : MonoBehaviour
                         MethodInfo theMethod = thisType.GetMethod("Deserialize");
                         object[] param = new object[2] {
                             serializableDataSet.data[i].serializedScripts,
-                            currentObj
+                            queuedItem.saveObject
                         };
 
                         theMethod.Invoke(monoItem, param);
@@ -229,7 +236,7 @@ class UniversalSerializedPersistenceSystem : MonoBehaviour
 
                     #region Deserialize All Children
                     int childIndex = -1;
-                    DeserializeAllChildren(currentObj.transform, currentObj.transform, serializableDataSet.data[i], ref childIndex);
+                    DeserializeAllChildren(queuedItem.saveObject.transform, queuedItem.saveObject.transform, serializableDataSet.data[i], ref childIndex);
                     #endregion
 
                     gameObjectsDataSet.RemoveAt(j);
