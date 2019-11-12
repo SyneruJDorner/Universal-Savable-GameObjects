@@ -36,7 +36,8 @@ class UniversalSerializedPersistenceSystem : MonoBehaviour
     public bool LoadData = false;
 
     public static string fileName = "PersistentDataSave.json";
-    private static string FilePath => Path.Combine(Application.streamingAssetsPath, fileName);
+    public static string streamingAssetPath = Application.streamingAssetsPath;
+    private static string FilePath => Path.Combine(streamingAssetPath, fileName);
 
     private static SerializableDataSet serializableDataSet = new SerializableDataSet();
     private static List<QueuedItem> gameObjectsDataSet = new List<QueuedItem>();
@@ -82,7 +83,6 @@ class UniversalSerializedPersistenceSystem : MonoBehaviour
     public static void QueueItemToSave(GameObject saveObject, string serializedGuid)
     {
         Camera cam;
-        AudioListener audioListener;
 
         SerializableData serializableData = new SerializableData();
 
@@ -92,7 +92,30 @@ class UniversalSerializedPersistenceSystem : MonoBehaviour
         serializableData.activeInHierarchy = Serialize(saveObject.activeInHierarchy);
         serializableData.sTransform = Serialize(new STransform().Serielize(saveObject.transform));
         serializableData.sCamera = (cam = saveObject.GetComponent<Camera>()) != null ? Serialize(new SCamera().Serielize(cam)) : null;
+
+        #region Audio
+        #region Audio Variables
+        AudioChorusFilter audioChorusFilter;
+        AudioDistortionFilter audioDistortionFilter;
+        AudioEchoFilter audioEchoFilter;
+        AudioHighPassFilter audioHighPassFilter;
+        AudioListener audioListener;
+        AudioLowPassFilter audioLowPassFilter;
+        AudioReverbFilter audioReverbFilter;
+        AudioReverbZone audioReverbZone;
+        AudioSource audioSource;
+        #endregion
+
+        serializableData.sAudioChorusFilter = (audioChorusFilter = saveObject.GetComponent<AudioChorusFilter>()) != null ? Serialize(new SAudioChorusFilter().Serielize(audioChorusFilter)) : null;
+        serializableData.sAudioDistortionFilter = (audioDistortionFilter = saveObject.GetComponent<AudioDistortionFilter>()) != null ? Serialize(new SAudioDistortionFilter().Serielize(audioDistortionFilter)) : null;
+        serializableData.sAudioEchoFilter = (audioEchoFilter = saveObject.GetComponent<AudioEchoFilter>()) != null ? Serialize(new SAudioEchoFilter().Serielize(audioEchoFilter)) : null;
+        serializableData.sAudioHighPassFilter = (audioHighPassFilter = saveObject.GetComponent<AudioHighPassFilter>()) != null ? Serialize(new SAudioHighPassFilter().Serielize(audioHighPassFilter)) : null;
         serializableData.sAudioListener = (audioListener = saveObject.GetComponent<AudioListener>()) != null ? Serialize(new SAudioListener().Serielize(audioListener)) : null;
+        serializableData.sAudioLowPassFilter = (audioLowPassFilter = saveObject.GetComponent<AudioLowPassFilter>()) != null ? Serialize(new SAudioLowPassFilter().Serielize(audioLowPassFilter)) : null;
+        serializableData.sAudioReverbFilter = (audioReverbFilter = saveObject.GetComponent<AudioReverbFilter>()) != null ? Serialize(new SAudioReverbFilter().Serielize(audioReverbFilter)) : null;
+        serializableData.sAudioReverbZone = (audioReverbZone = saveObject.GetComponent<AudioReverbZone>()) != null ? Serialize(new SAudioReverbZone().Serielize(audioReverbZone)) : null;
+        serializableData.sAudioSource = (audioSource = saveObject.GetComponent<AudioSource>()) != null ? Serialize(new SAudioSource().Serielize(audioSource)) : null;
+        #endregion
         #endregion
 
         #region Serialize User Defined Classes
@@ -128,14 +151,36 @@ class UniversalSerializedPersistenceSystem : MonoBehaviour
             SerializableChildData serializableChildData = new SerializableChildData();
 
             Camera cam;
-            AudioListener audioListener;
 
             #region Serialize Unity classes and types
             serializableChildData.rootParentID = Serialize(serializedGuid);
             serializableChildData.activeInHierarchy = Serialize(saveObject.activeInHierarchy);
             serializableChildData.sTransform = Serialize(new STransform().Serielize(saveObject.transform));
             serializableChildData.sCamera = (cam = saveObject.GetComponent<Camera>()) != null ? Serialize(new SCamera().Serielize(cam)) : null;
+
+            #region Audio
+            #region Audio Variables
+            AudioChorusFilter audioChorusFilter;
+            AudioDistortionFilter audioDistortionFilter;
+            AudioEchoFilter audioEchoFilter;
+            AudioHighPassFilter audioHighPassFilter;
+            AudioListener audioListener;
+            AudioLowPassFilter audioLowPassFilter;
+            AudioReverbFilter audioReverbFilter;
+            AudioReverbZone audioReverbZone;
+            AudioSource audioSource;
+            #endregion
+
+            serializableChildData.sAudioChorusFilter = (audioChorusFilter = saveObject.GetComponent<AudioChorusFilter>()) != null ? Serialize(new SAudioChorusFilter().Serielize(audioChorusFilter)) : null;
+            serializableChildData.sAudioDistortionFilter = (audioDistortionFilter = saveObject.GetComponent<AudioDistortionFilter>()) != null ? Serialize(new SAudioDistortionFilter().Serielize(audioDistortionFilter)) : null;
+            serializableChildData.sAudioEchoFilter = (audioEchoFilter = saveObject.GetComponent<AudioEchoFilter>()) != null ? Serialize(new SAudioEchoFilter().Serielize(audioEchoFilter)) : null;
+            serializableChildData.sAudioHighPassFilter = (audioHighPassFilter = saveObject.GetComponent<AudioHighPassFilter>()) != null ? Serialize(new SAudioHighPassFilter().Serielize(audioHighPassFilter)) : null;
             serializableChildData.sAudioListener = (audioListener = saveObject.GetComponent<AudioListener>()) != null ? Serialize(new SAudioListener().Serielize(audioListener)) : null;
+            serializableChildData.sAudioLowPassFilter = (audioLowPassFilter = saveObject.GetComponent<AudioLowPassFilter>()) != null ? Serialize(new SAudioLowPassFilter().Serielize(audioLowPassFilter)) : null;
+            serializableChildData.sAudioReverbFilter = (audioReverbFilter = saveObject.GetComponent<AudioReverbFilter>()) != null ? Serialize(new SAudioReverbFilter().Serielize(audioReverbFilter)) : null;
+            serializableChildData.sAudioReverbZone = (audioReverbZone = saveObject.GetComponent<AudioReverbZone>()) != null ? Serialize(new SAudioReverbZone().Serielize(audioReverbZone)) : null;
+            serializableChildData.sAudioSource = (audioSource = saveObject.GetComponent<AudioSource>()) != null ? Serialize(new SAudioSource().Serielize(audioSource)) : null;
+            #endregion
             #endregion
 
             #region Serialize User Defined Classes
@@ -163,6 +208,10 @@ class UniversalSerializedPersistenceSystem : MonoBehaviour
     {
         Debug.Log("Saving...");
         string jsonData = JsonUtility.ToJson(serializableDataSet);
+
+        if (!Directory.Exists(streamingAssetPath))
+            Directory.CreateDirectory(streamingAssetPath);
+
         File.WriteAllText(FilePath, jsonData);
         serializableDataSet.data.Clear();
         Debug.Log("Save was successful!");
@@ -205,13 +254,62 @@ class UniversalSerializedPersistenceSystem : MonoBehaviour
                     }
                     #endregion
 
-                    #region Deserialize Audio Listener
+                    #region Deserialize Audio
+                    if (serializableDataSet.data[i].sAudioChorusFilter.Length > 0)
+                    {
+                        SAudioChorusFilter sAudioChorusFilter = (SAudioChorusFilter)Deserialize(serializableDataSet.data[i].sAudioChorusFilter);
+                        sAudioChorusFilter.Deserielize(ref queuedItem.saveObject);
+                    }
+
+                    if (serializableDataSet.data[i].sAudioDistortionFilter.Length > 0)
+                    {
+                        SAudioDistortionFilter sAudioDistortionFilter = (SAudioDistortionFilter)Deserialize(serializableDataSet.data[i].sAudioDistortionFilter);
+                        sAudioDistortionFilter.Deserielize(ref queuedItem.saveObject);
+                    }
+
+                    if (serializableDataSet.data[i].sAudioEchoFilter.Length > 0)
+                    {
+                        SAudioEchoFilter sAudioEchoFilter = (SAudioEchoFilter)Deserialize(serializableDataSet.data[i].sAudioEchoFilter);
+                        sAudioEchoFilter.Deserielize(ref queuedItem.saveObject);
+                    }
+
+                    if (serializableDataSet.data[i].sAudioHighPassFilter.Length > 0)
+                    {
+                        SAudioHighPassFilter sAudioHighPassFilter = (SAudioHighPassFilter)Deserialize(serializableDataSet.data[i].sAudioHighPassFilter);
+                        sAudioHighPassFilter.Deserielize(ref queuedItem.saveObject);
+                    }
+
                     if (serializableDataSet.data[i].sAudioListener.Length > 0)
                     {
                         SAudioListener sAudioListener = (SAudioListener)Deserialize(serializableDataSet.data[i].sAudioListener);
                         sAudioListener.Deserielize(ref queuedItem.saveObject);
                     }
+
+                    if (serializableDataSet.data[i].sAudioLowPassFilter.Length > 0)
+                    {
+                        SAudioLowPassFilter sAudioLowPassFilter = (SAudioLowPassFilter)Deserialize(serializableDataSet.data[i].sAudioLowPassFilter);
+                        sAudioLowPassFilter.Deserielize(ref queuedItem.saveObject);
+                    }
+
+                    if (serializableDataSet.data[i].sAudioReverbFilter.Length > 0)
+                    {
+                        SAudioReverbFilter sAudioReverbFilter = (SAudioReverbFilter)Deserialize(serializableDataSet.data[i].sAudioReverbFilter);
+                        sAudioReverbFilter.Deserielize(ref queuedItem.saveObject);
+                    }
+
+                    if (serializableDataSet.data[i].sAudioReverbZone.Length > 0)
+                    {
+                        SAudioReverbZone sAudioReverbZone = (SAudioReverbZone)Deserialize(serializableDataSet.data[i].sAudioReverbZone);
+                        sAudioReverbZone.Deserielize(ref queuedItem.saveObject);
+                    }
+
+                    if (serializableDataSet.data[i].sAudioSource.Length > 0)
+                    {
+                        SAudioSource sAudioSource = (SAudioSource)Deserialize(serializableDataSet.data[i].sAudioSource);
+                        sAudioSource.Deserielize(ref queuedItem.saveObject);
+                    }
                     #endregion
+
                     #endregion
 
                     #region Deserialize User Defined Classes

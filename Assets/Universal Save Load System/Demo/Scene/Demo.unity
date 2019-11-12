@@ -349,7 +349,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dba5c64e01847da418d1f1c3ee129439, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serializedGuid: ce15fc79-996b-4046-9748-8b7ea9e33afb
+  serializedGuid: e3adc225-587d-4975-a677-02384a19a286
   monoScripts: []
 --- !u!65 &234825399
 BoxCollider:
@@ -587,7 +587,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dba5c64e01847da418d1f1c3ee129439, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serializedGuid: cd6857ac-130a-4deb-93d4-ccdb2e6a1037
+  serializedGuid: 9d6c1d1c-3da0-477f-996b-efe24fa4f937
   monoScripts: []
 --- !u!65 &924688529
 BoxCollider:
@@ -774,7 +774,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dba5c64e01847da418d1f1c3ee129439, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serializedGuid: 84009ffb-2b6e-425b-bcb3-e412cb7d75df
+  serializedGuid: 494d05bd-36d1-4391-b11d-722399dc193b
   monoScripts: []
 --- !u!65 &1278597602
 BoxCollider:
