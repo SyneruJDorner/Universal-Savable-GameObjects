@@ -352,7 +352,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dba5c64e01847da418d1f1c3ee129439, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serializedGuid: 976b5333-3d83-4402-94d6-53cd46b12e96
+  serializedGuid: ba12d585-c3f4-4e67-86f3-6f3c8c8681a5
   monoScripts: []
 --- !u!65 &234825399
 BoxCollider:
@@ -5551,7 +5551,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dba5c64e01847da418d1f1c3ee129439, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serializedGuid: 49d123ee-4f19-4897-85a0-e0bc9655396f
+  serializedGuid: b5d47eaa-81ab-4fab-9ad2-d31d886a7669
   monoScripts: []
 --- !u!166 &652861287
 AudioChorusFilter:
@@ -5861,7 +5861,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dba5c64e01847da418d1f1c3ee129439, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serializedGuid: f9fed774-3996-436f-97a5-e91f64aa18db
+  serializedGuid: 252be769-9e18-44ee-86c6-db040dbd6c1b
   monoScripts: []
 --- !u!65 &924688529
 BoxCollider:
@@ -6049,7 +6049,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dba5c64e01847da418d1f1c3ee129439, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serializedGuid: 73e84b2a-c12f-4e22-9081-909181601ccd
+  serializedGuid: 3c08d20b-d683-4f5a-b1a2-1fd81ec26ae4
   monoScripts: []
 --- !u!65 &1278597602
 BoxCollider:

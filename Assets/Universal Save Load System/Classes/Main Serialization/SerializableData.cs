@@ -34,6 +34,8 @@ public class UnitySerializableData
     public byte[] sLensFlare;
     public byte[] sLineRenderer;
     public byte[] sParticleSystem;
+    public byte[] sProjector;
+    public byte[] sTrailRenderer;
     #endregion
 }
 

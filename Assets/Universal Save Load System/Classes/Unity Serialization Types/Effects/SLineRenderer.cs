@@ -18,7 +18,7 @@ public class SLineRenderer
     public ReflectionProbeUsage reflectionProbeUsage;
     public uint renderLayerMask;
     public int renderPriority;
-    public STransform probeAnchor = new STransform();
+    //public STransform probeAnchor = new STransform();
     public bool useWorldSpace;
     public bool loop;
 }
@@ -42,7 +42,7 @@ public static class LineRendererExtensionMethods
             reflectionProbeUsage = _lineRenderer.reflectionProbeUsage,
             renderLayerMask = _lineRenderer.renderingLayerMask,
             renderPriority = _lineRenderer.rendererPriority,
-            probeAnchor = _lineRenderer.probeAnchor.Serialize(),
+            //probeAnchor = _lineRenderer.probeAnchor.Serialize(),
             useWorldSpace = _lineRenderer.useWorldSpace,
             loop = _lineRenderer.loop
         };
@@ -68,7 +68,7 @@ public static class LineRendererExtensionMethods
         returnVal.reflectionProbeUsage = _lineRenderer.reflectionProbeUsage;
         returnVal.renderingLayerMask = _lineRenderer.renderLayerMask;
         returnVal.rendererPriority = _lineRenderer.renderPriority;
-        returnVal.probeAnchor = _lineRenderer.probeAnchor.Deserialize(ref _gameObject);
+        //returnVal.probeAnchor = _lineRenderer.probeAnchor.Deserialize(ref _gameObject);
         returnVal.useWorldSpace = _lineRenderer.useWorldSpace;
         returnVal.loop = _lineRenderer.loop;
         return returnVal;

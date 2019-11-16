@@ -165,22 +165,19 @@ class UniversalSerializedPersistenceSystem : MonoBehaviour
 
                     #region Deserialize Effects
                     if (serializableDataSet.data[i].unitySerializableData.sLensFlare.Length > 0)
-                    {
-                        SLensFlare sLensFlare = (SLensFlare)DataDeserialization.Deserialize(serializableDataSet.data[i].unitySerializableData.sLensFlare);
-                        sLensFlare.Deserialize(ref queuedItem.saveObject);
-                    }
+                        ((SLensFlare)DataDeserialization.Deserialize(serializableDataSet.data[i].unitySerializableData.sLensFlare)).Deserialize(ref queuedItem.saveObject);
 
                     if (serializableDataSet.data[i].unitySerializableData.sLineRenderer.Length > 0)
-                    {
-                        SLineRenderer sLineRenderer = (SLineRenderer)DataDeserialization.Deserialize(serializableDataSet.data[i].unitySerializableData.sLineRenderer);
-                        sLineRenderer.Deserialize(ref queuedItem.saveObject);
-                    }
+                        ((SLineRenderer)DataDeserialization.Deserialize(serializableDataSet.data[i].unitySerializableData.sLineRenderer)).Deserialize(ref queuedItem.saveObject);
 
                     if (serializableDataSet.data[i].unitySerializableData.sParticleSystem.Length > 0)
-                    {
-                        SParticleSystem sParticleSystem = (SParticleSystem)DataDeserialization.Deserialize(serializableDataSet.data[i].unitySerializableData.sParticleSystem);
-                        sParticleSystem.Deserialize(ref queuedItem.saveObject);
-                    }
+                        ((SParticleSystem)DataDeserialization.Deserialize(serializableDataSet.data[i].unitySerializableData.sParticleSystem)).Deserialize(ref queuedItem.saveObject);
+
+                    if (serializableDataSet.data[i].unitySerializableData.sProjector.Length > 0)
+                        ((SProjector)DataDeserialization.Deserialize(serializableDataSet.data[i].unitySerializableData.sProjector)).Deserialize(ref queuedItem.saveObject);
+
+                    if (serializableDataSet.data[i].unitySerializableData.sTrailRenderer.Length > 0)
+                        ((STrailRenderer)DataDeserialization.Deserialize(serializableDataSet.data[i].unitySerializableData.sTrailRenderer)).Deserialize(ref queuedItem.saveObject);
 
                     #endregion
                     #endregion

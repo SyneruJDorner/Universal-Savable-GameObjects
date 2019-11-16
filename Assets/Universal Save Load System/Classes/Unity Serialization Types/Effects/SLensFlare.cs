@@ -20,6 +20,9 @@ public static class LensFlareExtensionMethods
     #region Serialization
     public static SLensFlare Serialize(this LensFlare _lensFlare)
     {
+        if (_lensFlare == null)
+            return null;
+
         SLensFlare returnVal = new SLensFlare
         {
             ExistsOnObject = (_lensFlare == null) ? false : true,
