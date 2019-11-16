@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-class SCamera
+public class SCamera
 {
     public bool ExistsOnObject = false;
     public bool Enabled;
@@ -31,8 +31,12 @@ class SCamera
     public bool OcclusionCulling;
     public float StereoConvergence;
     public float StereoSeparation;
+}
 
-    public SCamera Serielize(Camera _cam)
+public static class CameraExtensionMethods
+{
+    #region Serialization
+    public static SCamera Serialize(this Camera _cam)
     {
         SCamera RetSCamera = new SCamera
         {
@@ -66,37 +70,42 @@ class SCamera
 
         return RetSCamera;
     }
+    #endregion
 
-    public void Deserielize(ref GameObject _gameObject)
+    #region Deserialization
+    public static Camera Deserialize(this SCamera _cam, ref GameObject _gameObject)
     {
-        if (ExistsOnObject == false)
-            return;
+        if (_cam.ExistsOnObject == false)
+            return null;
 
         Camera _Camera = _gameObject.GetComponent<Camera>();
-        _Camera.enabled = Enabled;
-        _Camera.clearFlags = (CameraClearFlags)ClearFlag;
-        _Camera.backgroundColor = BackGroundColor.Deserialize();
-        _Camera.gateFit = (Camera.GateFitMode)GateFitMode;
-        _Camera.sensorSize = SensorSize.Deserialize();
-        _Camera.lensShift = LensShift.Deserialize();
-        _Camera.focalLength = FocalLength;
-        _Camera.rect = NormalizedViewPortRect.Deserialize();
-        _Camera.nearClipPlane = NearClipPlane;
-        _Camera.farClipPlane = FarClipPlane;
-        _Camera.fieldOfView = FieldOfView;
-        _Camera.orthographic = Orthographic;
-        _Camera.orthographicSize = OrthographicSize;
-        _Camera.depth = Depth;
-        _Camera.cullingMask = CullingMask;
-        _Camera.renderingPath = (RenderingPath)RenderPath;
-        _Camera.targetDisplay = TargetDisplay;
-        _Camera.stereoTargetEye = (StereoTargetEyeMask)TargetEye;
-        _Camera.allowHDR = HDR;
-        _Camera.allowMSAA = AllowMSAA;
-        _Camera.allowDynamicResolution = AllowDynamicResolution;
-        _Camera.forceIntoRenderTexture = ForceIntoRT;
-        _Camera.useOcclusionCulling = OcclusionCulling;
-        _Camera.stereoConvergence = StereoConvergence;
-        _Camera.stereoSeparation = StereoSeparation;
+        _Camera.enabled = _cam.Enabled;
+        _Camera.clearFlags = (CameraClearFlags)_cam.ClearFlag;
+        _Camera.backgroundColor = _cam.BackGroundColor.Deserialize();
+        _Camera.gateFit = (Camera.GateFitMode)_cam.GateFitMode;
+        _Camera.sensorSize = _cam.SensorSize.Deserialize();
+        _Camera.lensShift = _cam.LensShift.Deserialize();
+        _Camera.focalLength = _cam.FocalLength;
+        _Camera.rect = _cam.NormalizedViewPortRect.Deserialize();
+        _Camera.nearClipPlane = _cam.NearClipPlane;
+        _Camera.farClipPlane = _cam.FarClipPlane;
+        _Camera.fieldOfView = _cam.FieldOfView;
+        _Camera.orthographic = _cam.Orthographic;
+        _Camera.orthographicSize = _cam.OrthographicSize;
+        _Camera.depth = _cam.Depth;
+        _Camera.cullingMask = _cam.CullingMask;
+        _Camera.renderingPath = (RenderingPath)_cam.RenderPath;
+        _Camera.targetDisplay = _cam.TargetDisplay;
+        _Camera.stereoTargetEye = (StereoTargetEyeMask)_cam.TargetEye;
+        _Camera.allowHDR = _cam.HDR;
+        _Camera.allowMSAA = _cam.AllowMSAA;
+        _Camera.allowDynamicResolution = _cam.AllowDynamicResolution;
+        _Camera.forceIntoRenderTexture = _cam.ForceIntoRT;
+        _Camera.useOcclusionCulling = _cam.OcclusionCulling;
+        _Camera.stereoConvergence = _cam.StereoConvergence;
+        _Camera.stereoSeparation = _cam.StereoSeparation;
+
+        return _Camera;
     }
+    #endregion
 }

@@ -2,14 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-#region Audio Listener
 [System.Serializable]
-class SAudioListener
+public class SAudioListener
 {
     public bool ExistsOnObject = false;
     public bool Enabled;
+}
 
-    public SAudioListener Serielize(AudioListener _audioListener)
+public static class AudioListenerExtensionMethods
+{
+    #region Serialization
+    public static SAudioListener Serialize(this AudioListener _audioListener)
     {
         SAudioListener returnVal = new SAudioListener
         {
@@ -19,14 +22,17 @@ class SAudioListener
 
         return returnVal;
     }
+    #endregion
 
-    public void Deserielize(ref GameObject _gameObject)
+    #region Deserialization
+    public static AudioListener Deserialize(this SAudioListener _audioListener, ref GameObject _gameObject)
     {
-        if (ExistsOnObject == false)
-            return;
+        if (_audioListener.ExistsOnObject == false)
+            return null;
 
-        AudioListener _audioListener = _gameObject.GetComponent<AudioListener>();
-        _audioListener.enabled = Enabled;
+        AudioListener returnVal = _gameObject.GetComponent<AudioListener>();
+        returnVal.enabled = _audioListener.Enabled;
+        return returnVal;
     }
+    #endregion
 }
-#endregion

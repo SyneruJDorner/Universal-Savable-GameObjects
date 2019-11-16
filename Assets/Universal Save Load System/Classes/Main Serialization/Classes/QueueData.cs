@@ -14,24 +14,24 @@ public class QueueData
         serializableData.ID =                                           DataSerialization.Serialize(serializedGuid);
         serializableData.activeInHierarchy =                            DataSerialization.Serialize(saveObject.activeInHierarchy);
         serializableData.unitySerializableData.sTransform =             DataSerialization.Serialize(saveObject.transform.Serialize());
-        serializableData.unitySerializableData.sCamera =                (saveObject.GetComponent<Camera>() is var cam && cam != null) ?                                                     DataSerialization.Serialize(new SCamera().Serielize(cam)) : null;
+        serializableData.unitySerializableData.sCamera =                (saveObject.GetComponent<Camera>() is var cam && cam != null) ?                                                     DataSerialization.Serialize(cam.Serialize()) : null;
 
         #region Audio
         serializableData.unitySerializableData.sAudioChorusFilter =     (saveObject.GetComponent<AudioChorusFilter>() is var audioChorusFilter && audioChorusFilter != null) ?              DataSerialization.Serialize(audioChorusFilter.Serialize()) : null;
-        serializableData.unitySerializableData.sAudioDistortionFilter = (saveObject.GetComponent<AudioDistortionFilter>() is var audioDistortionFilter && audioDistortionFilter != null) ?  DataSerialization.Serialize(new SAudioDistortionFilter().Serielize(audioDistortionFilter)) : null;
-        serializableData.unitySerializableData.sAudioEchoFilter =       (saveObject.GetComponent<AudioEchoFilter>() is var audioEchoFilter && audioEchoFilter != null) ?                    DataSerialization.Serialize(new SAudioEchoFilter().Serielize(audioEchoFilter)) : null;
-        serializableData.unitySerializableData.sAudioHighPassFilter =   (saveObject.GetComponent<AudioHighPassFilter>() is var audioHighPassFilter && audioHighPassFilter != null) ?        DataSerialization.Serialize(new SAudioHighPassFilter().Serielize(audioHighPassFilter)) : null;
-        serializableData.unitySerializableData.sAudioListener =         (saveObject.GetComponent<AudioListener>() is var audioListener && audioListener != null) ?                          DataSerialization.Serialize(new SAudioListener().Serielize(audioListener)) : null;
-        serializableData.unitySerializableData.sAudioLowPassFilter =    (saveObject.GetComponent<AudioLowPassFilter>() is var audioLowPassFilter && audioLowPassFilter != null) ?           DataSerialization.Serialize(new SAudioLowPassFilter().Serielize(audioLowPassFilter)) : null;
-        serializableData.unitySerializableData.sAudioReverbFilter =     (saveObject.GetComponent<AudioReverbFilter>() is var audioReverbFilter && audioReverbFilter != null) ?              DataSerialization.Serialize(new SAudioReverbFilter().Serielize(audioReverbFilter)) : null;
-        serializableData.unitySerializableData.sAudioReverbZone =       (saveObject.GetComponent<AudioReverbZone>() is var audioReverbZone && audioReverbZone != null) ?                    DataSerialization.Serialize(new SAudioReverbZone().Serielize(audioReverbZone)) : null;
-        serializableData.unitySerializableData.sAudioSource =           (saveObject.GetComponent<AudioSource>() is var audioSource && audioSource != null) ?                                DataSerialization.Serialize(new SAudioSource().Serielize(audioSource)) : null;
+        serializableData.unitySerializableData.sAudioDistortionFilter = (saveObject.GetComponent<AudioDistortionFilter>() is var audioDistortionFilter && audioDistortionFilter != null) ?  DataSerialization.Serialize(audioDistortionFilter.Serialize()) : null;
+        serializableData.unitySerializableData.sAudioEchoFilter =       (saveObject.GetComponent<AudioEchoFilter>() is var audioEchoFilter && audioEchoFilter != null) ?                    DataSerialization.Serialize(audioEchoFilter.Serialize()) : null;
+        serializableData.unitySerializableData.sAudioHighPassFilter =   (saveObject.GetComponent<AudioHighPassFilter>() is var audioHighPassFilter && audioHighPassFilter != null) ?        DataSerialization.Serialize(audioHighPassFilter.Serialize()) : null;
+        serializableData.unitySerializableData.sAudioListener =         (saveObject.GetComponent<AudioListener>() is var audioListener && audioListener != null) ?                          DataSerialization.Serialize(audioListener.Serialize()) : null;
+        serializableData.unitySerializableData.sAudioLowPassFilter =    (saveObject.GetComponent<AudioLowPassFilter>() is var audioLowPassFilter && audioLowPassFilter != null) ?           DataSerialization.Serialize(audioLowPassFilter.Serialize()) : null;
+        serializableData.unitySerializableData.sAudioReverbFilter =     (saveObject.GetComponent<AudioReverbFilter>() is var audioReverbFilter && audioReverbFilter != null) ?              DataSerialization.Serialize(audioReverbFilter.Serialize()) : null;
+        serializableData.unitySerializableData.sAudioReverbZone =       (saveObject.GetComponent<AudioReverbZone>() is var audioReverbZone && audioReverbZone != null) ?                    DataSerialization.Serialize(audioReverbZone.Serialize()) : null;
+        serializableData.unitySerializableData.sAudioSource =           (saveObject.GetComponent<AudioSource>() is var audioSource && audioSource != null) ?                                DataSerialization.Serialize(audioSource.Serialize()) : null;
         #endregion
 
         #region Effects
-        serializableData.unitySerializableData.sLensFlare =             (saveObject.GetComponent<LensFlare>() is var lensFlare && lensFlare != null) ?                                      DataSerialization.Serialize(new SLensFlare().Serielize(lensFlare)) : null;
-        serializableData.unitySerializableData.sLineRenderer =          (saveObject.GetComponent<LineRenderer>() is var lineRenderer && lineRenderer != null) ?                             DataSerialization.Serialize(new SLineRenderer().Serielize(lineRenderer)) : null;
-        serializableData.unitySerializableData.sParticleSystem =        (saveObject.GetComponent<ParticleSystem>() is var particleSystem && particleSystem != null) ?                       DataSerialization.Serialize(new SParticleSystem().Serialize(particleSystem)) : null;
+        serializableData.unitySerializableData.sLensFlare =             (saveObject.GetComponent<LensFlare>() is var lensFlare && lensFlare != null) ?                                      DataSerialization.Serialize(lensFlare.Serialize()) : null;
+        serializableData.unitySerializableData.sLineRenderer =          (saveObject.GetComponent<LineRenderer>() is var lineRenderer && lineRenderer != null) ?                             DataSerialization.Serialize(lineRenderer.Serialize()) : null;
+        serializableData.unitySerializableData.sParticleSystem =        (saveObject.GetComponent<ParticleSystem>() is var particleSystem && particleSystem != null) ?                       DataSerialization.Serialize(particleSystem.Serialize()) : null;
         #endregion
         #endregion
 
@@ -71,24 +71,24 @@ public class QueueData
             serializableChildData.rootParentID =                                    DataSerialization.Serialize(serializedGuid);
             serializableChildData.activeInHierarchy =                               DataSerialization.Serialize(saveObject.activeInHierarchy);
             serializableChildData.unitySerializableData.sTransform =                DataSerialization.Serialize(saveObject.transform.Serialize());
-            serializableChildData.unitySerializableData.sCamera =                   (saveObject.GetComponent<Camera>() is var cam && cam != null) ?                                                     DataSerialization.Serialize(new SCamera().Serielize(cam)) : null;
+            serializableChildData.unitySerializableData.sCamera =                   (saveObject.GetComponent<Camera>() is var cam && cam != null) ?                                                     DataSerialization.Serialize(cam.Serialize()) : null;
 
             #region Audio
             serializableChildData.unitySerializableData.sAudioChorusFilter =        (saveObject.GetComponent<AudioChorusFilter>() is var audioChorusFilter && audioChorusFilter != null) ?              DataSerialization.Serialize(audioChorusFilter.Serialize()) : null;
-            serializableChildData.unitySerializableData.sAudioDistortionFilter =    (saveObject.GetComponent<AudioDistortionFilter>() is var audioDistortionFilter && audioDistortionFilter != null) ?  DataSerialization.Serialize(new SAudioDistortionFilter().Serielize(audioDistortionFilter)) : null;
-            serializableChildData.unitySerializableData.sAudioEchoFilter =          (saveObject.GetComponent<AudioEchoFilter>() is var audioEchoFilter && audioEchoFilter != null) ?                    DataSerialization.Serialize(new SAudioEchoFilter().Serielize(audioEchoFilter)) : null;
-            serializableChildData.unitySerializableData.sAudioHighPassFilter =      (saveObject.GetComponent<AudioHighPassFilter>() is var audioHighPassFilter && audioHighPassFilter != null) ?        DataSerialization.Serialize(new SAudioHighPassFilter().Serielize(audioHighPassFilter)) : null;
-            serializableChildData.unitySerializableData.sAudioListener =            (saveObject.GetComponent<AudioListener>() is var audioListener && audioListener != null) ?                          DataSerialization.Serialize(new SAudioListener().Serielize(audioListener)) : null;
-            serializableChildData.unitySerializableData.sAudioLowPassFilter =       (saveObject.GetComponent<AudioLowPassFilter>() is var audioLowPassFilter && audioLowPassFilter != null) ?           DataSerialization.Serialize(new SAudioLowPassFilter().Serielize(audioLowPassFilter)) : null;
-            serializableChildData.unitySerializableData.sAudioReverbFilter =        (saveObject.GetComponent<AudioReverbFilter>() is var audioReverbFilter && audioReverbFilter != null) ?              DataSerialization.Serialize(new SAudioReverbFilter().Serielize(audioReverbFilter)) : null;
-            serializableChildData.unitySerializableData.sAudioReverbZone =          (saveObject.GetComponent<AudioReverbZone>() is var audioReverbZone && audioReverbZone != null) ?                    DataSerialization.Serialize(new SAudioReverbZone().Serielize(audioReverbZone)) : null;
-            serializableChildData.unitySerializableData.sAudioSource =              (saveObject.GetComponent<AudioSource>() is var audioSource && audioSource != null) ?                                DataSerialization.Serialize(new SAudioSource().Serielize(audioSource)) : null;
+            serializableChildData.unitySerializableData.sAudioDistortionFilter =    (saveObject.GetComponent<AudioDistortionFilter>() is var audioDistortionFilter && audioDistortionFilter != null) ?  DataSerialization.Serialize(audioDistortionFilter.Serialize()) : null;
+            serializableChildData.unitySerializableData.sAudioEchoFilter =          (saveObject.GetComponent<AudioEchoFilter>() is var audioEchoFilter && audioEchoFilter != null) ?                    DataSerialization.Serialize(audioEchoFilter.Serialize()) : null;
+            serializableChildData.unitySerializableData.sAudioHighPassFilter =      (saveObject.GetComponent<AudioHighPassFilter>() is var audioHighPassFilter && audioHighPassFilter != null) ?        DataSerialization.Serialize(audioHighPassFilter.Serialize()) : null;
+            serializableChildData.unitySerializableData.sAudioListener =            (saveObject.GetComponent<AudioListener>() is var audioListener && audioListener != null) ?                          DataSerialization.Serialize(audioListener.Serialize()) : null;
+            serializableChildData.unitySerializableData.sAudioLowPassFilter =       (saveObject.GetComponent<AudioLowPassFilter>() is var audioLowPassFilter && audioLowPassFilter != null) ?           DataSerialization.Serialize(audioLowPassFilter.Serialize()) : null;
+            serializableChildData.unitySerializableData.sAudioReverbFilter =        (saveObject.GetComponent<AudioReverbFilter>() is var audioReverbFilter && audioReverbFilter != null) ?              DataSerialization.Serialize(audioReverbFilter.Serialize()) : null;
+            serializableChildData.unitySerializableData.sAudioReverbZone =          (saveObject.GetComponent<AudioReverbZone>() is var audioReverbZone && audioReverbZone != null) ?                    DataSerialization.Serialize(audioReverbZone.Serialize()) : null;
+            serializableChildData.unitySerializableData.sAudioSource =              (saveObject.GetComponent<AudioSource>() is var audioSource && audioSource != null) ?                                DataSerialization.Serialize(audioSource.Serialize()) : null;
             #endregion
 
             #region Effects
-            serializableChildData.unitySerializableData.sLensFlare =                (saveObject.GetComponent<LensFlare>() is var lensFlare && lensFlare != null) ?                                      DataSerialization.Serialize(new SLensFlare().Serielize(lensFlare)) : null;
-            serializableChildData.unitySerializableData.sLineRenderer =             (saveObject.GetComponent<LineRenderer>() is var lineRenderer && lineRenderer != null) ?                             DataSerialization.Serialize(new SLineRenderer().Serielize(lineRenderer)) : null;
-            serializableChildData.unitySerializableData.sParticleSystem =           (saveObject.GetComponent<ParticleSystem>() is var particleSystem && particleSystem != null) ?                       DataSerialization.Serialize(new SParticleSystem().Serialize(particleSystem)) : null;
+            serializableChildData.unitySerializableData.sLensFlare =                (saveObject.GetComponent<LensFlare>() is var lensFlare && lensFlare != null) ?                                      DataSerialization.Serialize(lensFlare.Serialize()) : null;
+            serializableChildData.unitySerializableData.sLineRenderer =             (saveObject.GetComponent<LineRenderer>() is var lineRenderer && lineRenderer != null) ?                             DataSerialization.Serialize(lineRenderer.Serialize()) : null;
+            serializableChildData.unitySerializableData.sParticleSystem =           (saveObject.GetComponent<ParticleSystem>() is var particleSystem && particleSystem != null) ?                       DataSerialization.Serialize(particleSystem.Serialize()) : null;
             #endregion
             #endregion
 
@@ -139,10 +139,7 @@ public class QueueData
 
             #region Deserialize Camera
             if (serializableChildData.unitySerializableData.sCamera.Length > 0)
-            {
-                SCamera sCamera = (SCamera)DataDeserialization.Deserialize(serializableChildData.unitySerializableData.sCamera);
-                sCamera.Deserielize(ref currentObj);
-            }
+                ((SCamera)DataDeserialization.Deserialize(serializableChildData.unitySerializableData.sCamera)).Deserialize(ref currentObj);
             #endregion
 
             #region Deserialize Audio
@@ -152,63 +149,42 @@ public class QueueData
             if (serializableChildData.unitySerializableData.sAudioDistortionFilter.Length > 0)
             {
                 SAudioDistortionFilter sAudioDistortionFilter = (SAudioDistortionFilter)DataDeserialization.Deserialize(serializableChildData.unitySerializableData.sAudioDistortionFilter);
-                sAudioDistortionFilter.Deserielize(ref currentObj);
+                sAudioDistortionFilter.Deserialize(ref currentObj);
             }
 
             if (serializableChildData.unitySerializableData.sAudioEchoFilter.Length > 0)
-            {
-                SAudioEchoFilter sAudioEchoFilter = (SAudioEchoFilter)DataDeserialization.Deserialize(serializableChildData.unitySerializableData.sAudioEchoFilter);
-                sAudioEchoFilter.Deserielize(ref currentObj);
-            }
+                ((SAudioEchoFilter)DataDeserialization.Deserialize(serializableChildData.unitySerializableData.sAudioEchoFilter)).Deserialize(ref currentObj);
 
             if (serializableChildData.unitySerializableData.sAudioHighPassFilter.Length > 0)
-            {
-                SAudioHighPassFilter sAudioHighPassFilter = (SAudioHighPassFilter)DataDeserialization.Deserialize(serializableChildData.unitySerializableData.sAudioHighPassFilter);
-                sAudioHighPassFilter.Deserielize(ref currentObj);
-            }
+                ((SAudioHighPassFilter)DataDeserialization.Deserialize(serializableChildData.unitySerializableData.sAudioHighPassFilter)).Deserialize(ref currentObj);
 
             if (serializableChildData.unitySerializableData.sAudioListener.Length > 0)
-            {
-                SAudioListener sAudioListener = (SAudioListener)DataDeserialization.Deserialize(serializableChildData.unitySerializableData.sAudioListener);
-                sAudioListener.Deserielize(ref currentObj);
-            }
+                ((SAudioListener)DataDeserialization.Deserialize(serializableChildData.unitySerializableData.sAudioListener)).Deserialize(ref currentObj);
 
             if (serializableChildData.unitySerializableData.sAudioLowPassFilter.Length > 0)
-            {
-                SAudioLowPassFilter sAudioLowPassFilter = (SAudioLowPassFilter)DataDeserialization.Deserialize(serializableChildData.unitySerializableData.sAudioLowPassFilter);
-                sAudioLowPassFilter.Deserielize(ref currentObj);
-            }
+                ((SAudioLowPassFilter)DataDeserialization.Deserialize(serializableChildData.unitySerializableData.sAudioLowPassFilter)).Deserialize(ref currentObj);
 
             if (serializableChildData.unitySerializableData.sAudioReverbFilter.Length > 0)
-            {
-                SAudioReverbFilter sAudioReverbFilter = (SAudioReverbFilter)DataDeserialization.Deserialize(serializableChildData.unitySerializableData.sAudioReverbFilter);
-                sAudioReverbFilter.Deserielize(ref currentObj);
-            }
+                ((SAudioReverbFilter)DataDeserialization.Deserialize(serializableChildData.unitySerializableData.sAudioReverbFilter)).Deserialize(ref currentObj);
 
             if (serializableChildData.unitySerializableData.sAudioReverbZone.Length > 0)
-            {
-                SAudioReverbZone sAudioReverbZone = (SAudioReverbZone)DataDeserialization.Deserialize(serializableChildData.unitySerializableData.sAudioReverbZone);
-                sAudioReverbZone.Deserielize(ref currentObj);
-            }
+                ((SAudioReverbZone)DataDeserialization.Deserialize(serializableChildData.unitySerializableData.sAudioReverbZone)).Deserialize(ref currentObj);
 
             if (serializableChildData.unitySerializableData.sAudioSource.Length > 0)
-            {
-                SAudioSource sAudioSource = (SAudioSource)DataDeserialization.Deserialize(serializableChildData.unitySerializableData.sAudioSource);
-                sAudioSource.Deserielize(ref currentObj);
-            }
+                ((SAudioSource)DataDeserialization.Deserialize(serializableChildData.unitySerializableData.sAudioSource)).Deserialize(ref currentObj);
             #endregion
 
             #region Deserialize Effects
             if (serializableChildData.unitySerializableData.sLensFlare.Length > 0)
             {
                 SLensFlare sLensFlare = (SLensFlare)DataDeserialization.Deserialize(serializableChildData.unitySerializableData.sLensFlare);
-                sLensFlare.Deserielize(ref currentObj);
+                sLensFlare.Deserialize(ref currentObj);
             }
 
             if (serializableChildData.unitySerializableData.sLineRenderer.Length > 0)
             {
                 SLineRenderer sLineRenderer = (SLineRenderer)DataDeserialization.Deserialize(serializableChildData.unitySerializableData.sLineRenderer);
-                sLineRenderer.Deserielize(ref currentObj);
+                sLineRenderer.Deserialize(ref currentObj);
             }
 
             if (serializableChildData.unitySerializableData.sParticleSystem.Length > 0)

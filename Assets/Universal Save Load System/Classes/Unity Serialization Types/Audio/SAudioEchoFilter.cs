@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-#region Audio Echo Filter
 [System.Serializable]
-class SAudioEchoFilter
+public class SAudioEchoFilter
 {
     public bool ExistsOnObject = false;
     public bool Enabled;
@@ -13,8 +12,12 @@ class SAudioEchoFilter
     public float decayRatio;
     public float wetMix;
     public float dryMix;
+}
 
-    public SAudioEchoFilter Serielize(AudioEchoFilter _audioEchoFilter)
+public static class AudioEchoFilterExtensionMethods
+{
+    #region Serialization
+    public static SAudioEchoFilter Serialize(this AudioEchoFilter _audioEchoFilter)
     {
         SAudioEchoFilter returnVal = new SAudioEchoFilter
         {
@@ -29,19 +32,21 @@ class SAudioEchoFilter
 
         return returnVal;
     }
+    #endregion
 
-    public void Deserielize(ref GameObject _gameObject)
+    #region Deserialization
+    public static void Deserialize(this SAudioEchoFilter _audioEchoFilter, ref GameObject _gameObject)
     {
-        if (ExistsOnObject == false)
+        if (_audioEchoFilter.ExistsOnObject == false)
             return;
 
-        AudioEchoFilter _audioEchoFilter = _gameObject.GetComponent<AudioEchoFilter>();
-        _audioEchoFilter.enabled = Enabled;
+        AudioEchoFilter returnVal = _gameObject.GetComponent<AudioEchoFilter>();
+        returnVal.enabled = _audioEchoFilter.Enabled;
 
-        _audioEchoFilter.delay = delay;
-        _audioEchoFilter.decayRatio = decayRatio;
-        _audioEchoFilter.wetMix = wetMix;
-        _audioEchoFilter.dryMix = dryMix;
+        returnVal.delay = _audioEchoFilter.delay;
+        returnVal.decayRatio = _audioEchoFilter.decayRatio;
+        returnVal.wetMix = _audioEchoFilter.wetMix;
+        returnVal.dryMix = _audioEchoFilter.dryMix;
     }
+    #endregion
 }
-#endregion

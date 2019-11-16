@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-#region Audio Reverb Zone
 [System.Serializable]
-class SAudioReverbZone
+public class SAudioReverbZone
 {
     public bool ExistsOnObject = false;
     public bool Enabled;
@@ -24,8 +23,12 @@ class SAudioReverbZone
     public float diffusion;
     public float lfReference;
     public int roomLF;
+}
 
-    public SAudioReverbZone Serielize(AudioReverbZone _audioReverbZone)
+public static class AudioReverbZoneExtensionMethods
+{
+    #region Serialization
+    public static SAudioReverbZone Serialize(this AudioReverbZone _audioReverbZone)
     {
         SAudioReverbZone returnVal = new SAudioReverbZone
         {
@@ -51,30 +54,33 @@ class SAudioReverbZone
 
         return returnVal;
     }
+    #endregion
 
-    public void Deserielize(ref GameObject _gameObject)
+    #region Deserialization
+    public static AudioReverbZone Deserialize(this SAudioReverbZone _audioReverbZone, ref GameObject _gameObject)
     {
-        if (ExistsOnObject == false)
-            return;
+        if (_audioReverbZone.ExistsOnObject == false)
+            return null;
 
-        AudioReverbZone _audioReverbZone = _gameObject.GetComponent<AudioReverbZone>();
-        _audioReverbZone.enabled = Enabled;
+        AudioReverbZone returnVal = _gameObject.GetComponent<AudioReverbZone>();
+        returnVal.enabled = _audioReverbZone.Enabled;
 
-        _audioReverbZone.minDistance = minDistance;
-        _audioReverbZone.maxDistance = maxDistance;
-        _audioReverbZone.reverbPreset = reverbPreset;
-        _audioReverbZone.room = room;
-        _audioReverbZone.roomHF = roomHF;
-        _audioReverbZone.decayTime = decayTime;
-        _audioReverbZone.decayHFRatio = decayHFRatio;
-        _audioReverbZone.reflections = reflections;
-        _audioReverbZone.reflectionsDelay = reflectionsDelay;
-        _audioReverbZone.reverb = reverb;
-        _audioReverbZone.reverbDelay = reverbDelay;
-        _audioReverbZone.HFReference = hfReference;
-        _audioReverbZone.diffusion = diffusion;
-        _audioReverbZone.LFReference = lfReference;
-        _audioReverbZone.roomLF = roomLF;
+        returnVal.minDistance = _audioReverbZone.minDistance;
+        returnVal.maxDistance = _audioReverbZone.maxDistance;
+        returnVal.reverbPreset = _audioReverbZone.reverbPreset;
+        returnVal.room = _audioReverbZone.room;
+        returnVal.roomHF = _audioReverbZone.roomHF;
+        returnVal.decayTime = _audioReverbZone.decayTime;
+        returnVal.decayHFRatio = _audioReverbZone.decayHFRatio;
+        returnVal.reflections = _audioReverbZone.reflections;
+        returnVal.reflectionsDelay = _audioReverbZone.reflectionsDelay;
+        returnVal.reverb = _audioReverbZone.reverb;
+        returnVal.reverbDelay = _audioReverbZone.reverbDelay;
+        returnVal.HFReference = _audioReverbZone.hfReference;
+        returnVal.diffusion = _audioReverbZone.diffusion;
+        returnVal.LFReference = _audioReverbZone.lfReference;
+        returnVal.roomLF = _audioReverbZone.roomLF;
+        return returnVal;
     }
+    #endregion
 }
-#endregion

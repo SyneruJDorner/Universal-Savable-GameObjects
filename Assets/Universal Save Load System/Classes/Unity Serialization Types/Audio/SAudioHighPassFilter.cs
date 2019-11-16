@@ -2,17 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-#region Audio High Pass Filter
 [System.Serializable]
-class SAudioHighPassFilter
+public class SAudioHighPassFilter
 {
     public bool ExistsOnObject = false;
     public bool Enabled;
 
     public float cutoffFrequency;
     public float highpassResonanceQ;
+}
 
-    public SAudioHighPassFilter Serielize(AudioHighPassFilter _audioHighPassFilter)
+public static class AudioHighPassFilterExtensionMethods
+{
+    #region Serialization
+    public static SAudioHighPassFilter Serialize(this AudioHighPassFilter _audioHighPassFilter)
     {
         SAudioHighPassFilter returnVal = new SAudioHighPassFilter
         {
@@ -25,17 +28,20 @@ class SAudioHighPassFilter
 
         return returnVal;
     }
+    #endregion
 
-    public void Deserielize(ref GameObject _gameObject)
+    #region Deserialization
+    public static AudioHighPassFilter Deserialize(this SAudioHighPassFilter _audioHighPassFilter, ref GameObject _gameObject)
     {
-        if (ExistsOnObject == false)
-            return;
+        if (_audioHighPassFilter.ExistsOnObject == false)
+            return null;
 
-        AudioHighPassFilter _audioHighPassFilter = _gameObject.GetComponent<AudioHighPassFilter>();
-        _audioHighPassFilter.enabled = Enabled;
+        AudioHighPassFilter returnVal = _gameObject.GetComponent<AudioHighPassFilter>();
+        returnVal.enabled = _audioHighPassFilter.Enabled;
 
-        _audioHighPassFilter.cutoffFrequency = cutoffFrequency;
-        _audioHighPassFilter.highpassResonanceQ = highpassResonanceQ;
+        returnVal.cutoffFrequency = _audioHighPassFilter.cutoffFrequency;
+        returnVal.highpassResonanceQ = _audioHighPassFilter.highpassResonanceQ;
+        return returnVal;
     }
+    #endregion
 }
-#endregion

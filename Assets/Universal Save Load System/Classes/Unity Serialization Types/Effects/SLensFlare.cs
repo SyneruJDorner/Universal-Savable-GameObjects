@@ -4,7 +4,7 @@ using UnityEngine;
 
 #region Lens Flare
 [System.Serializable]
-class SLensFlare
+public class SLensFlare
 {
     public bool ExistsOnObject = false;
     public bool Enabled;
@@ -12,8 +12,13 @@ class SLensFlare
     public SColor color;
     public float brightness;
     public float fadeSpeed;
+}
+#endregion
 
-    public SLensFlare Serielize(LensFlare _lensFlare)
+public static class LensFlareExtensionMethods
+{
+    #region Serialization
+    public static SLensFlare Serialize(this LensFlare _lensFlare)
     {
         SLensFlare returnVal = new SLensFlare
         {
@@ -27,18 +32,21 @@ class SLensFlare
 
         return returnVal;
     }
+    #endregion
 
-    public void Deserielize(ref GameObject _gameObject)
+    #region Deserialization
+    public static LensFlare Deserialize(this SLensFlare _lensFlare, ref GameObject _gameObject)
     {
-        if (ExistsOnObject == false)
-            return;
+        if (_lensFlare.ExistsOnObject == false)
+            return null;
 
-        LensFlare _lensFlare = _gameObject.GetComponent<LensFlare>();
-        _lensFlare.enabled = Enabled;
+        LensFlare returnVal = _gameObject.GetComponent<LensFlare>();
+        returnVal.enabled = _lensFlare.Enabled;
 
-        _lensFlare.color = new SColor().Deserialize();
-        _lensFlare.brightness = brightness;
-        _lensFlare.fadeSpeed = fadeSpeed;
+        returnVal.color = new SColor().Deserialize();
+        returnVal.brightness = _lensFlare.brightness;
+        returnVal.fadeSpeed = _lensFlare.fadeSpeed;
+        return returnVal;
     }
+    #endregion
 }
-#endregion

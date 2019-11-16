@@ -117,10 +117,7 @@ class UniversalSerializedPersistenceSystem : MonoBehaviour
 
                     #region Deserialize Camera
                     if (serializableDataSet.data[i].unitySerializableData.sCamera.Length > 0)
-                    {
-                        SCamera sCamera = (SCamera)DataDeserialization.Deserialize(serializableDataSet.data[i].unitySerializableData.sCamera);
-                        sCamera.Deserielize(ref queuedItem.saveObject);
-                    }
+                        ((SCamera)DataDeserialization.Deserialize(serializableDataSet.data[i].unitySerializableData.sCamera)).Deserialize(ref queuedItem.saveObject);
                     #endregion
 
                     #region Deserialize Audio
@@ -130,63 +127,48 @@ class UniversalSerializedPersistenceSystem : MonoBehaviour
                     if (serializableDataSet.data[i].unitySerializableData.sAudioDistortionFilter.Length > 0)
                     {
                         SAudioDistortionFilter sAudioDistortionFilter = (SAudioDistortionFilter)DataDeserialization.Deserialize(serializableDataSet.data[i].unitySerializableData.sAudioDistortionFilter);
-                        sAudioDistortionFilter.Deserielize(ref queuedItem.saveObject);
+                        sAudioDistortionFilter.Deserialize(ref queuedItem.saveObject);
                     }
 
                     if (serializableDataSet.data[i].unitySerializableData.sAudioEchoFilter.Length > 0)
-                    {
-                        SAudioEchoFilter sAudioEchoFilter = (SAudioEchoFilter)DataDeserialization.Deserialize(serializableDataSet.data[i].unitySerializableData.sAudioEchoFilter);
-                        sAudioEchoFilter.Deserielize(ref queuedItem.saveObject);
-                    }
+                        ((SAudioEchoFilter)DataDeserialization.Deserialize(serializableDataSet.data[i].unitySerializableData.sAudioEchoFilter)).Deserialize(ref queuedItem.saveObject);
 
                     if (serializableDataSet.data[i].unitySerializableData.sAudioHighPassFilter.Length > 0)
-                    {
-                        SAudioHighPassFilter sAudioHighPassFilter = (SAudioHighPassFilter)DataDeserialization.Deserialize(serializableDataSet.data[i].unitySerializableData.sAudioHighPassFilter);
-                        sAudioHighPassFilter.Deserielize(ref queuedItem.saveObject);
-                    }
+                        ((SAudioHighPassFilter)DataDeserialization.Deserialize(serializableDataSet.data[i].unitySerializableData.sAudioHighPassFilter)).Deserialize(ref queuedItem.saveObject);
 
                     if (serializableDataSet.data[i].unitySerializableData.sAudioListener.Length > 0)
-                    {
-                        SAudioListener sAudioListener = (SAudioListener)DataDeserialization.Deserialize(serializableDataSet.data[i].unitySerializableData.sAudioListener);
-                        sAudioListener.Deserielize(ref queuedItem.saveObject);
-                    }
+ 
+                        ((SAudioListener)DataDeserialization.Deserialize(serializableDataSet.data[i].unitySerializableData.sAudioListener)).Deserialize(ref queuedItem.saveObject);
+
 
                     if (serializableDataSet.data[i].unitySerializableData.sAudioLowPassFilter.Length > 0)
-                    {
-                        SAudioLowPassFilter sAudioLowPassFilter = (SAudioLowPassFilter)DataDeserialization.Deserialize(serializableDataSet.data[i].unitySerializableData.sAudioLowPassFilter);
-                        sAudioLowPassFilter.Deserielize(ref queuedItem.saveObject);
-                    }
+                        ((SAudioLowPassFilter)DataDeserialization.Deserialize(serializableDataSet.data[i].unitySerializableData.sAudioLowPassFilter)).Deserialize(ref queuedItem.saveObject);
+
 
                     if (serializableDataSet.data[i].unitySerializableData.sAudioReverbFilter.Length > 0)
-                    {
-                        SAudioReverbFilter sAudioReverbFilter = (SAudioReverbFilter)DataDeserialization.Deserialize(serializableDataSet.data[i].unitySerializableData.sAudioReverbFilter);
-                        sAudioReverbFilter.Deserielize(ref queuedItem.saveObject);
-                    }
+                        ((SAudioReverbFilter)DataDeserialization.Deserialize(serializableDataSet.data[i].unitySerializableData.sAudioReverbFilter)).Deserialize(ref queuedItem.saveObject);
+
 
                     if (serializableDataSet.data[i].unitySerializableData.sAudioReverbZone.Length > 0)
-                    {
-                        SAudioReverbZone sAudioReverbZone = (SAudioReverbZone)DataDeserialization.Deserialize(serializableDataSet.data[i].unitySerializableData.sAudioReverbZone);
-                        sAudioReverbZone.Deserielize(ref queuedItem.saveObject);
-                    }
+                        ((SAudioReverbZone)DataDeserialization.Deserialize(serializableDataSet.data[i].unitySerializableData.sAudioReverbZone)).Deserialize(ref queuedItem.saveObject);
+
 
                     if (serializableDataSet.data[i].unitySerializableData.sAudioSource.Length > 0)
-                    {
-                        SAudioSource sAudioSource = (SAudioSource)DataDeserialization.Deserialize(serializableDataSet.data[i].unitySerializableData.sAudioSource);
-                        sAudioSource.Deserielize(ref queuedItem.saveObject);
-                    }
+                        ((SAudioSource)DataDeserialization.Deserialize(serializableDataSet.data[i].unitySerializableData.sAudioSource)).Deserialize(ref queuedItem.saveObject);
+
                     #endregion
 
                     #region Deserialize Effects
                     if (serializableDataSet.data[i].unitySerializableData.sLensFlare.Length > 0)
                     {
                         SLensFlare sLensFlare = (SLensFlare)DataDeserialization.Deserialize(serializableDataSet.data[i].unitySerializableData.sLensFlare);
-                        sLensFlare.Deserielize(ref queuedItem.saveObject);
+                        sLensFlare.Deserialize(ref queuedItem.saveObject);
                     }
 
                     if (serializableDataSet.data[i].unitySerializableData.sLineRenderer.Length > 0)
                     {
                         SLineRenderer sLineRenderer = (SLineRenderer)DataDeserialization.Deserialize(serializableDataSet.data[i].unitySerializableData.sLineRenderer);
-                        sLineRenderer.Deserielize(ref queuedItem.saveObject);
+                        sLineRenderer.Deserialize(ref queuedItem.saveObject);
                     }
 
                     if (serializableDataSet.data[i].unitySerializableData.sParticleSystem.Length > 0)

@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-#region Audio Reverb Filter
 [System.Serializable]
-class SAudioReverbFilter
+public class SAudioReverbFilter
 {
     public bool ExistsOnObject = false;
     public bool Enabled;
@@ -24,8 +23,12 @@ class SAudioReverbFilter
     public float lfReference;
     public float reflectionsDelay;
     public AudioReverbPreset reverbPreset;
+}
 
-    public SAudioReverbFilter Serielize(AudioReverbFilter _audioReverbFilter)
+public static class AudioReverbFilterExtensionMethods
+{
+    #region Serialization
+    public static SAudioReverbFilter Serialize(this AudioReverbFilter _audioReverbFilter)
     {
         SAudioReverbFilter returnVal = new SAudioReverbFilter
         {
@@ -51,29 +54,32 @@ class SAudioReverbFilter
 
         return returnVal;
     }
+    #endregion
 
-    public void Deserielize(ref GameObject _gameObject)
+    #region Deserialization
+    public static AudioReverbFilter Deserialize(this SAudioReverbFilter _audioReverbFilter, ref GameObject _gameObject)
     {
-        if (ExistsOnObject == false)
-            return;
+        if (_audioReverbFilter.ExistsOnObject == false)
+            return null;
 
-        AudioReverbFilter _audioReverbFilter = _gameObject.GetComponent<AudioReverbFilter>();
-        _audioReverbFilter.enabled = Enabled;
+        AudioReverbFilter returnVal = _gameObject.GetComponent<AudioReverbFilter>();
+        returnVal.enabled = _audioReverbFilter.Enabled;
 
-        _audioReverbFilter.dryLevel = dryLevel;
-        _audioReverbFilter.room = room;
-        _audioReverbFilter.roomHF = roomHF;
-        _audioReverbFilter.decayTime = decayTime;
-        _audioReverbFilter.decayHFRatio = decayHFRatio;
-        _audioReverbFilter.reflectionsLevel = reflectionsLevel;
-        _audioReverbFilter.reverbLevel = reverbLevel;
-        _audioReverbFilter.reverbDelay = reverbDelay;
-        _audioReverbFilter.diffusion = diffusion;
-        _audioReverbFilter.density = density;
-        _audioReverbFilter.hfReference = hfReference;
-        _audioReverbFilter.lfReference = lfReference;
-        _audioReverbFilter.reflectionsDelay = reflectionsDelay;
-        _audioReverbFilter.reverbPreset = reverbPreset;
+        returnVal.dryLevel = _audioReverbFilter.dryLevel;
+        returnVal.room = _audioReverbFilter.room;
+        returnVal.roomHF = _audioReverbFilter.roomHF;
+        returnVal.decayTime = _audioReverbFilter.decayTime;
+        returnVal.decayHFRatio = _audioReverbFilter.decayHFRatio;
+        returnVal.reflectionsLevel = _audioReverbFilter.reflectionsLevel;
+        returnVal.reverbLevel = _audioReverbFilter.reverbLevel;
+        returnVal.reverbDelay = _audioReverbFilter.reverbDelay;
+        returnVal.diffusion = _audioReverbFilter.diffusion;
+        returnVal.density = _audioReverbFilter.density;
+        returnVal.hfReference = _audioReverbFilter.hfReference;
+        returnVal.lfReference = _audioReverbFilter.lfReference;
+        returnVal.reflectionsDelay = _audioReverbFilter.reflectionsDelay;
+        returnVal.reverbPreset = _audioReverbFilter.reverbPreset;
+        return returnVal;
     }
+    #endregion
 }
-#endregion

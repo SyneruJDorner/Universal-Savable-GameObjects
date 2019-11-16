@@ -2,17 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-#region Audio Low Pass Filter
 [System.Serializable]
-class SAudioLowPassFilter
+public class SAudioLowPassFilter
 {
     public bool ExistsOnObject = false;
     public bool Enabled;
 
     public float lowpassResonanceQ;
-    public AnimationCurve customCutoffCurve;
+    public SAnimationCurve customCutoffCurve = new SAnimationCurve();
+}
 
-    public SAudioLowPassFilter Serielize(AudioLowPassFilter _audioLowPassFilter)
+public static class AudioLowPassFilterExtensionMethods
+{
+    #region Serialization
+    public static SAudioLowPassFilter Serialize(this AudioLowPassFilter _audioLowPassFilter)
     {
         SAudioLowPassFilter returnVal = new SAudioLowPassFilter
         {
@@ -20,22 +23,25 @@ class SAudioLowPassFilter
             Enabled = _audioLowPassFilter.enabled,
 
             lowpassResonanceQ = _audioLowPassFilter.lowpassResonanceQ,
-            customCutoffCurve = _audioLowPassFilter.customCutoffCurve,
+            customCutoffCurve = _audioLowPassFilter.customCutoffCurve.Serialize(),
         };
 
         return returnVal;
     }
+    #endregion
 
-    public void Deserielize(ref GameObject _gameObject)
+    #region Deserialization
+    public static AudioLowPassFilter Deserialize(this SAudioLowPassFilter _audioLowPassFilter, ref GameObject _gameObject)
     {
-        if (ExistsOnObject == false)
-            return;
+        if (_audioLowPassFilter.ExistsOnObject == false)
+            return null;
 
-        AudioLowPassFilter _audioLowPassFilter = _gameObject.GetComponent<AudioLowPassFilter>();
-        _audioLowPassFilter.enabled = Enabled;
+        AudioLowPassFilter returnVal = _gameObject.GetComponent<AudioLowPassFilter>();
+        returnVal.enabled = _audioLowPassFilter.Enabled;
 
-        _audioLowPassFilter.lowpassResonanceQ = lowpassResonanceQ;
-        _audioLowPassFilter.customCutoffCurve = customCutoffCurve;
+        returnVal.lowpassResonanceQ = _audioLowPassFilter.lowpassResonanceQ;
+        returnVal.customCutoffCurve = _audioLowPassFilter.customCutoffCurve.Deserialize();
+        return returnVal;
     }
+    #endregion
 }
-#endregion

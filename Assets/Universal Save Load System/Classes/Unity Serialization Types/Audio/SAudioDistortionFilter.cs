@@ -2,16 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-#region Audio Distortion Filter
 [System.Serializable]
-class SAudioDistortionFilter
+public class SAudioDistortionFilter
 {
     public bool ExistsOnObject = false;
     public bool Enabled;
 
     public float distortionLevel;
+}
 
-    public SAudioDistortionFilter Serielize(AudioDistortionFilter _audioDistortionFilter)
+public static class AudioDistortionFilterExtensionMethods
+{
+    #region Serialization
+    public static SAudioDistortionFilter Serialize(this AudioDistortionFilter _audioDistortionFilter)
     {
         SAudioDistortionFilter returnVal = new SAudioDistortionFilter
         {
@@ -23,16 +26,19 @@ class SAudioDistortionFilter
 
         return returnVal;
     }
+    #endregion
 
-    public void Deserielize(ref GameObject _gameObject)
+    #region Deserialization
+    public static AudioDistortionFilter Deserialize(this SAudioDistortionFilter _audioDistortionFilter, ref GameObject _gameObject)
     {
-        if (ExistsOnObject == false)
-            return;
+        if (_audioDistortionFilter.ExistsOnObject == false)
+            return null;
 
-        AudioDistortionFilter _audioDistortionFilter = _gameObject.GetComponent<AudioDistortionFilter>();
-        _audioDistortionFilter.enabled = Enabled;
+        AudioDistortionFilter returnVal = _gameObject.GetComponent<AudioDistortionFilter>();
+        returnVal.enabled = _audioDistortionFilter.Enabled;
 
-        _audioDistortionFilter.distortionLevel = distortionLevel;
+        returnVal.distortionLevel = _audioDistortionFilter.distortionLevel;
+        return returnVal;
     }
+    #endregion
 }
-#endregion

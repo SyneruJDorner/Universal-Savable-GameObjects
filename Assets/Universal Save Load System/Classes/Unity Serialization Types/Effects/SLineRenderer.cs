@@ -5,7 +5,7 @@ using UnityEngine.Rendering;
 
 #region Line Renderer
 [System.Serializable]
-class SLineRenderer
+public class SLineRenderer
 {
     public bool ExistsOnObject = false;
     public bool Enabled;
@@ -21,8 +21,13 @@ class SLineRenderer
     public STransform probeAnchor = new STransform();
     public bool useWorldSpace;
     public bool loop;
+}
+#endregion
 
-    public SLineRenderer Serielize(LineRenderer _lineRenderer)
+public static class LineRendererExtensionMethods
+{
+    #region Serialization
+    public static SLineRenderer Serialize(this LineRenderer _lineRenderer)
     {
         SLineRenderer returnVal = new SLineRenderer
         {
@@ -44,26 +49,29 @@ class SLineRenderer
 
         return returnVal;
     }
+    #endregion
 
-    public void Deserielize(ref GameObject _gameObject)
+    #region Deserialization
+    public static LineRenderer Deserialize(this SLineRenderer _lineRenderer, ref GameObject _gameObject)
     {
-        if (ExistsOnObject == false)
-            return;
+        if (_lineRenderer.ExistsOnObject == false)
+            return null;
 
-        LineRenderer _lineRenderer = _gameObject.GetComponent<LineRenderer>();
-        _lineRenderer.enabled = Enabled;
+        LineRenderer returnVal = _gameObject.GetComponent<LineRenderer>();
+        returnVal.enabled = _lineRenderer.Enabled;
 
-        _lineRenderer.shadowCastingMode = castShadows;
-        _lineRenderer.receiveShadows = recieveShadows;
-        _lineRenderer.allowOcclusionWhenDynamic = dynamicOccludee;
-        _lineRenderer.motionVectorGenerationMode = motionVectors;
-        _lineRenderer.lightProbeUsage = lightProbeUsage;
-        _lineRenderer.reflectionProbeUsage = reflectionProbeUsage;
-        _lineRenderer.renderingLayerMask = renderLayerMask;
-        _lineRenderer.rendererPriority = renderPriority;
-        _lineRenderer.probeAnchor = probeAnchor.Deserialize(ref _gameObject);
-        _lineRenderer.useWorldSpace = useWorldSpace;
-        _lineRenderer.loop = loop;
+        returnVal.shadowCastingMode = _lineRenderer.castShadows;
+        returnVal.receiveShadows = _lineRenderer.recieveShadows;
+        returnVal.allowOcclusionWhenDynamic = _lineRenderer.dynamicOccludee;
+        returnVal.motionVectorGenerationMode = _lineRenderer.motionVectors;
+        returnVal.lightProbeUsage = _lineRenderer.lightProbeUsage;
+        returnVal.reflectionProbeUsage = _lineRenderer.reflectionProbeUsage;
+        returnVal.renderingLayerMask = _lineRenderer.renderLayerMask;
+        returnVal.rendererPriority = _lineRenderer.renderPriority;
+        returnVal.probeAnchor = _lineRenderer.probeAnchor.Deserialize(ref _gameObject);
+        returnVal.useWorldSpace = _lineRenderer.useWorldSpace;
+        returnVal.loop = _lineRenderer.loop;
+        return returnVal;
     }
+    #endregion
 }
-#endregion

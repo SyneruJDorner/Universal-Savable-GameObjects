@@ -5,7 +5,7 @@ using UnityEngine.Rendering;
 
 #region Particle System
 [System.Serializable]
-class SParticleSystem
+public class SParticleSystem
 {
     #region variables
     public bool ExistsOnObject = false;
@@ -491,8 +491,13 @@ class SParticleSystem
     public P_TrailsModule pTrailsModule = new P_TrailsModule();
     public P_CustomDataModule pCustomDataModule = new P_CustomDataModule();
     #endregion
+}
+#endregion
 
-    public SParticleSystem Serialize(ParticleSystem _particleSystem)
+public static class ParticleSystemExtensionMethods
+{
+    #region Serialize
+    public static SParticleSystem Serialize(this ParticleSystem _particleSystem)
     {
         if (_particleSystem == null)
             return null;
@@ -501,7 +506,7 @@ class SParticleSystem
         returnVal.ExistsOnObject = (_particleSystem == null) ? false : true;
 
         #region Main Module
-        returnVal.pMain = new P_MainModule()
+        returnVal.pMain = new SParticleSystem.P_MainModule()
         {
             cullingMode = _particleSystem.main.cullingMode,
             customSimulationSpace = _particleSystem.main.customSimulationSpace.Serialize(),
@@ -550,7 +555,7 @@ class SParticleSystem
         #endregion
 
         #region Emission Module
-        returnVal.pEmission = new P_EmissionModule()
+        returnVal.pEmission = new SParticleSystem.P_EmissionModule()
         {
             burstCount = _particleSystem.emission.burstCount,
             enabled = _particleSystem.emission.enabled,
@@ -564,7 +569,7 @@ class SParticleSystem
         #endregion
 
         #region Shape Module
-        returnVal.pShapeModule = new P_ShapeModule()
+        returnVal.pShapeModule = new SParticleSystem.P_ShapeModule()
         {
             alignToDirection = _particleSystem.shape.alignToDirection,
             angle = _particleSystem.shape.angle,
@@ -616,7 +621,7 @@ class SParticleSystem
         #endregion
 
         #region Velocity over Lifetime Module
-        returnVal.pVelocityOverLifetimeModule = new P_VelocityOverLifetimeModule()
+        returnVal.pVelocityOverLifetimeModule = new SParticleSystem.P_VelocityOverLifetimeModule()
         {
             enabled = _particleSystem.velocityOverLifetime.enabled,
             orbitalOffsetX = _particleSystem.velocityOverLifetime.orbitalOffsetX.Serialize(),
@@ -646,7 +651,7 @@ class SParticleSystem
         #endregion
 
         #region Noise Module
-        returnVal.pNoiseModule = new P_NoiseModule()
+        returnVal.pNoiseModule = new SParticleSystem.P_NoiseModule()
         {
             damping = _particleSystem.noise.damping,
             enabled = _particleSystem.noise.enabled,
@@ -682,7 +687,7 @@ class SParticleSystem
         #endregion
 
         #region Limit Velocity OverLifetime Module
-        returnVal.pLimitVelocityOverLifetimeModule = new P_LimitVelocityOverLifetimeModule()
+        returnVal.pLimitVelocityOverLifetimeModule = new SParticleSystem.P_LimitVelocityOverLifetimeModule()
         {
             dampen = _particleSystem.limitVelocityOverLifetime.dampen,
             drag = _particleSystem.limitVelocityOverLifetime.drag.Serialize(),
@@ -704,7 +709,7 @@ class SParticleSystem
         #endregion
 
         #region Inherit Velocity Module
-        returnVal.pInheritVelocityModule = new P_InheritVelocityModule()
+        returnVal.pInheritVelocityModule = new SParticleSystem.P_InheritVelocityModule()
         {
             curve = _particleSystem.inheritVelocity.curve.Serialize(),
             curveMultiplier = _particleSystem.inheritVelocity.curveMultiplier,
@@ -714,7 +719,7 @@ class SParticleSystem
         #endregion
 
         #region Force Over Lifetime Module
-        returnVal.pForceOverLifetimeModule = new P_ForceOverLifetimeModule()
+        returnVal.pForceOverLifetimeModule = new SParticleSystem.P_ForceOverLifetimeModule()
         {
             enabled = _particleSystem.forceOverLifetime.enabled,
             randomized = _particleSystem.forceOverLifetime.randomized,
@@ -729,7 +734,7 @@ class SParticleSystem
         #endregion
 
         #region Color Over Lifetime Module
-        returnVal.pColourOverLifetimeModule = new P_ColourOverLifetimeModule()
+        returnVal.pColourOverLifetimeModule = new SParticleSystem.P_ColourOverLifetimeModule()
         {
             color = _particleSystem.colorOverLifetime.color.Serialize(),
             enabled = _particleSystem.colorOverLifetime.enabled
@@ -737,7 +742,7 @@ class SParticleSystem
         #endregion
 
         #region Color By Speed Module
-        returnVal.pColorBySpeedModule = new P_ColorBySpeedModule()
+        returnVal.pColorBySpeedModule = new SParticleSystem.P_ColorBySpeedModule()
         {
             color = _particleSystem.colorBySpeed.color.Serialize(),
             enabled = _particleSystem.colorBySpeed.enabled,
@@ -746,7 +751,7 @@ class SParticleSystem
         #endregion
 
         #region Size Over Lifetime Module
-        returnVal.pSizeOverLifetime = new P_SizeOverLifetime()
+        returnVal.pSizeOverLifetime = new SParticleSystem.P_SizeOverLifetime()
         {
             enabled = _particleSystem.sizeOverLifetime.enabled,
             separateAxes = _particleSystem.sizeOverLifetime.separateAxes,
@@ -762,7 +767,7 @@ class SParticleSystem
         #endregion
 
         #region Size By Speed Module
-        returnVal.pSizeBySpeedModule = new P_SizeBySpeedModule()
+        returnVal.pSizeBySpeedModule = new SParticleSystem.P_SizeBySpeedModule()
         {
             enabled = _particleSystem.sizeBySpeed.enabled,
             range = _particleSystem.sizeBySpeed.range.Serialize(),
@@ -779,7 +784,7 @@ class SParticleSystem
         #endregion
 
         #region Rotation Over Lifetime Module
-        returnVal.pRotationOverLifetimeModule = new P_RotationOverLifetimeModule()
+        returnVal.pRotationOverLifetimeModule = new SParticleSystem.P_RotationOverLifetimeModule()
         {
             enabled = _particleSystem.rotationOverLifetime.enabled,
             separateAxes = _particleSystem.rotationOverLifetime.separateAxes,
@@ -793,7 +798,7 @@ class SParticleSystem
         #endregion
 
         #region Rotation By Speed Module
-        returnVal.pRotationBySpeedModule = new P_RotationBySpeedModule()
+        returnVal.pRotationBySpeedModule = new SParticleSystem.P_RotationBySpeedModule()
         {
             enabled = _particleSystem.rotationBySpeed.enabled,
             range = _particleSystem.rotationBySpeed.range.Serialize(),
@@ -807,7 +812,7 @@ class SParticleSystem
         #endregion
 
         #region External Forces Module
-        returnVal.pExternalForcesModule = new P_ExternalForcesModule()
+        returnVal.pExternalForcesModule = new SParticleSystem.P_ExternalForcesModule()
         {
             enabled = _particleSystem.externalForces.enabled,
             influenceCount = _particleSystem.externalForces.influenceCount,
@@ -819,7 +824,7 @@ class SParticleSystem
         #endregion
 
         #region Collision Module
-        returnVal.pCollisionModule = new P_CollisionModule()
+        returnVal.pCollisionModule = new SParticleSystem.P_CollisionModule()
         {
             bounce = _particleSystem.collision.bounce.Serialize(),
             bounceMultiplier = _particleSystem.collision.bounceMultiplier,
@@ -848,7 +853,7 @@ class SParticleSystem
         #endregion
 
         #region Trigger Module
-        returnVal.pTriggerModule = new P_TriggerModule()
+        returnVal.pTriggerModule = new SParticleSystem.P_TriggerModule()
         {
             enabled = _particleSystem.trigger.enabled,
             enter = _particleSystem.trigger.enter,
@@ -861,7 +866,7 @@ class SParticleSystem
         #endregion
 
         #region Sub Emitters Module
-        returnVal.pSubEmittersModule = new P_SubEmittersModule()
+        returnVal.pSubEmittersModule = new SParticleSystem.P_SubEmittersModule()
         {
             enabled = _particleSystem.subEmitters.enabled,
             subEmittersCount = _particleSystem.subEmitters.subEmittersCount
@@ -870,7 +875,7 @@ class SParticleSystem
         #endregion
 
         #region Texture Sheet Animation Module
-        returnVal.pTextureSheetAnimationModule = new P_TextureSheetAnimationModule()
+        returnVal.pTextureSheetAnimationModule = new SParticleSystem.P_TextureSheetAnimationModule()
         {
             animation = _particleSystem.textureSheetAnimation.animation,
             cycleCount = _particleSystem.textureSheetAnimation.cycleCount,
@@ -893,7 +898,7 @@ class SParticleSystem
         #endregion
 
         #region Lights Module
-        returnVal.pLightsModule = new P_LightsModule()
+        returnVal.pLightsModule = new SParticleSystem.P_LightsModule()
         {
             alphaAffectsIntensity = _particleSystem.lights.alphaAffectsIntensity,
             enabled = _particleSystem.lights.enabled,
@@ -911,7 +916,7 @@ class SParticleSystem
         #endregion
 
         #region Trails Module
-        returnVal.pTrailsModule = new P_TrailsModule()
+        returnVal.pTrailsModule = new SParticleSystem.P_TrailsModule()
         {
             attachRibbonsToTransform = _particleSystem.trails.attachRibbonsToTransform,
             colorOverLifetime = _particleSystem.trails.colorOverLifetime.Serialize(),
@@ -938,7 +943,7 @@ class SParticleSystem
         #endregion
 
         #region Custom Data Module
-        returnVal.pCustomDataModule = new P_CustomDataModule()
+        returnVal.pCustomDataModule = new SParticleSystem.P_CustomDataModule()
         {
             enabled = _particleSystem.customData.enabled,
         };
@@ -949,424 +954,424 @@ class SParticleSystem
 
         return returnVal;
     }
+    #endregion
 
-    public void Deserialize(ref GameObject _gameObject)
+    #region Deserialize
+    public static void Deserialize(this SParticleSystem _particleSystem, ref GameObject _gameObject)
     {
-        if (ExistsOnObject == false)
+        if (_particleSystem.ExistsOnObject == false)
             return;
 
-        ParticleSystem _particleSystem = _gameObject.GetComponent<ParticleSystem>();
+        ParticleSystem returnVal = _gameObject.GetComponent<ParticleSystem>();
 
-        bool isPlaying = _particleSystem.isPlaying;
-        _particleSystem.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
-
-        Debug.Log("Particle playing " + isPlaying);
+        bool isPlaying = returnVal.isPlaying;
+        returnVal.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
 
         #region Main Module
-        ParticleSystem.MainModule mainModule = _particleSystem.main;
-        mainModule.cullingMode = pMain.cullingMode;
-        mainModule.customSimulationSpace = pMain.customSimulationSpace.Deserialize(ref _gameObject);
-        mainModule.duration = pMain.duration;
-        mainModule.emitterVelocityMode = pMain.emitterVelocityMode;
-        mainModule.flipRotation = pMain.flipRotation;
-        mainModule.gravityModifier = pMain.gravityModifier.Deserialize();
-        mainModule.gravityModifierMultiplier = pMain.gravityModifierMultiplier;
-        mainModule.loop = pMain.loop;
-        mainModule.maxParticles = pMain.maxParticles;
-        mainModule.playOnAwake = pMain.playOnAwake;
-        mainModule.prewarm = pMain.prewarm;
-        mainModule.ringBufferLoopRange = pMain.ringBufferLoopRange.Deserialize();
-        mainModule.ringBufferMode = pMain.ringBufferMode;
-        mainModule.scalingMode = pMain.scalingMode;
-        mainModule.simulationSpace = pMain.simulationSpace;
-        mainModule.simulationSpeed = pMain.simulationSpeed;
-        mainModule.startColor = pMain.startColor.Deserialize();
-        mainModule.startDelay = pMain.startDelay.Deserialize();
-        mainModule.startDelayMultiplier = pMain.startDelayMultiplier;
-        mainModule.startLifetime = pMain.startLifetime.Deserialize();
-        mainModule.startLifetimeMultiplier = pMain.startLifetimeMultiplier;
-        mainModule.startRotation = pMain.startRotation.Deserialize();
-        mainModule.startRotation3D = pMain.startRotation3D;
-        mainModule.startRotationMultiplier = pMain.startRotationMultiplier;
-        mainModule.startRotationX = pMain.startRotationX.Deserialize();
-        mainModule.startRotationXMultiplier = pMain.startRotationXMultiplier;
-        mainModule.startRotationY = pMain.startRotationY.Deserialize();
-        mainModule.startRotationYMultiplier = pMain.startRotationYMultiplier;
-        mainModule.startRotationZ = pMain.startRotationZ.Deserialize();
-        mainModule.startRotationZMultiplier = pMain.startRotationZMultiplier;
-        mainModule.startSize = pMain.startSize.Deserialize();
-        mainModule.startSize3D = pMain.startSize3D;
-        mainModule.startSizeMultiplier = pMain.startSizeMultiplier;
-        mainModule.startSizeX = pMain.startSizeX.Deserialize();
-        mainModule.startSizeXMultiplier = pMain.startSizeXMultiplier;
-        mainModule.startSizeY = pMain.startSizeY.Deserialize();
-        mainModule.startSizeYMultiplier = pMain.startSizeYMultiplier;
-        mainModule.startSizeZ = pMain.startSizeZ.Deserialize();
-        mainModule.startSizeZMultiplier = pMain.startSizeZMultiplier;
-        mainModule.startSpeed = pMain.startSpeed.Deserialize();
-        mainModule.startSpeedMultiplier = pMain.startSpeedMultiplier;
-        mainModule.stopAction = pMain.stopAction;
-        mainModule.useUnscaledTime = pMain.useUnscaledTime;
+        ParticleSystem.MainModule mainModule = returnVal.main;
+        mainModule.cullingMode = _particleSystem.pMain.cullingMode;
+        mainModule.customSimulationSpace = _particleSystem.pMain.customSimulationSpace.Deserialize(ref _gameObject);
+        mainModule.duration = _particleSystem.pMain.duration;
+        mainModule.emitterVelocityMode = _particleSystem.pMain.emitterVelocityMode;
+        mainModule.flipRotation = _particleSystem.pMain.flipRotation;
+        mainModule.gravityModifier = _particleSystem.pMain.gravityModifier.Deserialize();
+        mainModule.gravityModifierMultiplier = _particleSystem.pMain.gravityModifierMultiplier;
+        mainModule.loop = _particleSystem.pMain.loop;
+        mainModule.maxParticles = _particleSystem.pMain.maxParticles;
+        mainModule.playOnAwake = _particleSystem.pMain.playOnAwake;
+        mainModule.prewarm = _particleSystem.pMain.prewarm;
+        mainModule.ringBufferLoopRange = _particleSystem.pMain.ringBufferLoopRange.Deserialize();
+        mainModule.ringBufferMode = _particleSystem.pMain.ringBufferMode;
+        mainModule.scalingMode = _particleSystem.pMain.scalingMode;
+        mainModule.simulationSpace = _particleSystem.pMain.simulationSpace;
+        mainModule.simulationSpeed = _particleSystem.pMain.simulationSpeed;
+        mainModule.startColor = _particleSystem.pMain.startColor.Deserialize();
+        mainModule.startDelay = _particleSystem.pMain.startDelay.Deserialize();
+        mainModule.startDelayMultiplier = _particleSystem.pMain.startDelayMultiplier;
+        mainModule.startLifetime = _particleSystem.pMain.startLifetime.Deserialize();
+        mainModule.startLifetimeMultiplier = _particleSystem.pMain.startLifetimeMultiplier;
+        mainModule.startRotation = _particleSystem.pMain.startRotation.Deserialize();
+        mainModule.startRotation3D = _particleSystem.pMain.startRotation3D;
+        mainModule.startRotationMultiplier = _particleSystem.pMain.startRotationMultiplier;
+        mainModule.startRotationX = _particleSystem.pMain.startRotationX.Deserialize();
+        mainModule.startRotationXMultiplier = _particleSystem.pMain.startRotationXMultiplier;
+        mainModule.startRotationY = _particleSystem.pMain.startRotationY.Deserialize();
+        mainModule.startRotationYMultiplier = _particleSystem.pMain.startRotationYMultiplier;
+        mainModule.startRotationZ = _particleSystem.pMain.startRotationZ.Deserialize();
+        mainModule.startRotationZMultiplier = _particleSystem.pMain.startRotationZMultiplier;
+        mainModule.startSize = _particleSystem.pMain.startSize.Deserialize();
+        mainModule.startSize3D = _particleSystem.pMain.startSize3D;
+        mainModule.startSizeMultiplier = _particleSystem.pMain.startSizeMultiplier;
+        mainModule.startSizeX = _particleSystem.pMain.startSizeX.Deserialize();
+        mainModule.startSizeXMultiplier = _particleSystem.pMain.startSizeXMultiplier;
+        mainModule.startSizeY = _particleSystem.pMain.startSizeY.Deserialize();
+        mainModule.startSizeYMultiplier = _particleSystem.pMain.startSizeYMultiplier;
+        mainModule.startSizeZ = _particleSystem.pMain.startSizeZ.Deserialize();
+        mainModule.startSizeZMultiplier = _particleSystem.pMain.startSizeZMultiplier;
+        mainModule.startSpeed = _particleSystem.pMain.startSpeed.Deserialize();
+        mainModule.startSpeedMultiplier = _particleSystem.pMain.startSpeedMultiplier;
+        mainModule.stopAction = _particleSystem.pMain.stopAction;
+        mainModule.useUnscaledTime = _particleSystem.pMain.useUnscaledTime;
         #endregion
 
         #region Emission Module
-        ParticleSystem.EmissionModule emissionModule = _particleSystem.emission;
-        emissionModule.burstCount = pEmission.burstCount;
-        emissionModule.enabled = pEmission.enabled;
-        emissionModule.rateOverDistance = pEmission.rateOverDistance.Deserialize();
-        emissionModule.rateOverDistanceMultiplier = pEmission.rateOverDistanceMultiplier;
-        emissionModule.rateOverTime = pEmission.rateOverTime.Deserialize();
-        emissionModule.rateOverTimeMultiplier = pEmission.rateOverTimeMultiplier;
-        //pEmission.DeserializeBursts(ref emissionModule);
+        ParticleSystem.EmissionModule emissionModule = returnVal.emission;
+        emissionModule.burstCount = _particleSystem.pEmission.burstCount;
+        emissionModule.enabled = _particleSystem.pEmission.enabled;
+        emissionModule.rateOverDistance = _particleSystem.pEmission.rateOverDistance.Deserialize();
+        emissionModule.rateOverDistanceMultiplier = _particleSystem.pEmission.rateOverDistanceMultiplier;
+        emissionModule.rateOverTime = _particleSystem.pEmission.rateOverTime.Deserialize();
+        emissionModule.rateOverTimeMultiplier = _particleSystem.pEmission.rateOverTimeMultiplier;
+        //_particleSystem.pEmission.DeserializeBursts(ref emissionModule);
         #endregion
 
         #region Shape Module
-        ParticleSystem.ShapeModule shapeModule = _particleSystem.shape;
-        shapeModule.alignToDirection = pShapeModule.alignToDirection;
-        shapeModule.angle = pShapeModule.angle;
-        shapeModule.arc = pShapeModule.arc;
-        shapeModule.arcMode = pShapeModule.arcMode;
-        shapeModule.arcSpeed = pShapeModule.arcSpeed.Deserialize();
-        shapeModule.arcSpeedMultiplier = pShapeModule.arcSpeedMultiplier;
-        shapeModule.arcSpread = pShapeModule.arcSpread;
-        shapeModule.scale = pShapeModule.scale.Deserialize();
-        shapeModule.boxThickness = pShapeModule.boxThickness.Deserialize();
-        shapeModule.donutRadius = pShapeModule.donutRadius;
-        shapeModule.enabled = pShapeModule.enabled;
-        shapeModule.length = pShapeModule.length;
-        shapeModule.mesh = pShapeModule.mesh.Deserialize();
-        shapeModule.meshMaterialIndex = pShapeModule.meshMaterialIndex;
-        shapeModule.meshRenderer = pShapeModule.meshRenderer.Deserialize();
-        shapeModule.meshShapeType = pShapeModule.meshShapeType;
-        shapeModule.meshSpawnMode = pShapeModule.meshSpawnMode;
-        shapeModule.meshSpawnSpeed = pShapeModule.meshSpawnSpeed.Deserialize();
-        shapeModule.meshSpawnSpeedMultiplier = pShapeModule.meshSpawnSpeedMultiplier;
-        shapeModule.meshSpawnSpread = pShapeModule.meshSpawnSpread;
-        shapeModule.normalOffset = pShapeModule.normalOffset;
-        shapeModule.position = pShapeModule.position.Deserialize();
-        shapeModule.radius = pShapeModule.radius;
-        shapeModule.radiusMode = pShapeModule.radiusMode;
-        shapeModule.radiusSpeed = pShapeModule.radiusSpeed.Deserialize();
-        shapeModule.radiusSpeedMultiplier = pShapeModule.radiusSpeedMultiplier;
-        shapeModule.radiusSpread = pShapeModule.radiusSpread;
-        shapeModule.radiusThickness = pShapeModule.radiusThickness;
-        shapeModule.randomDirectionAmount = pShapeModule.randomDirectionAmount;
-        shapeModule.randomPositionAmount = pShapeModule.randomPositionAmount;
-        shapeModule.rotation = pShapeModule.rotation.Deserialize();
-        shapeModule.scale = pShapeModule.scale.Deserialize();
-        shapeModule.shapeType = pShapeModule.shapeType;
-        shapeModule.skinnedMeshRenderer = pShapeModule.skinnedMeshRenderer.Deserialize();
-        shapeModule.sphericalDirectionAmount = pShapeModule.sphericalDirectionAmount;
-        //shapeModule.sprite = pShapeModule.sprite;
-        //shapeModule.spriteRenderer = pShapeModule.spriteRenderer;
-        //shapeModule.texture = pShapeModule.texture;
-        shapeModule.textureAlphaAffectsParticles = pShapeModule.textureAlphaAffectsParticles;
-        shapeModule.textureBilinearFiltering = pShapeModule.textureBilinearFiltering;
-        shapeModule.textureClipChannel = pShapeModule.textureClipChannel;
-        shapeModule.textureClipThreshold = pShapeModule.textureClipThreshold;
-        shapeModule.textureColorAffectsParticles = pShapeModule.textureColorAffectsParticles;
-        shapeModule.textureUVChannel = pShapeModule.textureUVChannel;
-        shapeModule.useMeshColors = pShapeModule.useMeshColors;
-        shapeModule.useMeshMaterialIndex = pShapeModule.useMeshMaterialIndex;
+        ParticleSystem.ShapeModule shapeModule = returnVal.shape;
+        shapeModule.alignToDirection = _particleSystem.pShapeModule.alignToDirection;
+        shapeModule.angle = _particleSystem.pShapeModule.angle;
+        shapeModule.arc = _particleSystem.pShapeModule.arc;
+        shapeModule.arcMode = _particleSystem.pShapeModule.arcMode;
+        shapeModule.arcSpeed = _particleSystem.pShapeModule.arcSpeed.Deserialize();
+        shapeModule.arcSpeedMultiplier = _particleSystem.pShapeModule.arcSpeedMultiplier;
+        shapeModule.arcSpread = _particleSystem.pShapeModule.arcSpread;
+        shapeModule.scale = _particleSystem.pShapeModule.scale.Deserialize();
+        shapeModule.boxThickness = _particleSystem.pShapeModule.boxThickness.Deserialize();
+        shapeModule.donutRadius = _particleSystem.pShapeModule.donutRadius;
+        shapeModule.enabled = _particleSystem.pShapeModule.enabled;
+        shapeModule.length = _particleSystem.pShapeModule.length;
+        shapeModule.mesh = _particleSystem.pShapeModule.mesh.Deserialize();
+        shapeModule.meshMaterialIndex = _particleSystem.pShapeModule.meshMaterialIndex;
+        shapeModule.meshRenderer = _particleSystem.pShapeModule.meshRenderer.Deserialize();
+        shapeModule.meshShapeType = _particleSystem.pShapeModule.meshShapeType;
+        shapeModule.meshSpawnMode = _particleSystem.pShapeModule.meshSpawnMode;
+        shapeModule.meshSpawnSpeed = _particleSystem.pShapeModule.meshSpawnSpeed.Deserialize();
+        shapeModule.meshSpawnSpeedMultiplier = _particleSystem.pShapeModule.meshSpawnSpeedMultiplier;
+        shapeModule.meshSpawnSpread = _particleSystem.pShapeModule.meshSpawnSpread;
+        shapeModule.normalOffset = _particleSystem.pShapeModule.normalOffset;
+        shapeModule.position = _particleSystem.pShapeModule.position.Deserialize();
+        shapeModule.radius = _particleSystem.pShapeModule.radius;
+        shapeModule.radiusMode = _particleSystem.pShapeModule.radiusMode;
+        shapeModule.radiusSpeed = _particleSystem.pShapeModule.radiusSpeed.Deserialize();
+        shapeModule.radiusSpeedMultiplier = _particleSystem.pShapeModule.radiusSpeedMultiplier;
+        shapeModule.radiusSpread = _particleSystem.pShapeModule.radiusSpread;
+        shapeModule.radiusThickness = _particleSystem.pShapeModule.radiusThickness;
+        shapeModule.randomDirectionAmount = _particleSystem.pShapeModule.randomDirectionAmount;
+        shapeModule.randomPositionAmount = _particleSystem.pShapeModule.randomPositionAmount;
+        shapeModule.rotation = _particleSystem.pShapeModule.rotation.Deserialize();
+        shapeModule.scale = _particleSystem.pShapeModule.scale.Deserialize();
+        shapeModule.shapeType = _particleSystem.pShapeModule.shapeType;
+        shapeModule.skinnedMeshRenderer = _particleSystem.pShapeModule.skinnedMeshRenderer.Deserialize();
+        shapeModule.sphericalDirectionAmount = _particleSystem.pShapeModule.sphericalDirectionAmount;
+        //shapeModule.sprite = _particleSystem.pShapeModule.sprite;
+        //shapeModule.spriteRenderer = _particleSystem.pShapeModule.spriteRenderer;
+        //shapeModule.texture = _particleSystem.pShapeModule.texture;
+        shapeModule.textureAlphaAffectsParticles = _particleSystem.pShapeModule.textureAlphaAffectsParticles;
+        shapeModule.textureBilinearFiltering = _particleSystem.pShapeModule.textureBilinearFiltering;
+        shapeModule.textureClipChannel = _particleSystem.pShapeModule.textureClipChannel;
+        shapeModule.textureClipThreshold = _particleSystem.pShapeModule.textureClipThreshold;
+        shapeModule.textureColorAffectsParticles = _particleSystem.pShapeModule.textureColorAffectsParticles;
+        shapeModule.textureUVChannel = _particleSystem.pShapeModule.textureUVChannel;
+        shapeModule.useMeshColors = _particleSystem.pShapeModule.useMeshColors;
+        shapeModule.useMeshMaterialIndex = _particleSystem.pShapeModule.useMeshMaterialIndex;
         #endregion
 
         #region Velocity over Lifetime Module
-        ParticleSystem.VelocityOverLifetimeModule velocityOverLifetimeModule = _particleSystem.velocityOverLifetime;
-        velocityOverLifetimeModule.enabled = pVelocityOverLifetimeModule.enabled;
-        velocityOverLifetimeModule.orbitalOffsetX = pVelocityOverLifetimeModule.orbitalOffsetX.Deserialize();
-        velocityOverLifetimeModule.orbitalOffsetXMultiplier = pVelocityOverLifetimeModule.orbitalOffsetXMultiplier;
-        velocityOverLifetimeModule.orbitalOffsetY = pVelocityOverLifetimeModule.orbitalOffsetY.Deserialize();
-        velocityOverLifetimeModule.orbitalOffsetYMultiplier = pVelocityOverLifetimeModule.orbitalOffsetYMultiplier;
-        velocityOverLifetimeModule.orbitalOffsetZ = pVelocityOverLifetimeModule.orbitalOffsetZ.Deserialize();
-        velocityOverLifetimeModule.orbitalOffsetZMultiplier = pVelocityOverLifetimeModule.orbitalOffsetZMultiplier;
-        velocityOverLifetimeModule.orbitalX = pVelocityOverLifetimeModule.orbitalX.Deserialize();
-        velocityOverLifetimeModule.orbitalXMultiplier = pVelocityOverLifetimeModule.orbitalXMultiplier;
-        velocityOverLifetimeModule.orbitalY = pVelocityOverLifetimeModule.orbitalY.Deserialize();
-        velocityOverLifetimeModule.orbitalYMultiplier = pVelocityOverLifetimeModule.orbitalYMultiplier;
-        velocityOverLifetimeModule.orbitalZ = pVelocityOverLifetimeModule.orbitalZ.Deserialize();
-        velocityOverLifetimeModule.orbitalZMultiplier = pVelocityOverLifetimeModule.orbitalZMultiplier;
-        velocityOverLifetimeModule.radial = pVelocityOverLifetimeModule.radial.Deserialize();
-        velocityOverLifetimeModule.radialMultiplier = pVelocityOverLifetimeModule.radialMultiplier;
-        velocityOverLifetimeModule.space = pVelocityOverLifetimeModule.space;
-        velocityOverLifetimeModule.speedModifier = pVelocityOverLifetimeModule.speedModifier.Deserialize();
-        velocityOverLifetimeModule.speedModifierMultiplier = pVelocityOverLifetimeModule.speedModifierMultiplier;
-        velocityOverLifetimeModule.x = pVelocityOverLifetimeModule.x.Deserialize();
-        velocityOverLifetimeModule.xMultiplier = pVelocityOverLifetimeModule.xMultiplier;
-        velocityOverLifetimeModule.y = pVelocityOverLifetimeModule.y.Deserialize();
-        velocityOverLifetimeModule.yMultiplier = pVelocityOverLifetimeModule.yMultiplier;
-        velocityOverLifetimeModule.z = pVelocityOverLifetimeModule.z.Deserialize();
-        velocityOverLifetimeModule.zMultiplier = pVelocityOverLifetimeModule.zMultiplier;
+        ParticleSystem.VelocityOverLifetimeModule velocityOverLifetimeModule = returnVal.velocityOverLifetime;
+        velocityOverLifetimeModule.enabled = _particleSystem.pVelocityOverLifetimeModule.enabled;
+        velocityOverLifetimeModule.orbitalOffsetX = _particleSystem.pVelocityOverLifetimeModule.orbitalOffsetX.Deserialize();
+        velocityOverLifetimeModule.orbitalOffsetXMultiplier = _particleSystem.pVelocityOverLifetimeModule.orbitalOffsetXMultiplier;
+        velocityOverLifetimeModule.orbitalOffsetY = _particleSystem.pVelocityOverLifetimeModule.orbitalOffsetY.Deserialize();
+        velocityOverLifetimeModule.orbitalOffsetYMultiplier = _particleSystem.pVelocityOverLifetimeModule.orbitalOffsetYMultiplier;
+        velocityOverLifetimeModule.orbitalOffsetZ = _particleSystem.pVelocityOverLifetimeModule.orbitalOffsetZ.Deserialize();
+        velocityOverLifetimeModule.orbitalOffsetZMultiplier = _particleSystem.pVelocityOverLifetimeModule.orbitalOffsetZMultiplier;
+        velocityOverLifetimeModule.orbitalX = _particleSystem.pVelocityOverLifetimeModule.orbitalX.Deserialize();
+        velocityOverLifetimeModule.orbitalXMultiplier = _particleSystem.pVelocityOverLifetimeModule.orbitalXMultiplier;
+        velocityOverLifetimeModule.orbitalY = _particleSystem.pVelocityOverLifetimeModule.orbitalY.Deserialize();
+        velocityOverLifetimeModule.orbitalYMultiplier = _particleSystem.pVelocityOverLifetimeModule.orbitalYMultiplier;
+        velocityOverLifetimeModule.orbitalZ = _particleSystem.pVelocityOverLifetimeModule.orbitalZ.Deserialize();
+        velocityOverLifetimeModule.orbitalZMultiplier = _particleSystem.pVelocityOverLifetimeModule.orbitalZMultiplier;
+        velocityOverLifetimeModule.radial = _particleSystem.pVelocityOverLifetimeModule.radial.Deserialize();
+        velocityOverLifetimeModule.radialMultiplier = _particleSystem.pVelocityOverLifetimeModule.radialMultiplier;
+        velocityOverLifetimeModule.space = _particleSystem.pVelocityOverLifetimeModule.space;
+        velocityOverLifetimeModule.speedModifier = _particleSystem.pVelocityOverLifetimeModule.speedModifier.Deserialize();
+        velocityOverLifetimeModule.speedModifierMultiplier = _particleSystem.pVelocityOverLifetimeModule.speedModifierMultiplier;
+        velocityOverLifetimeModule.x = _particleSystem.pVelocityOverLifetimeModule.x.Deserialize();
+        velocityOverLifetimeModule.xMultiplier = _particleSystem.pVelocityOverLifetimeModule.xMultiplier;
+        velocityOverLifetimeModule.y = _particleSystem.pVelocityOverLifetimeModule.y.Deserialize();
+        velocityOverLifetimeModule.yMultiplier = _particleSystem.pVelocityOverLifetimeModule.yMultiplier;
+        velocityOverLifetimeModule.z = _particleSystem.pVelocityOverLifetimeModule.z.Deserialize();
+        velocityOverLifetimeModule.zMultiplier = _particleSystem.pVelocityOverLifetimeModule.zMultiplier;
         #endregion
 
         #region Noise Module
-        ParticleSystem.NoiseModule noiseModule = _particleSystem.noise;
-        noiseModule.damping = pNoiseModule.damping;
-        noiseModule.enabled = pNoiseModule.enabled;
-        noiseModule.frequency = pNoiseModule.frequency;
-        noiseModule.octaveCount = pNoiseModule.octaveCount;
-        noiseModule.octaveMultiplier = pNoiseModule.octaveMultiplier;
-        noiseModule.octaveScale = pNoiseModule.octaveScale;
-        noiseModule.positionAmount = pNoiseModule.positionAmount.Deserialize();
-        noiseModule.quality = pNoiseModule.quality;
-        noiseModule.remap = pNoiseModule.remap.Deserialize();
-        noiseModule.remapEnabled = pNoiseModule.remapEnabled;
-        noiseModule.remapMultiplier = pNoiseModule.remapMultiplier;
-        noiseModule.remapX = pNoiseModule.remapX.Deserialize();
-        noiseModule.remapXMultiplier = pNoiseModule.remapXMultiplier;
-        noiseModule.remapY = pNoiseModule.remapY.Deserialize();
-        noiseModule.remapYMultiplier = pNoiseModule.remapYMultiplier;
-        noiseModule.remapZ = pNoiseModule.remapZ.Deserialize();
-        noiseModule.remapZMultiplier = pNoiseModule.remapZMultiplier;
-        noiseModule.rotationAmount = pNoiseModule.rotationAmount.Deserialize();
-        noiseModule.scrollSpeed = pNoiseModule.scrollSpeed.Deserialize();
-        noiseModule.scrollSpeedMultiplier = pNoiseModule.scrollSpeedMultiplier;
-        noiseModule.separateAxes = pNoiseModule.separateAxes;
-        noiseModule.sizeAmount = pNoiseModule.sizeAmount.Deserialize();
-        noiseModule.strength = pNoiseModule.strength.Deserialize();
-        noiseModule.strengthMultiplier = pNoiseModule.strengthMultiplier;
-        noiseModule.strengthX = pNoiseModule.strengthX.Deserialize();
-        noiseModule.strengthXMultiplier = pNoiseModule.strengthXMultiplier;
-        noiseModule.strengthY = pNoiseModule.strengthY.Deserialize();
-        noiseModule.strengthYMultiplier = pNoiseModule.strengthYMultiplier;
-        noiseModule.strengthZ = pNoiseModule.strengthZ.Deserialize();
-        noiseModule.strengthZMultiplier = pNoiseModule.strengthZMultiplier;
+        ParticleSystem.NoiseModule noiseModule = returnVal.noise;
+        noiseModule.damping = _particleSystem.pNoiseModule.damping;
+        noiseModule.enabled = _particleSystem.pNoiseModule.enabled;
+        noiseModule.frequency = _particleSystem.pNoiseModule.frequency;
+        noiseModule.octaveCount = _particleSystem.pNoiseModule.octaveCount;
+        noiseModule.octaveMultiplier = _particleSystem.pNoiseModule.octaveMultiplier;
+        noiseModule.octaveScale = _particleSystem.pNoiseModule.octaveScale;
+        noiseModule.positionAmount = _particleSystem.pNoiseModule.positionAmount.Deserialize();
+        noiseModule.quality = _particleSystem.pNoiseModule.quality;
+        noiseModule.remap = _particleSystem.pNoiseModule.remap.Deserialize();
+        noiseModule.remapEnabled = _particleSystem.pNoiseModule.remapEnabled;
+        noiseModule.remapMultiplier = _particleSystem.pNoiseModule.remapMultiplier;
+        noiseModule.remapX = _particleSystem.pNoiseModule.remapX.Deserialize();
+        noiseModule.remapXMultiplier = _particleSystem.pNoiseModule.remapXMultiplier;
+        noiseModule.remapY = _particleSystem.pNoiseModule.remapY.Deserialize();
+        noiseModule.remapYMultiplier = _particleSystem.pNoiseModule.remapYMultiplier;
+        noiseModule.remapZ = _particleSystem.pNoiseModule.remapZ.Deserialize();
+        noiseModule.remapZMultiplier = _particleSystem.pNoiseModule.remapZMultiplier;
+        noiseModule.rotationAmount = _particleSystem.pNoiseModule.rotationAmount.Deserialize();
+        noiseModule.scrollSpeed = _particleSystem.pNoiseModule.scrollSpeed.Deserialize();
+        noiseModule.scrollSpeedMultiplier = _particleSystem.pNoiseModule.scrollSpeedMultiplier;
+        noiseModule.separateAxes = _particleSystem.pNoiseModule.separateAxes;
+        noiseModule.sizeAmount = _particleSystem.pNoiseModule.sizeAmount.Deserialize();
+        noiseModule.strength = _particleSystem.pNoiseModule.strength.Deserialize();
+        noiseModule.strengthMultiplier = _particleSystem.pNoiseModule.strengthMultiplier;
+        noiseModule.strengthX = _particleSystem.pNoiseModule.strengthX.Deserialize();
+        noiseModule.strengthXMultiplier = _particleSystem.pNoiseModule.strengthXMultiplier;
+        noiseModule.strengthY = _particleSystem.pNoiseModule.strengthY.Deserialize();
+        noiseModule.strengthYMultiplier = _particleSystem.pNoiseModule.strengthYMultiplier;
+        noiseModule.strengthZ = _particleSystem.pNoiseModule.strengthZ.Deserialize();
+        noiseModule.strengthZMultiplier = _particleSystem.pNoiseModule.strengthZMultiplier;
         #endregion
 
         #region Limit Velocity OverLifetime Module
-        ParticleSystem.LimitVelocityOverLifetimeModule limitVelocityOverLifetimeModule = _particleSystem.limitVelocityOverLifetime;
-        limitVelocityOverLifetimeModule.dampen = pLimitVelocityOverLifetimeModule.dampen;
-        limitVelocityOverLifetimeModule.drag = pLimitVelocityOverLifetimeModule.drag.Deserialize();
-        limitVelocityOverLifetimeModule.dragMultiplier = pLimitVelocityOverLifetimeModule.dragMultiplier;
-        limitVelocityOverLifetimeModule.enabled = pLimitVelocityOverLifetimeModule.enabled;
-        limitVelocityOverLifetimeModule.limit = pLimitVelocityOverLifetimeModule.limit.Deserialize();
-        limitVelocityOverLifetimeModule.limitMultiplier = pLimitVelocityOverLifetimeModule.limitMultiplier;
-        limitVelocityOverLifetimeModule.limitX = pLimitVelocityOverLifetimeModule.limitX.Deserialize();
-        limitVelocityOverLifetimeModule.limitXMultiplier = pLimitVelocityOverLifetimeModule.limitXMultiplier;
-        limitVelocityOverLifetimeModule.limitY = pLimitVelocityOverLifetimeModule.limitY.Deserialize();
-        limitVelocityOverLifetimeModule.limitYMultiplier = pLimitVelocityOverLifetimeModule.limitYMultiplier;
-        limitVelocityOverLifetimeModule.limitZ = pLimitVelocityOverLifetimeModule.limitZ.Deserialize();
-        limitVelocityOverLifetimeModule.limitZMultiplier = pLimitVelocityOverLifetimeModule.limitZMultiplier;
-        limitVelocityOverLifetimeModule.multiplyDragByParticleSize = pLimitVelocityOverLifetimeModule.multiplyDragByParticleSize;
-        limitVelocityOverLifetimeModule.multiplyDragByParticleVelocity = pLimitVelocityOverLifetimeModule.multiplyDragByParticleVelocity;
-        limitVelocityOverLifetimeModule.separateAxes = pLimitVelocityOverLifetimeModule.separateAxes;
-        limitVelocityOverLifetimeModule.space = pLimitVelocityOverLifetimeModule.space;
+        ParticleSystem.LimitVelocityOverLifetimeModule limitVelocityOverLifetimeModule = returnVal.limitVelocityOverLifetime;
+        limitVelocityOverLifetimeModule.dampen = _particleSystem.pLimitVelocityOverLifetimeModule.dampen;
+        limitVelocityOverLifetimeModule.drag = _particleSystem.pLimitVelocityOverLifetimeModule.drag.Deserialize();
+        limitVelocityOverLifetimeModule.dragMultiplier = _particleSystem.pLimitVelocityOverLifetimeModule.dragMultiplier;
+        limitVelocityOverLifetimeModule.enabled = _particleSystem.pLimitVelocityOverLifetimeModule.enabled;
+        limitVelocityOverLifetimeModule.limit = _particleSystem.pLimitVelocityOverLifetimeModule.limit.Deserialize();
+        limitVelocityOverLifetimeModule.limitMultiplier = _particleSystem.pLimitVelocityOverLifetimeModule.limitMultiplier;
+        limitVelocityOverLifetimeModule.limitX = _particleSystem.pLimitVelocityOverLifetimeModule.limitX.Deserialize();
+        limitVelocityOverLifetimeModule.limitXMultiplier = _particleSystem.pLimitVelocityOverLifetimeModule.limitXMultiplier;
+        limitVelocityOverLifetimeModule.limitY = _particleSystem.pLimitVelocityOverLifetimeModule.limitY.Deserialize();
+        limitVelocityOverLifetimeModule.limitYMultiplier = _particleSystem.pLimitVelocityOverLifetimeModule.limitYMultiplier;
+        limitVelocityOverLifetimeModule.limitZ = _particleSystem.pLimitVelocityOverLifetimeModule.limitZ.Deserialize();
+        limitVelocityOverLifetimeModule.limitZMultiplier = _particleSystem.pLimitVelocityOverLifetimeModule.limitZMultiplier;
+        limitVelocityOverLifetimeModule.multiplyDragByParticleSize = _particleSystem.pLimitVelocityOverLifetimeModule.multiplyDragByParticleSize;
+        limitVelocityOverLifetimeModule.multiplyDragByParticleVelocity = _particleSystem.pLimitVelocityOverLifetimeModule.multiplyDragByParticleVelocity;
+        limitVelocityOverLifetimeModule.separateAxes = _particleSystem.pLimitVelocityOverLifetimeModule.separateAxes;
+        limitVelocityOverLifetimeModule.space = _particleSystem.pLimitVelocityOverLifetimeModule.space;
         #endregion
 
         #region Inherit Velocity Module
-        ParticleSystem.InheritVelocityModule inheritVelocity = _particleSystem.inheritVelocity;
-        inheritVelocity.curve = pInheritVelocityModule.curve.Deserialize();
-        inheritVelocity.curveMultiplier = pInheritVelocityModule.curveMultiplier;
-        inheritVelocity.enabled = pInheritVelocityModule.enabled;
-        inheritVelocity.mode = pInheritVelocityModule.mode;
+        ParticleSystem.InheritVelocityModule inheritVelocity = returnVal.inheritVelocity;
+        inheritVelocity.curve = _particleSystem.pInheritVelocityModule.curve.Deserialize();
+        inheritVelocity.curveMultiplier = _particleSystem.pInheritVelocityModule.curveMultiplier;
+        inheritVelocity.enabled = _particleSystem.pInheritVelocityModule.enabled;
+        inheritVelocity.mode = _particleSystem.pInheritVelocityModule.mode;
         #endregion
 
         #region Force Over Lifetime Module
-        ParticleSystem.ForceOverLifetimeModule forceOverLifetime = _particleSystem.forceOverLifetime;
-        forceOverLifetime.enabled = pForceOverLifetimeModule.enabled;
-        forceOverLifetime.randomized = pForceOverLifetimeModule.randomized;
-        forceOverLifetime.space = pForceOverLifetimeModule.space;
-        forceOverLifetime.x = pForceOverLifetimeModule.x.Deserialize();
-        forceOverLifetime.xMultiplier = pForceOverLifetimeModule.xMultiplier;
-        forceOverLifetime.y = pForceOverLifetimeModule.y.Deserialize();
-        forceOverLifetime.yMultiplier = pForceOverLifetimeModule.yMultiplier;
-        forceOverLifetime.z = pForceOverLifetimeModule.z.Deserialize();
-        forceOverLifetime.zMultiplier = pForceOverLifetimeModule.zMultiplier;
+        ParticleSystem.ForceOverLifetimeModule forceOverLifetime = returnVal.forceOverLifetime;
+        forceOverLifetime.enabled = _particleSystem.pForceOverLifetimeModule.enabled;
+        forceOverLifetime.randomized = _particleSystem.pForceOverLifetimeModule.randomized;
+        forceOverLifetime.space = _particleSystem.pForceOverLifetimeModule.space;
+        forceOverLifetime.x = _particleSystem.pForceOverLifetimeModule.x.Deserialize();
+        forceOverLifetime.xMultiplier = _particleSystem.pForceOverLifetimeModule.xMultiplier;
+        forceOverLifetime.y = _particleSystem.pForceOverLifetimeModule.y.Deserialize();
+        forceOverLifetime.yMultiplier = _particleSystem.pForceOverLifetimeModule.yMultiplier;
+        forceOverLifetime.z = _particleSystem.pForceOverLifetimeModule.z.Deserialize();
+        forceOverLifetime.zMultiplier = _particleSystem.pForceOverLifetimeModule.zMultiplier;
         #endregion
 
         #region Color Over Lifetime Module
-        ParticleSystem.ColorOverLifetimeModule colorOverLifetimeModule = _particleSystem.colorOverLifetime;
-        colorOverLifetimeModule.color = pColourOverLifetimeModule.color.Deserialize();
-        colorOverLifetimeModule.enabled = pColourOverLifetimeModule.enabled;
+        ParticleSystem.ColorOverLifetimeModule colorOverLifetimeModule = returnVal.colorOverLifetime;
+        colorOverLifetimeModule.color = _particleSystem.pColourOverLifetimeModule.color.Deserialize();
+        colorOverLifetimeModule.enabled = _particleSystem.pColourOverLifetimeModule.enabled;
         #endregion
 
         #region Color By Speed Module
-        ParticleSystem.ColorBySpeedModule colorBySpeedMocule = _particleSystem.colorBySpeed;
-        colorBySpeedMocule.color = pColorBySpeedModule.color.Deserialize();
-        colorBySpeedMocule.enabled = pColorBySpeedModule.enabled;
-        colorBySpeedMocule.range = pColorBySpeedModule.range.Deserialize();
+        ParticleSystem.ColorBySpeedModule colorBySpeedMocule = returnVal.colorBySpeed;
+        colorBySpeedMocule.color = _particleSystem.pColorBySpeedModule.color.Deserialize();
+        colorBySpeedMocule.enabled = _particleSystem.pColorBySpeedModule.enabled;
+        colorBySpeedMocule.range = _particleSystem.pColorBySpeedModule.range.Deserialize();
         #endregion
 
         #region Size Over Lifetime Module
-        ParticleSystem.SizeOverLifetimeModule sizeOverLifetimeModule = _particleSystem.sizeOverLifetime;
-        sizeOverLifetimeModule.enabled = pSizeOverLifetime.enabled;
-        sizeOverLifetimeModule.separateAxes = pSizeOverLifetime.separateAxes;
-        sizeOverLifetimeModule.size = pSizeOverLifetime.size.Deserialize();
-        sizeOverLifetimeModule.sizeMultiplier = pSizeOverLifetime.sizeMultiplier;
-        sizeOverLifetimeModule.x = pSizeOverLifetime.x.Deserialize();
-        sizeOverLifetimeModule.xMultiplier = pSizeOverLifetime.xMultiplier;
-        sizeOverLifetimeModule.y = pSizeOverLifetime.y.Deserialize();
-        sizeOverLifetimeModule.yMultiplier = pSizeOverLifetime.yMultiplier;
-        sizeOverLifetimeModule.z = pSizeOverLifetime.z.Deserialize();
-        sizeOverLifetimeModule.zMultiplier = pSizeOverLifetime.zMultiplier;
+        ParticleSystem.SizeOverLifetimeModule sizeOverLifetimeModule = returnVal.sizeOverLifetime;
+        sizeOverLifetimeModule.enabled = _particleSystem.pSizeOverLifetime.enabled;
+        sizeOverLifetimeModule.separateAxes = _particleSystem.pSizeOverLifetime.separateAxes;
+        sizeOverLifetimeModule.size = _particleSystem.pSizeOverLifetime.size.Deserialize();
+        sizeOverLifetimeModule.sizeMultiplier = _particleSystem.pSizeOverLifetime.sizeMultiplier;
+        sizeOverLifetimeModule.x = _particleSystem.pSizeOverLifetime.x.Deserialize();
+        sizeOverLifetimeModule.xMultiplier = _particleSystem.pSizeOverLifetime.xMultiplier;
+        sizeOverLifetimeModule.y = _particleSystem.pSizeOverLifetime.y.Deserialize();
+        sizeOverLifetimeModule.yMultiplier = _particleSystem.pSizeOverLifetime.yMultiplier;
+        sizeOverLifetimeModule.z = _particleSystem.pSizeOverLifetime.z.Deserialize();
+        sizeOverLifetimeModule.zMultiplier = _particleSystem.pSizeOverLifetime.zMultiplier;
         #endregion
 
         #region Size By Speed Module
-        ParticleSystem.SizeBySpeedModule sizeBySpeedModule = _particleSystem.sizeBySpeed;
-        sizeBySpeedModule.enabled = pSizeBySpeedModule.enabled;
-        sizeBySpeedModule.range = pSizeBySpeedModule.range.Deserialize();
-        sizeBySpeedModule.separateAxes = pSizeBySpeedModule.separateAxes;
-        sizeBySpeedModule.size = pSizeBySpeedModule.size.Deserialize();
-        sizeBySpeedModule.sizeMultiplier = pSizeBySpeedModule.sizeMultiplier;
-        sizeBySpeedModule.x = pSizeBySpeedModule.x.Deserialize();
-        sizeBySpeedModule.xMultiplier = pSizeBySpeedModule.xMultiplier;
-        sizeBySpeedModule.y = pSizeBySpeedModule.y.Deserialize();
-        sizeBySpeedModule.yMultiplier = pSizeBySpeedModule.yMultiplier;
-        sizeBySpeedModule.z = pSizeBySpeedModule.z.Deserialize();
-        sizeBySpeedModule.zMultiplier = pSizeBySpeedModule.zMultiplier;
+        ParticleSystem.SizeBySpeedModule sizeBySpeedModule = returnVal.sizeBySpeed;
+        sizeBySpeedModule.enabled = _particleSystem.pSizeBySpeedModule.enabled;
+        sizeBySpeedModule.range = _particleSystem.pSizeBySpeedModule.range.Deserialize();
+        sizeBySpeedModule.separateAxes = _particleSystem.pSizeBySpeedModule.separateAxes;
+        sizeBySpeedModule.size = _particleSystem.pSizeBySpeedModule.size.Deserialize();
+        sizeBySpeedModule.sizeMultiplier = _particleSystem.pSizeBySpeedModule.sizeMultiplier;
+        sizeBySpeedModule.x = _particleSystem.pSizeBySpeedModule.x.Deserialize();
+        sizeBySpeedModule.xMultiplier = _particleSystem.pSizeBySpeedModule.xMultiplier;
+        sizeBySpeedModule.y = _particleSystem.pSizeBySpeedModule.y.Deserialize();
+        sizeBySpeedModule.yMultiplier = _particleSystem.pSizeBySpeedModule.yMultiplier;
+        sizeBySpeedModule.z = _particleSystem.pSizeBySpeedModule.z.Deserialize();
+        sizeBySpeedModule.zMultiplier = _particleSystem.pSizeBySpeedModule.zMultiplier;
         #endregion
 
         #region Rotation Over Lifetime Module
-        ParticleSystem.RotationOverLifetimeModule rotationOverLifetimeModule = _particleSystem.rotationOverLifetime;
-        rotationOverLifetimeModule.enabled = pRotationOverLifetimeModule.enabled;
-        rotationOverLifetimeModule.separateAxes = pRotationOverLifetimeModule.separateAxes;
-        rotationOverLifetimeModule.x = pRotationOverLifetimeModule.x.Deserialize();
-        rotationOverLifetimeModule.xMultiplier = pRotationOverLifetimeModule.xMultiplier;
-        rotationOverLifetimeModule.y = pRotationOverLifetimeModule.y.Deserialize();
-        rotationOverLifetimeModule.yMultiplier = pRotationOverLifetimeModule.yMultiplier;
-        rotationOverLifetimeModule.z = pRotationOverLifetimeModule.z.Deserialize();
-        rotationOverLifetimeModule.zMultiplier = pRotationOverLifetimeModule.zMultiplier;
+        ParticleSystem.RotationOverLifetimeModule rotationOverLifetimeModule = returnVal.rotationOverLifetime;
+        rotationOverLifetimeModule.enabled = _particleSystem.pRotationOverLifetimeModule.enabled;
+        rotationOverLifetimeModule.separateAxes = _particleSystem.pRotationOverLifetimeModule.separateAxes;
+        rotationOverLifetimeModule.x = _particleSystem.pRotationOverLifetimeModule.x.Deserialize();
+        rotationOverLifetimeModule.xMultiplier = _particleSystem.pRotationOverLifetimeModule.xMultiplier;
+        rotationOverLifetimeModule.y = _particleSystem.pRotationOverLifetimeModule.y.Deserialize();
+        rotationOverLifetimeModule.yMultiplier = _particleSystem.pRotationOverLifetimeModule.yMultiplier;
+        rotationOverLifetimeModule.z = _particleSystem.pRotationOverLifetimeModule.z.Deserialize();
+        rotationOverLifetimeModule.zMultiplier = _particleSystem.pRotationOverLifetimeModule.zMultiplier;
         #endregion
 
         #region Rotation By Speed Module
-        ParticleSystem.RotationBySpeedModule rotationBySpeedModule = _particleSystem.rotationBySpeed;
-        rotationBySpeedModule.enabled = pRotationBySpeedModule.enabled;
-        rotationBySpeedModule.range = pRotationBySpeedModule.range.Deserialize();
-        rotationBySpeedModule.x = pRotationBySpeedModule.x.Deserialize();
-        rotationBySpeedModule.xMultiplier = pRotationBySpeedModule.xMultiplier;
-        rotationBySpeedModule.y = pRotationBySpeedModule.y.Deserialize();
-        rotationBySpeedModule.yMultiplier = pRotationBySpeedModule.yMultiplier;
-        rotationBySpeedModule.z = pRotationBySpeedModule.z.Deserialize();
-        rotationBySpeedModule.zMultiplier = pRotationBySpeedModule.zMultiplier;
+        ParticleSystem.RotationBySpeedModule rotationBySpeedModule = returnVal.rotationBySpeed;
+        rotationBySpeedModule.enabled = _particleSystem.pRotationBySpeedModule.enabled;
+        rotationBySpeedModule.range = _particleSystem.pRotationBySpeedModule.range.Deserialize();
+        rotationBySpeedModule.x = _particleSystem.pRotationBySpeedModule.x.Deserialize();
+        rotationBySpeedModule.xMultiplier = _particleSystem.pRotationBySpeedModule.xMultiplier;
+        rotationBySpeedModule.y = _particleSystem.pRotationBySpeedModule.y.Deserialize();
+        rotationBySpeedModule.yMultiplier = _particleSystem.pRotationBySpeedModule.yMultiplier;
+        rotationBySpeedModule.z = _particleSystem.pRotationBySpeedModule.z.Deserialize();
+        rotationBySpeedModule.zMultiplier = _particleSystem.pRotationBySpeedModule.zMultiplier;
         #endregion
 
         #region External Forces Module
-        ParticleSystem.ExternalForcesModule externalForcesModule = _particleSystem.externalForces;
-        externalForcesModule.enabled = pExternalForcesModule.enabled;
-        //externalForcesModule.influenceCount = pExternalForcesModule.influenceCount;
-        externalForcesModule.influenceFilter = pExternalForcesModule.influenceFilter;
-        externalForcesModule.influenceMask = pExternalForcesModule.influenceMask;
-        externalForcesModule.multiplier = pExternalForcesModule.multiplier;
-        externalForcesModule.multiplierCurve = pExternalForcesModule.multiplierCurve.Deserialize();
+        ParticleSystem.ExternalForcesModule externalForcesModule = returnVal.externalForces;
+        externalForcesModule.enabled = _particleSystem.pExternalForcesModule.enabled;
+        //externalForcesModule.influenceCount = _particleSystem.pExternalForcesModule.influenceCount;
+        externalForcesModule.influenceFilter = _particleSystem.pExternalForcesModule.influenceFilter;
+        externalForcesModule.influenceMask = _particleSystem.pExternalForcesModule.influenceMask;
+        externalForcesModule.multiplier = _particleSystem.pExternalForcesModule.multiplier;
+        externalForcesModule.multiplierCurve = _particleSystem.pExternalForcesModule.multiplierCurve.Deserialize();
         #endregion
 
         #region Collision Module
-        ParticleSystem.CollisionModule collisionModule = _particleSystem.collision;
-        collisionModule.bounce = pCollisionModule.bounce.Deserialize();
-        collisionModule.bounceMultiplier = pCollisionModule.bounceMultiplier;
-        collisionModule.colliderForce = pCollisionModule.colliderForce;
-        collisionModule.collidesWith = pCollisionModule.collidesWith;
-        collisionModule.dampen = pCollisionModule.dampen.Deserialize();
-        collisionModule.dampenMultiplier = pCollisionModule.dampenMultiplier;
-        collisionModule.enabled = pCollisionModule.enabled;
-        collisionModule.enableDynamicColliders = pCollisionModule.enableDynamicColliders;
-        collisionModule.lifetimeLoss = pCollisionModule.lifetimeLoss.Deserialize();
-        collisionModule.lifetimeLossMultiplier = pCollisionModule.lifetimeLossMultiplier;
-        collisionModule.maxCollisionShapes = pCollisionModule.maxCollisionShapes;
-        collisionModule.maxKillSpeed = pCollisionModule.maxKillSpeed;
-        //collisionModule.maxPlaneCount = pCollisionModule.maxPlaneCount;
-        collisionModule.minKillSpeed = pCollisionModule.minKillSpeed;
-        collisionModule.mode = pCollisionModule.mode;
-        collisionModule.multiplyColliderForceByCollisionAngle = pCollisionModule.multiplyColliderForceByCollisionAngle;
-        collisionModule.multiplyColliderForceByParticleSize = pCollisionModule.multiplyColliderForceByParticleSize;
-        collisionModule.multiplyColliderForceByParticleSpeed = pCollisionModule.multiplyColliderForceByParticleSpeed;
-        collisionModule.quality = pCollisionModule.quality;
-        collisionModule.radiusScale = pCollisionModule.radiusScale;
-        collisionModule.sendCollisionMessages = pCollisionModule.sendCollisionMessages;
-        collisionModule.type = pCollisionModule.type;
-        collisionModule.voxelSize = pCollisionModule.voxelSize;
+        ParticleSystem.CollisionModule collisionModule = returnVal.collision;
+        collisionModule.bounce = _particleSystem.pCollisionModule.bounce.Deserialize();
+        collisionModule.bounceMultiplier = _particleSystem.pCollisionModule.bounceMultiplier;
+        collisionModule.colliderForce = _particleSystem.pCollisionModule.colliderForce;
+        collisionModule.collidesWith = _particleSystem.pCollisionModule.collidesWith;
+        collisionModule.dampen = _particleSystem.pCollisionModule.dampen.Deserialize();
+        collisionModule.dampenMultiplier = _particleSystem.pCollisionModule.dampenMultiplier;
+        collisionModule.enabled = _particleSystem.pCollisionModule.enabled;
+        collisionModule.enableDynamicColliders = _particleSystem.pCollisionModule.enableDynamicColliders;
+        collisionModule.lifetimeLoss = _particleSystem.pCollisionModule.lifetimeLoss.Deserialize();
+        collisionModule.lifetimeLossMultiplier = _particleSystem.pCollisionModule.lifetimeLossMultiplier;
+        collisionModule.maxCollisionShapes = _particleSystem.pCollisionModule.maxCollisionShapes;
+        collisionModule.maxKillSpeed = _particleSystem.pCollisionModule.maxKillSpeed;
+        //collisionModule.maxPlaneCount = _particleSystem.pCollisionModule.maxPlaneCount;
+        collisionModule.minKillSpeed = _particleSystem.pCollisionModule.minKillSpeed;
+        collisionModule.mode = _particleSystem.pCollisionModule.mode;
+        collisionModule.multiplyColliderForceByCollisionAngle = _particleSystem.pCollisionModule.multiplyColliderForceByCollisionAngle;
+        collisionModule.multiplyColliderForceByParticleSize = _particleSystem.pCollisionModule.multiplyColliderForceByParticleSize;
+        collisionModule.multiplyColliderForceByParticleSpeed = _particleSystem.pCollisionModule.multiplyColliderForceByParticleSpeed;
+        collisionModule.quality = _particleSystem.pCollisionModule.quality;
+        collisionModule.radiusScale = _particleSystem.pCollisionModule.radiusScale;
+        collisionModule.sendCollisionMessages = _particleSystem.pCollisionModule.sendCollisionMessages;
+        collisionModule.type = _particleSystem.pCollisionModule.type;
+        collisionModule.voxelSize = _particleSystem.pCollisionModule.voxelSize;
         #endregion
 
         #region Trigger Module
-        ParticleSystem.TriggerModule triggerModule = _particleSystem.trigger;
-        triggerModule.enabled = pTriggerModule.enabled;
-        triggerModule.enter = pTriggerModule.enter;
-        triggerModule.exit = pTriggerModule.exit;
-        triggerModule.inside = pTriggerModule.inside;
-        //triggerModule.maxColliderCount = pTriggerModule.maxColliderCount;
-        triggerModule.outside = pTriggerModule.outside;
-        triggerModule.radiusScale = pTriggerModule.radiusScale;
+        ParticleSystem.TriggerModule triggerModule = returnVal.trigger;
+        triggerModule.enabled = _particleSystem.pTriggerModule.enabled;
+        triggerModule.enter = _particleSystem.pTriggerModule.enter;
+        triggerModule.exit = _particleSystem.pTriggerModule.exit;
+        triggerModule.inside = _particleSystem.pTriggerModule.inside;
+        //triggerModule.maxColliderCount = _particleSystem.pTriggerModule.maxColliderCount;
+        triggerModule.outside = _particleSystem.pTriggerModule.outside;
+        triggerModule.radiusScale = _particleSystem.pTriggerModule.radiusScale;
         #endregion
 
         #region Sub Emitters Module
-        ParticleSystem.SubEmittersModule subEmittersModule = _particleSystem.subEmitters;
-        subEmittersModule.enabled = pSubEmittersModule.enabled;
-        //subEmittersModule.subEmittersCount = _particleSystem.subEmitters.subEmittersCount;
-        //pSubEmittersModule.DeserializeSubEmitters(ref subEmittersModule);
+        ParticleSystem.SubEmittersModule subEmittersModule = returnVal.subEmitters;
+        subEmittersModule.enabled = _particleSystem.pSubEmittersModule.enabled;
+        //_particleSystem.subEmittersModule.subEmittersCount = returnVal.subEmitters.subEmittersCount;
+        //_particleSystem.pSubEmittersModule.DeserializeSubEmitters(ref subEmittersModule);
         #endregion
 
         #region Texture Sheet Animation Module
-        ParticleSystem.TextureSheetAnimationModule textureSheetAnimationModule = _particleSystem.textureSheetAnimation;
-        textureSheetAnimationModule.animation = pTextureSheetAnimationModule.animation;
-        textureSheetAnimationModule.cycleCount = pTextureSheetAnimationModule.cycleCount;
-        textureSheetAnimationModule.enabled = pTextureSheetAnimationModule.enabled;
-        textureSheetAnimationModule.fps = pTextureSheetAnimationModule.fps;
-        textureSheetAnimationModule.frameOverTime = pTextureSheetAnimationModule.frameOverTime.Deserialize();
-        textureSheetAnimationModule.frameOverTimeMultiplier = pTextureSheetAnimationModule.frameOverTimeMultiplier;
-        textureSheetAnimationModule.mode = pTextureSheetAnimationModule.mode;
-        textureSheetAnimationModule.numTilesX = pTextureSheetAnimationModule.numTilesX;
-        textureSheetAnimationModule.numTilesY = pTextureSheetAnimationModule.numTilesY;
-        textureSheetAnimationModule.rowIndex = pTextureSheetAnimationModule.rowIndex;
-        textureSheetAnimationModule.rowMode = pTextureSheetAnimationModule.rowMode;
-        textureSheetAnimationModule.speedRange = pTextureSheetAnimationModule.speedRange.Deserialize();
-        //textureSheetAnimationModule.spriteCount = pTextureSheetAnimationModule.spriteCount;
-        textureSheetAnimationModule.startFrame = pTextureSheetAnimationModule.startFrame.Deserialize();
-        textureSheetAnimationModule.startFrameMultiplier = pTextureSheetAnimationModule.startFrameMultiplier;
-        textureSheetAnimationModule.timeMode = pTextureSheetAnimationModule.timeMode;
-        textureSheetAnimationModule.uvChannelMask = pTextureSheetAnimationModule.uvChannelMask;
+        ParticleSystem.TextureSheetAnimationModule textureSheetAnimationModule = returnVal.textureSheetAnimation;
+        textureSheetAnimationModule.animation = _particleSystem.pTextureSheetAnimationModule.animation;
+        textureSheetAnimationModule.cycleCount = _particleSystem.pTextureSheetAnimationModule.cycleCount;
+        textureSheetAnimationModule.enabled = _particleSystem.pTextureSheetAnimationModule.enabled;
+        textureSheetAnimationModule.fps = _particleSystem.pTextureSheetAnimationModule.fps;
+        textureSheetAnimationModule.frameOverTime = _particleSystem.pTextureSheetAnimationModule.frameOverTime.Deserialize();
+        textureSheetAnimationModule.frameOverTimeMultiplier = _particleSystem.pTextureSheetAnimationModule.frameOverTimeMultiplier;
+        textureSheetAnimationModule.mode = _particleSystem.pTextureSheetAnimationModule.mode;
+        textureSheetAnimationModule.numTilesX = _particleSystem.pTextureSheetAnimationModule.numTilesX;
+        textureSheetAnimationModule.numTilesY = _particleSystem.pTextureSheetAnimationModule.numTilesY;
+        textureSheetAnimationModule.rowIndex = _particleSystem.pTextureSheetAnimationModule.rowIndex;
+        textureSheetAnimationModule.rowMode = _particleSystem.pTextureSheetAnimationModule.rowMode;
+        textureSheetAnimationModule.speedRange = _particleSystem.pTextureSheetAnimationModule.speedRange.Deserialize();
+        //textureSheetAnimationModule.spriteCount = _particleSystem.pTextureSheetAnimationModule.spriteCount;
+        textureSheetAnimationModule.startFrame = _particleSystem.pTextureSheetAnimationModule.startFrame.Deserialize();
+        textureSheetAnimationModule.startFrameMultiplier = _particleSystem.pTextureSheetAnimationModule.startFrameMultiplier;
+        textureSheetAnimationModule.timeMode = _particleSystem.pTextureSheetAnimationModule.timeMode;
+        textureSheetAnimationModule.uvChannelMask = _particleSystem.pTextureSheetAnimationModule.uvChannelMask;
         #endregion
 
         #region Lights Module
-        ParticleSystem.LightsModule lightsModule = _particleSystem.lights;
-        lightsModule.alphaAffectsIntensity = pLightsModule.alphaAffectsIntensity;
-        lightsModule.enabled = pLightsModule.enabled;
-        lightsModule.intensity = pLightsModule.intensity.Deserialize();
-        lightsModule.intensityMultiplier = pLightsModule.intensityMultiplier;
-        //lightsModule.light = pLightsModule.light;
-        lightsModule.maxLights = pLightsModule.maxLights;
-        lightsModule.range = pLightsModule.range.Deserialize();
-        lightsModule.rangeMultiplier = pLightsModule.rangeMultiplier;
-        lightsModule.ratio = pLightsModule.ratio;
-        lightsModule.sizeAffectsRange = pLightsModule.sizeAffectsRange;
-        lightsModule.useParticleColor = pLightsModule.useParticleColor;
-        lightsModule.useRandomDistribution = pLightsModule.useRandomDistribution;
+        ParticleSystem.LightsModule lightsModule = returnVal.lights;
+        lightsModule.alphaAffectsIntensity = _particleSystem.pLightsModule.alphaAffectsIntensity;
+        lightsModule.enabled = _particleSystem.pLightsModule.enabled;
+        lightsModule.intensity = _particleSystem.pLightsModule.intensity.Deserialize();
+        lightsModule.intensityMultiplier = _particleSystem.pLightsModule.intensityMultiplier;
+        //lightsModule.light = _particleSystem.pLightsModule.light;
+        lightsModule.maxLights = _particleSystem.pLightsModule.maxLights;
+        lightsModule.range = _particleSystem.pLightsModule.range.Deserialize();
+        lightsModule.rangeMultiplier = _particleSystem.pLightsModule.rangeMultiplier;
+        lightsModule.ratio = _particleSystem.pLightsModule.ratio;
+        lightsModule.sizeAffectsRange = _particleSystem.pLightsModule.sizeAffectsRange;
+        lightsModule.useParticleColor = _particleSystem.pLightsModule.useParticleColor;
+        lightsModule.useRandomDistribution = _particleSystem.pLightsModule.useRandomDistribution;
         #endregion
 
         #region Trails Module
-        ParticleSystem.TrailModule trailsModule = _particleSystem.trails;
-        trailsModule.attachRibbonsToTransform = pTrailsModule.attachRibbonsToTransform;
-        trailsModule.colorOverLifetime = pTrailsModule.colorOverLifetime.Deserialize();
-        trailsModule.colorOverTrail = pTrailsModule.colorOverTrail.Deserialize();
-        trailsModule.dieWithParticles = pTrailsModule.dieWithParticles;
-        trailsModule.enabled = pTrailsModule.enabled;
-        trailsModule.generateLightingData = pTrailsModule.generateLightingData;
-        trailsModule.inheritParticleColor = pTrailsModule.inheritParticleColor;
-        trailsModule.lifetime = pTrailsModule.lifetime.Deserialize();
-        trailsModule.lifetimeMultiplier = pTrailsModule.lifetimeMultiplier;
-        trailsModule.minVertexDistance = pTrailsModule.minVertexDistance;
-        trailsModule.mode = pTrailsModule.mode;
-        trailsModule.ratio = pTrailsModule.ratio;
-        trailsModule.ribbonCount = pTrailsModule.ribbonCount;
-        trailsModule.shadowBias = pTrailsModule.shadowBias;
-        trailsModule.sizeAffectsLifetime = pTrailsModule.sizeAffectsLifetime;
-        trailsModule.sizeAffectsWidth = pTrailsModule.sizeAffectsWidth;
-        trailsModule.splitSubEmitterRibbons = pTrailsModule.splitSubEmitterRibbons;
-        trailsModule.textureMode = pTrailsModule.textureMode;
-        trailsModule.widthOverTrail = pTrailsModule.widthOverTrail.Deserialize();
-        trailsModule.widthOverTrailMultiplier = pTrailsModule.widthOverTrailMultiplier;
-        trailsModule.worldSpace = pTrailsModule.worldSpace;
+        ParticleSystem.TrailModule trailsModule = returnVal.trails;
+        trailsModule.attachRibbonsToTransform = _particleSystem.pTrailsModule.attachRibbonsToTransform;
+        trailsModule.colorOverLifetime = _particleSystem.pTrailsModule.colorOverLifetime.Deserialize();
+        trailsModule.colorOverTrail = _particleSystem.pTrailsModule.colorOverTrail.Deserialize();
+        trailsModule.dieWithParticles = _particleSystem.pTrailsModule.dieWithParticles;
+        trailsModule.enabled = _particleSystem.pTrailsModule.enabled;
+        trailsModule.generateLightingData = _particleSystem.pTrailsModule.generateLightingData;
+        trailsModule.inheritParticleColor = _particleSystem.pTrailsModule.inheritParticleColor;
+        trailsModule.lifetime = _particleSystem.pTrailsModule.lifetime.Deserialize();
+        trailsModule.lifetimeMultiplier = _particleSystem.pTrailsModule.lifetimeMultiplier;
+        trailsModule.minVertexDistance = _particleSystem.pTrailsModule.minVertexDistance;
+        trailsModule.mode = _particleSystem.pTrailsModule.mode;
+        trailsModule.ratio = _particleSystem.pTrailsModule.ratio;
+        trailsModule.ribbonCount = _particleSystem.pTrailsModule.ribbonCount;
+        trailsModule.shadowBias = _particleSystem.pTrailsModule.shadowBias;
+        trailsModule.sizeAffectsLifetime = _particleSystem.pTrailsModule.sizeAffectsLifetime;
+        trailsModule.sizeAffectsWidth = _particleSystem.pTrailsModule.sizeAffectsWidth;
+        trailsModule.splitSubEmitterRibbons = _particleSystem.pTrailsModule.splitSubEmitterRibbons;
+        trailsModule.textureMode = _particleSystem.pTrailsModule.textureMode;
+        trailsModule.widthOverTrail = _particleSystem.pTrailsModule.widthOverTrail.Deserialize();
+        trailsModule.widthOverTrailMultiplier = _particleSystem.pTrailsModule.widthOverTrailMultiplier;
+        trailsModule.worldSpace = _particleSystem.pTrailsModule.worldSpace;
         #endregion
 
         #region Custom Data Module
-        ParticleSystem.CustomDataModule customDataModule = _particleSystem.customData;
-        customDataModule.enabled = pCustomDataModule.enabled;
+        ParticleSystem.CustomDataModule customDataModule = returnVal.customData;
+        customDataModule.enabled = _particleSystem.pCustomDataModule.enabled;
         #endregion
 
         //Particle System Renderer (Handle particle renderer here in the future)
-        //_particleSystem.GetComponent<ParticleSystemRenderer>()
+        //returnVal.GetComponent<ParticleSystemRenderer>()
 
 
         if (isPlaying == true)
-            _particleSystem.Play();
+            returnVal.Play();
     }
+    #endregion
 }
-#endregion
