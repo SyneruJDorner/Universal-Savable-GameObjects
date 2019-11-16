@@ -184,7 +184,7 @@ public class SavableGameObject : MonoBehaviour, IUniversalSerializedPersistenceS
         {
             var type = Type.GetType(script.GetType().ToString());
             object item = Convert.ChangeType(script, type);
-            serializedMonoData.Add(new UserDefinedData() { ID = serializedGuid, scriptName = type.ToString(), serializedData = UniversalSerializedPersistenceSystem.SerializeMonoObject(item)});
+            serializedMonoData.Add(new UserDefinedData() { ID = serializedGuid, scriptName = type.ToString(), serializedData = DataSerialization.SerializeMonoObject(item)});
         }
 
         monoScripts.Clear();
@@ -205,7 +205,7 @@ public class SavableGameObject : MonoBehaviour, IUniversalSerializedPersistenceS
 
                 if (type.ToString() == data.scriptName)
                 {
-                    UniversalSerializedPersistenceSystem.DeserializeMonoObject(data.serializedData, item);
+                    DataDeserialization.DeserializeMonoObject(data.serializedData, item);
                     break;
                 }
             }
@@ -216,12 +216,12 @@ public class SavableGameObject : MonoBehaviour, IUniversalSerializedPersistenceS
 
     public void UniSave()
     {
-        UniversalSerializedPersistenceSystem.QueueItemToSave(gameObject, serializedGuid);
+        QueueData.QueueItemToSave(gameObject, serializedGuid);
     }
 
     public void UniLoad()
     {
-        UniversalSerializedPersistenceSystem.QueueItemToLoad(gameObject, serializedGuid);
+        QueueData.QueueItemToLoad(gameObject, serializedGuid);
     }
 
     public void SaveMessage()

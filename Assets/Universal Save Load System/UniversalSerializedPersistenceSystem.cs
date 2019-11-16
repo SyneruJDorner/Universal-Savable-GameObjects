@@ -39,8 +39,8 @@ class UniversalSerializedPersistenceSystem : MonoBehaviour
     public static string streamingAssetPath = Application.streamingAssetsPath;
     private static string FilePath => Path.Combine(streamingAssetPath, fileName);
 
-    private static SerializableDataSet serializableDataSet = new SerializableDataSet();
-    private static List<QueuedItem> gameObjectsDataSet = new List<QueuedItem>();
+    [HideInInspector] public static SerializableDataSet serializableDataSet = new SerializableDataSet();
+    [HideInInspector] public static List<QueuedItem> gameObjectsDataSet = new List<QueuedItem>();
 
     public List<object> saveableItems = new List<object>();
 
@@ -80,130 +80,6 @@ class UniversalSerializedPersistenceSystem : MonoBehaviour
     #endregion
 
     #region Save Load Zone
-    public static void QueueItemToSave(GameObject saveObject, string serializedGuid)
-    {
-        Camera cam;
-
-        SerializableData serializableData = new SerializableData();
-
-        #region Serilaize Object
-        #region Serialize Unity classes and types
-        serializableData.ID = Serialize(serializedGuid);
-        serializableData.activeInHierarchy = Serialize(saveObject.activeInHierarchy);
-        serializableData.sTransform = Serialize(new STransform().Serielize(saveObject.transform));
-        serializableData.sCamera = (cam = saveObject.GetComponent<Camera>()) != null ? Serialize(new SCamera().Serielize(cam)) : null;
-
-        #region Audio
-        #region Audio Variables
-        AudioChorusFilter audioChorusFilter;
-        AudioDistortionFilter audioDistortionFilter;
-        AudioEchoFilter audioEchoFilter;
-        AudioHighPassFilter audioHighPassFilter;
-        AudioListener audioListener;
-        AudioLowPassFilter audioLowPassFilter;
-        AudioReverbFilter audioReverbFilter;
-        AudioReverbZone audioReverbZone;
-        AudioSource audioSource;
-        #endregion
-
-        serializableData.sAudioChorusFilter = (audioChorusFilter = saveObject.GetComponent<AudioChorusFilter>()) != null ? Serialize(new SAudioChorusFilter().Serielize(audioChorusFilter)) : null;
-        serializableData.sAudioDistortionFilter = (audioDistortionFilter = saveObject.GetComponent<AudioDistortionFilter>()) != null ? Serialize(new SAudioDistortionFilter().Serielize(audioDistortionFilter)) : null;
-        serializableData.sAudioEchoFilter = (audioEchoFilter = saveObject.GetComponent<AudioEchoFilter>()) != null ? Serialize(new SAudioEchoFilter().Serielize(audioEchoFilter)) : null;
-        serializableData.sAudioHighPassFilter = (audioHighPassFilter = saveObject.GetComponent<AudioHighPassFilter>()) != null ? Serialize(new SAudioHighPassFilter().Serielize(audioHighPassFilter)) : null;
-        serializableData.sAudioListener = (audioListener = saveObject.GetComponent<AudioListener>()) != null ? Serialize(new SAudioListener().Serielize(audioListener)) : null;
-        serializableData.sAudioLowPassFilter = (audioLowPassFilter = saveObject.GetComponent<AudioLowPassFilter>()) != null ? Serialize(new SAudioLowPassFilter().Serielize(audioLowPassFilter)) : null;
-        serializableData.sAudioReverbFilter = (audioReverbFilter = saveObject.GetComponent<AudioReverbFilter>()) != null ? Serialize(new SAudioReverbFilter().Serielize(audioReverbFilter)) : null;
-        serializableData.sAudioReverbZone = (audioReverbZone = saveObject.GetComponent<AudioReverbZone>()) != null ? Serialize(new SAudioReverbZone().Serielize(audioReverbZone)) : null;
-        serializableData.sAudioSource = (audioSource = saveObject.GetComponent<AudioSource>()) != null ? Serialize(new SAudioSource().Serielize(audioSource)) : null;
-        #endregion
-        #endregion
-
-        #region Serialize User Defined Classes
-        MonoBehaviour[] saveableScripts = saveObject.GetComponents<MonoBehaviour>();
-
-        foreach (var monoItem in saveableScripts)
-        {
-            if (monoItem is IUniversalSerializedPersistenceSystem == false)
-                continue;
-
-            System.Type thisType = monoItem.GetType();
-            MethodInfo theMethod = thisType.GetMethod("Serialize");
-            object[] parameters = new object[1] { saveObject };
-            serializableData.serializedScripts = (List<UserDefinedData>)theMethod.Invoke(monoItem, parameters);
-            break;
-        }
-        #endregion
-        #endregion
-
-        #region Serilaize Objects Children
-        SerializeAllChildren(serializedGuid, saveObject.transform, saveObject.transform, ref serializableData);
-        #endregion
-
-        serializableDataSet.data.Add(serializableData);
-        saveObject.BroadcastMessage("SaveMessage", SendMessageOptions.DontRequireReceiver);
-    }
-
-    private static void SerializeAllChildren(string serializedGuid, Transform rootParent, Transform parent, ref SerializableData serializableData)
-    {
-        foreach (Transform t in parent)
-        {
-            GameObject saveObject = t.gameObject;
-            SerializableChildData serializableChildData = new SerializableChildData();
-
-            Camera cam;
-
-            #region Serialize Unity classes and types
-            serializableChildData.rootParentID = Serialize(serializedGuid);
-            serializableChildData.activeInHierarchy = Serialize(saveObject.activeInHierarchy);
-            serializableChildData.sTransform = Serialize(new STransform().Serielize(saveObject.transform));
-            serializableChildData.sCamera = (cam = saveObject.GetComponent<Camera>()) != null ? Serialize(new SCamera().Serielize(cam)) : null;
-
-            #region Audio
-            #region Audio Variables
-            AudioChorusFilter audioChorusFilter;
-            AudioDistortionFilter audioDistortionFilter;
-            AudioEchoFilter audioEchoFilter;
-            AudioHighPassFilter audioHighPassFilter;
-            AudioListener audioListener;
-            AudioLowPassFilter audioLowPassFilter;
-            AudioReverbFilter audioReverbFilter;
-            AudioReverbZone audioReverbZone;
-            AudioSource audioSource;
-            #endregion
-
-            serializableChildData.sAudioChorusFilter = (audioChorusFilter = saveObject.GetComponent<AudioChorusFilter>()) != null ? Serialize(new SAudioChorusFilter().Serielize(audioChorusFilter)) : null;
-            serializableChildData.sAudioDistortionFilter = (audioDistortionFilter = saveObject.GetComponent<AudioDistortionFilter>()) != null ? Serialize(new SAudioDistortionFilter().Serielize(audioDistortionFilter)) : null;
-            serializableChildData.sAudioEchoFilter = (audioEchoFilter = saveObject.GetComponent<AudioEchoFilter>()) != null ? Serialize(new SAudioEchoFilter().Serielize(audioEchoFilter)) : null;
-            serializableChildData.sAudioHighPassFilter = (audioHighPassFilter = saveObject.GetComponent<AudioHighPassFilter>()) != null ? Serialize(new SAudioHighPassFilter().Serielize(audioHighPassFilter)) : null;
-            serializableChildData.sAudioListener = (audioListener = saveObject.GetComponent<AudioListener>()) != null ? Serialize(new SAudioListener().Serielize(audioListener)) : null;
-            serializableChildData.sAudioLowPassFilter = (audioLowPassFilter = saveObject.GetComponent<AudioLowPassFilter>()) != null ? Serialize(new SAudioLowPassFilter().Serielize(audioLowPassFilter)) : null;
-            serializableChildData.sAudioReverbFilter = (audioReverbFilter = saveObject.GetComponent<AudioReverbFilter>()) != null ? Serialize(new SAudioReverbFilter().Serielize(audioReverbFilter)) : null;
-            serializableChildData.sAudioReverbZone = (audioReverbZone = saveObject.GetComponent<AudioReverbZone>()) != null ? Serialize(new SAudioReverbZone().Serielize(audioReverbZone)) : null;
-            serializableChildData.sAudioSource = (audioSource = saveObject.GetComponent<AudioSource>()) != null ? Serialize(new SAudioSource().Serielize(audioSource)) : null;
-            #endregion
-            #endregion
-
-            #region Serialize User Defined Classes
-            MonoBehaviour[] saveableScripts = parent.GetComponents<MonoBehaviour>();
-
-            foreach (var monoItem in saveableScripts)
-            {
-                if (monoItem is IUniversalSerializedPersistenceSystem == false)
-                    continue;
-
-                System.Type thisType = monoItem.GetType();
-                MethodInfo theMethod = thisType.GetMethod("Serialize");
-                object[] parameters = new object[1] { saveObject };
-                serializableChildData.serializedScripts = (List<UserDefinedData>)theMethod.Invoke(monoItem, parameters);
-                break;
-            }
-            #endregion
-
-            serializableData.serializableChildData.Add(serializableChildData);
-            SerializeAllChildren(serializedGuid, rootParent, t, ref serializableData);
-        }
-    }
-
     public static void Save()
     {
         Debug.Log("Saving...");
@@ -215,12 +91,6 @@ class UniversalSerializedPersistenceSystem : MonoBehaviour
         File.WriteAllText(FilePath, jsonData);
         serializableDataSet.data.Clear();
         Debug.Log("Save was successful!");
-    }
-
-    public static void QueueItemToLoad(GameObject saveObject, string serializedGuid)
-    {
-        gameObjectsDataSet.Add(new QueuedItem() { ID = serializedGuid, saveObject = saveObject });
-        saveObject.BroadcastMessage("SaveMessage", SendMessageOptions.DontRequireReceiver);
     }
 
     public static void Load()
@@ -236,80 +106,96 @@ class UniversalSerializedPersistenceSystem : MonoBehaviour
             {
                 QueuedItem queuedItem = gameObjectsDataSet[j];
 
-                string sID = (string)Deserialize(serializableDataSet.data[i].ID);
+                string sID = (string)DataDeserialization.Deserialize(serializableDataSet.data[i].ID);
 
                 if (queuedItem.ID == sID)
                 {
                     #region Deserialize Unity classes and types
                     #region Deserialize transform
-                    STransform sTrans = (STransform)Deserialize(serializableDataSet.data[i].sTransform);
-                    sTrans.Deserielize(ref queuedItem.saveObject);
+                    ((STransform)DataDeserialization.Deserialize(serializableDataSet.data[i].unitySerializableData.sTransform)).Deserialize(ref queuedItem.saveObject);
                     #endregion
 
                     #region Deserialize Camera
-                    if (serializableDataSet.data[i].sCamera.Length > 0)
+                    if (serializableDataSet.data[i].unitySerializableData.sCamera.Length > 0)
                     {
-                        SCamera sCamera = (SCamera)Deserialize(serializableDataSet.data[i].sCamera);
+                        SCamera sCamera = (SCamera)DataDeserialization.Deserialize(serializableDataSet.data[i].unitySerializableData.sCamera);
                         sCamera.Deserielize(ref queuedItem.saveObject);
                     }
                     #endregion
 
                     #region Deserialize Audio
-                    if (serializableDataSet.data[i].sAudioChorusFilter.Length > 0)
-                    {
-                        SAudioChorusFilter sAudioChorusFilter = (SAudioChorusFilter)Deserialize(serializableDataSet.data[i].sAudioChorusFilter);
-                        sAudioChorusFilter.Deserielize(ref queuedItem.saveObject);
-                    }
+                    if (serializableDataSet.data[i].unitySerializableData.sAudioChorusFilter.Length > 0)
+                        ((SAudioChorusFilter)DataDeserialization.Deserialize(serializableDataSet.data[i].unitySerializableData.sAudioChorusFilter)).Deserialize(ref queuedItem.saveObject);
 
-                    if (serializableDataSet.data[i].sAudioDistortionFilter.Length > 0)
+                    if (serializableDataSet.data[i].unitySerializableData.sAudioDistortionFilter.Length > 0)
                     {
-                        SAudioDistortionFilter sAudioDistortionFilter = (SAudioDistortionFilter)Deserialize(serializableDataSet.data[i].sAudioDistortionFilter);
+                        SAudioDistortionFilter sAudioDistortionFilter = (SAudioDistortionFilter)DataDeserialization.Deserialize(serializableDataSet.data[i].unitySerializableData.sAudioDistortionFilter);
                         sAudioDistortionFilter.Deserielize(ref queuedItem.saveObject);
                     }
 
-                    if (serializableDataSet.data[i].sAudioEchoFilter.Length > 0)
+                    if (serializableDataSet.data[i].unitySerializableData.sAudioEchoFilter.Length > 0)
                     {
-                        SAudioEchoFilter sAudioEchoFilter = (SAudioEchoFilter)Deserialize(serializableDataSet.data[i].sAudioEchoFilter);
+                        SAudioEchoFilter sAudioEchoFilter = (SAudioEchoFilter)DataDeserialization.Deserialize(serializableDataSet.data[i].unitySerializableData.sAudioEchoFilter);
                         sAudioEchoFilter.Deserielize(ref queuedItem.saveObject);
                     }
 
-                    if (serializableDataSet.data[i].sAudioHighPassFilter.Length > 0)
+                    if (serializableDataSet.data[i].unitySerializableData.sAudioHighPassFilter.Length > 0)
                     {
-                        SAudioHighPassFilter sAudioHighPassFilter = (SAudioHighPassFilter)Deserialize(serializableDataSet.data[i].sAudioHighPassFilter);
+                        SAudioHighPassFilter sAudioHighPassFilter = (SAudioHighPassFilter)DataDeserialization.Deserialize(serializableDataSet.data[i].unitySerializableData.sAudioHighPassFilter);
                         sAudioHighPassFilter.Deserielize(ref queuedItem.saveObject);
                     }
 
-                    if (serializableDataSet.data[i].sAudioListener.Length > 0)
+                    if (serializableDataSet.data[i].unitySerializableData.sAudioListener.Length > 0)
                     {
-                        SAudioListener sAudioListener = (SAudioListener)Deserialize(serializableDataSet.data[i].sAudioListener);
+                        SAudioListener sAudioListener = (SAudioListener)DataDeserialization.Deserialize(serializableDataSet.data[i].unitySerializableData.sAudioListener);
                         sAudioListener.Deserielize(ref queuedItem.saveObject);
                     }
 
-                    if (serializableDataSet.data[i].sAudioLowPassFilter.Length > 0)
+                    if (serializableDataSet.data[i].unitySerializableData.sAudioLowPassFilter.Length > 0)
                     {
-                        SAudioLowPassFilter sAudioLowPassFilter = (SAudioLowPassFilter)Deserialize(serializableDataSet.data[i].sAudioLowPassFilter);
+                        SAudioLowPassFilter sAudioLowPassFilter = (SAudioLowPassFilter)DataDeserialization.Deserialize(serializableDataSet.data[i].unitySerializableData.sAudioLowPassFilter);
                         sAudioLowPassFilter.Deserielize(ref queuedItem.saveObject);
                     }
 
-                    if (serializableDataSet.data[i].sAudioReverbFilter.Length > 0)
+                    if (serializableDataSet.data[i].unitySerializableData.sAudioReverbFilter.Length > 0)
                     {
-                        SAudioReverbFilter sAudioReverbFilter = (SAudioReverbFilter)Deserialize(serializableDataSet.data[i].sAudioReverbFilter);
+                        SAudioReverbFilter sAudioReverbFilter = (SAudioReverbFilter)DataDeserialization.Deserialize(serializableDataSet.data[i].unitySerializableData.sAudioReverbFilter);
                         sAudioReverbFilter.Deserielize(ref queuedItem.saveObject);
                     }
 
-                    if (serializableDataSet.data[i].sAudioReverbZone.Length > 0)
+                    if (serializableDataSet.data[i].unitySerializableData.sAudioReverbZone.Length > 0)
                     {
-                        SAudioReverbZone sAudioReverbZone = (SAudioReverbZone)Deserialize(serializableDataSet.data[i].sAudioReverbZone);
+                        SAudioReverbZone sAudioReverbZone = (SAudioReverbZone)DataDeserialization.Deserialize(serializableDataSet.data[i].unitySerializableData.sAudioReverbZone);
                         sAudioReverbZone.Deserielize(ref queuedItem.saveObject);
                     }
 
-                    if (serializableDataSet.data[i].sAudioSource.Length > 0)
+                    if (serializableDataSet.data[i].unitySerializableData.sAudioSource.Length > 0)
                     {
-                        SAudioSource sAudioSource = (SAudioSource)Deserialize(serializableDataSet.data[i].sAudioSource);
+                        SAudioSource sAudioSource = (SAudioSource)DataDeserialization.Deserialize(serializableDataSet.data[i].unitySerializableData.sAudioSource);
                         sAudioSource.Deserielize(ref queuedItem.saveObject);
                     }
                     #endregion
 
+                    #region Deserialize Effects
+                    if (serializableDataSet.data[i].unitySerializableData.sLensFlare.Length > 0)
+                    {
+                        SLensFlare sLensFlare = (SLensFlare)DataDeserialization.Deserialize(serializableDataSet.data[i].unitySerializableData.sLensFlare);
+                        sLensFlare.Deserielize(ref queuedItem.saveObject);
+                    }
+
+                    if (serializableDataSet.data[i].unitySerializableData.sLineRenderer.Length > 0)
+                    {
+                        SLineRenderer sLineRenderer = (SLineRenderer)DataDeserialization.Deserialize(serializableDataSet.data[i].unitySerializableData.sLineRenderer);
+                        sLineRenderer.Deserielize(ref queuedItem.saveObject);
+                    }
+
+                    if (serializableDataSet.data[i].unitySerializableData.sParticleSystem.Length > 0)
+                    {
+                        SParticleSystem sParticleSystem = (SParticleSystem)DataDeserialization.Deserialize(serializableDataSet.data[i].unitySerializableData.sParticleSystem);
+                        sParticleSystem.Deserialize(ref queuedItem.saveObject);
+                    }
+
+                    #endregion
                     #endregion
 
                     #region Deserialize User Defined Classes
@@ -334,7 +220,7 @@ class UniversalSerializedPersistenceSystem : MonoBehaviour
 
                     #region Deserialize All Children
                     int childIndex = -1;
-                    DeserializeAllChildren(queuedItem.saveObject.transform, queuedItem.saveObject.transform, serializableDataSet.data[i], ref childIndex);
+                    QueueData.DequeueAllChildren(queuedItem.saveObject.transform, queuedItem.saveObject.transform, serializableDataSet.data[i], ref childIndex);
                     #endregion
 
                     gameObjectsDataSet.RemoveAt(j);
@@ -347,99 +233,6 @@ class UniversalSerializedPersistenceSystem : MonoBehaviour
         gameObjectsDataSet.Clear();
 
         Debug.Log("Load was successful!");
-    }
-
-    private static void DeserializeAllChildren(Transform rootParent, Transform parent, SerializableData serializableData, ref int childIndex)
-    {
-        foreach (Transform t in parent)
-        {
-            SerializableChildData serializableChildData  = serializableData.serializableChildData[++childIndex];
-            GameObject currentObj = t.gameObject;
-
-            #region Deserialize Unity classes and types
-            #region Deserialize transform
-            STransform sTrans = (STransform)Deserialize(serializableChildData.sTransform);
-            sTrans.Deserielize(ref currentObj);
-            #endregion
-
-            #region Deserialize Camera
-            if (serializableChildData.sCamera.Length > 0)
-            {
-                SCamera sCamera = (SCamera)Deserialize(serializableChildData.sCamera);
-                sCamera.Deserielize(ref currentObj);
-            }
-            #endregion
-
-            #region Deserialize Audio Listener
-            if (serializableChildData.sAudioListener.Length > 0)
-            {
-                SAudioListener sAudioListener = (SAudioListener)Deserialize(serializableChildData.sAudioListener);
-                sAudioListener.Deserielize(ref currentObj);
-            }
-            #endregion
-            #endregion
-
-            #region Deserialize User Defined Classes
-            MonoBehaviour[] saveableScripts = parent.gameObject.GetComponents<MonoBehaviour>();
-
-            foreach (var monoItem in saveableScripts)
-            {
-                if (monoItem is IUniversalSerializedPersistenceSystem == false)
-                    continue;
-
-                System.Type thisType = monoItem.GetType();
-                MethodInfo theMethod = thisType.GetMethod("Deserialize");
-                object[] param = new object[2] {
-                    serializableChildData.serializedScripts,
-                    currentObj
-                };
-
-                theMethod.Invoke(monoItem, param);
-                break;
-            }
-            #endregion
-
-            #region Deserialize All Children
-            DeserializeAllChildren(rootParent, t, serializableData, ref childIndex);
-            #endregion
-        }
-    }
-
-    #endregion
-
-    #region Serialize/Deserialize Zone
-    public static byte[] Serialize(object obj)
-    {
-        BinaryFormatter bf = new BinaryFormatter();
-        using (var ms = new MemoryStream())
-        {
-            bf.Serialize(ms, obj);
-            return ms.ToArray();
-        }
-    }
-
-    public static object Deserialize(byte[] arrBytes)
-    {
-        using (var memStream = new MemoryStream())
-        {
-            var binForm = new BinaryFormatter();
-            memStream.Write(arrBytes, 0, arrBytes.Length);
-            memStream.Seek(0, SeekOrigin.Begin);
-            var obj = binForm.Deserialize(memStream);
-            return obj;
-        }
-    }
-
-    public static byte[] SerializeMonoObject(object obj)
-    {
-        string data = JsonUtility.ToJson(obj);
-        return Serialize(data);
-    }
-
-    public static void DeserializeMonoObject(byte[] data, object obj)
-    {
-        string deserializedData = (string)Deserialize(data);
-        JsonUtility.FromJsonOverwrite(deserializedData, obj);
     }
     #endregion
 }
