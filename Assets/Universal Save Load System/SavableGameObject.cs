@@ -12,7 +12,7 @@ using UnityEditor.Experimental.SceneManagement;
 
 [System.Serializable]
 [ExecuteInEditMode, DisallowMultipleComponent]
-public class SavableGameObject : MonoBehaviour, IUniversalSerializedPersistenceSystem
+public class SavableGameObject : MonoBehaviour, ISerializationCallbackReceiver, IUniversalSerializedPersistenceSystem
 {
     #region Unique ID
     // System guid we use for comparison and generation
@@ -21,10 +21,12 @@ public class SavableGameObject : MonoBehaviour, IUniversalSerializedPersistenceS
     // Unity's serialization system doesn't know about Guid, so we convert to a string
     [SerializeField]
     public string serializedGuid;
+    //[SerializeField]
+    //private byte[] serializedGuid;
 
     public bool IsGuidAssigned()
     {
-        return guid != Guid.Empty;
+        return guid != System.Guid.Empty;
     }
 
 
@@ -33,7 +35,7 @@ public class SavableGameObject : MonoBehaviour, IUniversalSerializedPersistenceS
     void CreateGuid()
     {
         // if our serialized data is invalid, then we are a new object and need a new GUID
-        if (serializedGuid == null || serializedGuid.Length != 16)
+        if (string.IsNullOrEmpty(serializedGuid))
         {
 #if UNITY_EDITOR
             // if in editor, make sure we aren't a prefab of some kind
@@ -43,7 +45,7 @@ public class SavableGameObject : MonoBehaviour, IUniversalSerializedPersistenceS
             }
             Undo.RecordObject(this, "Added GUID");
 #endif
-            guid = Guid.NewGuid();
+            guid = System.Guid.NewGuid();
             serializedGuid = guid.ToString();
 
 #if UNITY_EDITOR
@@ -55,20 +57,20 @@ public class SavableGameObject : MonoBehaviour, IUniversalSerializedPersistenceS
             }
 #endif
         }
-        else if (guid == Guid.Empty)
+        else if (guid == System.Guid.Empty)
         {
             // otherwise, we should set our system guid to our serialized guid
-            guid = new Guid(serializedGuid);
+            guid = new System.Guid(serializedGuid);
         }
 
         // register with the GUID Manager so that other components can access this
-        if (guid != Guid.Empty)
+        if (guid != System.Guid.Empty)
         {
             if (!GuidManager.Add(this))
             {
                 // if registration fails, we probably have a duplicate or invalid GUID, get us a new one.
-                serializedGuid = null;
-                guid = Guid.Empty;
+                serializedGuid = "";
+                guid = System.Guid.Empty;
                 CreateGuid();
             }
         }
@@ -113,13 +115,13 @@ public class SavableGameObject : MonoBehaviour, IUniversalSerializedPersistenceS
         // A prefab asset cannot contain a GUID since it would then be duplicated when instanced.
         if (IsAssetOnDisk())
         {
-            serializedGuid = null;
-            guid = Guid.Empty;
+            serializedGuid = "";
+            guid = System.Guid.Empty;
         }
         else
 #endif
         {
-            if (guid != Guid.Empty)
+            if (guid != System.Guid.Empty)
             {
                 serializedGuid = guid.ToString();
             }
@@ -129,8 +131,10 @@ public class SavableGameObject : MonoBehaviour, IUniversalSerializedPersistenceS
     // On load, we can go head a restore our system guid for later use
     public void OnAfterDeserialize()
     {
-        if (serializedGuid != null && serializedGuid.Length == 16)
-            guid = new Guid(serializedGuid);
+        if (string.IsNullOrEmpty(serializedGuid))
+        {
+            guid = new System.Guid(serializedGuid);
+        }
     }
 
     void Awake()
@@ -145,8 +149,8 @@ public class SavableGameObject : MonoBehaviour, IUniversalSerializedPersistenceS
         // at a time that lets us detect what we are
         if (IsAssetOnDisk())
         {
-            serializedGuid = null;
-            guid = Guid.Empty;
+            serializedGuid = "";
+            guid = System.Guid.Empty;
         }
         else
 #endif
@@ -156,11 +160,11 @@ public class SavableGameObject : MonoBehaviour, IUniversalSerializedPersistenceS
     }
 
     // Never return an invalid GUID
-    public Guid GetGuid()
+    public System.Guid GetGuid()
     {
-        if (guid == Guid.Empty && serializedGuid != null && serializedGuid.Length == 16)
+        if (guid == System.Guid.Empty && !string.IsNullOrEmpty(serializedGuid))
         {
-            guid = new Guid(serializedGuid);
+            guid = new System.Guid(serializedGuid);
         }
 
         return guid;

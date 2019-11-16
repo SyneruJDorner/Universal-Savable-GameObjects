@@ -17,7 +17,7 @@ public class STrailRenderer
     public bool emitting;
     public SColor endColor;
     public float endWidth;
-    public bool forceRenderingOff;
+    //public bool forceRenderingOff;
     public bool generateLightingData;
     public HideFlags hideFlags;
     public int lightmapIndex;
@@ -31,7 +31,7 @@ public class STrailRenderer
     public int numCapVertices;
     public int numCornerVertices;
     //public STransform probeAnchor;
-    public RayTracingMode rayTracingMode;
+    //public RayTracingMode rayTracingMode;
     public int realtimeLightmapIndex;
     public SVector4 realtimeLightmapScaleOffset;
     public bool receiveShadows;
@@ -78,7 +78,7 @@ public static class TrailRendererExtensionMethods
             emitting = _trailRenderer.emitting,
             endColor = _trailRenderer.endColor.Serialize(),
             endWidth = _trailRenderer.endWidth,
-            forceRenderingOff = _trailRenderer.forceRenderingOff,
+            //forceRenderingOff = _trailRenderer.forceRenderingOff,
             generateLightingData = _trailRenderer.generateLightingData,
             hideFlags = _trailRenderer.hideFlags,
             lightmapIndex = _trailRenderer.lightmapIndex,
@@ -92,7 +92,7 @@ public static class TrailRendererExtensionMethods
             numCapVertices = _trailRenderer.numCapVertices,
             numCornerVertices = _trailRenderer.numCornerVertices,
             //probeAnchor = _trailRenderer.probeAnchor.Serialize(),
-            rayTracingMode = _trailRenderer.rayTracingMode,
+            //rayTracingMode = _trailRenderer.rayTracingMode,
             realtimeLightmapIndex = _trailRenderer.realtimeLightmapIndex,
             realtimeLightmapScaleOffset = _trailRenderer.realtimeLightmapScaleOffset.Serialize(),
             receiveShadows = _trailRenderer.receiveShadows,
@@ -134,7 +134,7 @@ public static class TrailRendererExtensionMethods
         returnVal.emitting = _trailRenderer.emitting;
         returnVal.endColor = _trailRenderer.endColor.Deserialize();
         returnVal.endWidth = _trailRenderer.endWidth;
-        returnVal.forceRenderingOff = _trailRenderer.forceRenderingOff;
+        //returnVal.forceRenderingOff = _trailRenderer.forceRenderingOff;
         returnVal.generateLightingData = _trailRenderer.generateLightingData;
         returnVal.hideFlags = _trailRenderer.hideFlags;
         returnVal.lightmapIndex = _trailRenderer.lightmapIndex;
@@ -148,7 +148,7 @@ public static class TrailRendererExtensionMethods
         returnVal.numCapVertices = _trailRenderer.numCapVertices;
         returnVal.numCornerVertices = _trailRenderer.numCornerVertices;
         //returnVal.probeAnchor = _trailRenderer.probeAnchor.Deserialize();
-        returnVal.rayTracingMode = _trailRenderer.rayTracingMode;
+        //returnVal.rayTracingMode = _trailRenderer.rayTracingMode;
         returnVal.realtimeLightmapIndex = _trailRenderer.realtimeLightmapIndex;
         returnVal.realtimeLightmapScaleOffset = _trailRenderer.realtimeLightmapScaleOffset.Deserialize();
         returnVal.receiveShadows = _trailRenderer.receiveShadows;

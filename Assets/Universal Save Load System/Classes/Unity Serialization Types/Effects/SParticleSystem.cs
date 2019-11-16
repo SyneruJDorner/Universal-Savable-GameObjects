@@ -69,23 +69,22 @@ public class SParticleSystem
         public float rateOverTimeMultiplier;
         //public List<ParticleSystem.Burst> bursts = new List<ParticleSystem.Burst>();
 
-            /*
-        public void SerializeBursts(ParticleSystem.EmissionModule emissionModule)
+        /*
+    public void SerializeBursts(ParticleSystem.EmissionModule emissionModule)
+    {
+        for (int i = 0; i < emissionModule.burstCount; i++)
         {
-            for (int i = 0; i < emissionModule.burstCount; i++)
-            {
-                bursts.Add(emissionModule.GetBurst(i));
-            }
+            bursts.Add(emissionModule.GetBurst(i));
         }
-
-        public void DeserializeBursts(ref ParticleSystem.EmissionModule emissionModule)
+    }
+    public void DeserializeBursts(ref ParticleSystem.EmissionModule emissionModule)
+    {
+        for (int i = 0; i < burstCount; i++)
         {
-            for (int i = 0; i < burstCount; i++)
-            {
-                emissionModule.SetBurst(i, bursts[i]);
-            }
+            emissionModule.SetBurst(i, bursts[i]);
         }
-        */
+    }
+    */
     }
 
     [System.Serializable]
@@ -377,7 +376,6 @@ public class SParticleSystem
         public int subEmittersCount;
         /*
         public List<SParticleSystem> subEmmiters = new List<SParticleSystem>();
-
         public void SerializeSubEmitters(ParticleSystem.SubEmittersModule subEmmiter)
         {
             for (int i = 0; i < subEmmiter.subEmittersCount; i++)
@@ -385,7 +383,6 @@ public class SParticleSystem
                 subEmmiters.Add(new SParticleSystem().Serielize(subEmmiter.GetSubEmitterSystem(i)));
             }
         }
-
         public void DeserializeSubEmitters(ref ParticleSystem.SubEmittersModule subEmmiter)
         {
             for (int i = 0; i < subEmittersCount; i++)

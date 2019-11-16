@@ -25,17 +25,13 @@ public class GuidManager
         public void HandleAddCallback()
         {
             if (OnAdd != null)
-            {
                 OnAdd(go);
-            }
         }
 
         public void HandleRemoveCallback()
         {
             if (OnRemove != null)
-            {
                 OnRemove();
-            }
         }
     }
 
@@ -43,31 +39,25 @@ public class GuidManager
     static GuidManager Instance;
 
     // All the public API is static so you need not worry about creating an instance
-    public static bool Add(SavableGameObject savableGameObject)
+    public static bool Add(SavableGameObject guidComponent)
     {
         if (Instance == null)
-        {
             Instance = new GuidManager();
-        }
 
-        return Instance.InternalAdd(savableGameObject);
+        return Instance.InternalAdd(guidComponent);
     }
 
     public static void Remove(System.Guid guid)
     {
         if (Instance == null)
-        {
             Instance = new GuidManager();
-        }
 
         Instance.InternalRemove(guid);
     }
     public static GameObject ResolveGuid(System.Guid guid, Action<GameObject> onAddCallback, Action onRemoveCallback)
     {
         if (Instance == null)
-        {
             Instance = new GuidManager();
-        }
 
         return Instance.ResolveGuidInternal(guid, onAddCallback, onRemoveCallback);
     }
@@ -75,9 +65,7 @@ public class GuidManager
     public static GameObject ResolveGuid(System.Guid guid, Action onDestroyCallback)
     {
         if (Instance == null)
-        {
             Instance = new GuidManager();
-        }
 
         return Instance.ResolveGuidInternal(guid, null, onDestroyCallback);
     }
@@ -85,9 +73,8 @@ public class GuidManager
     public static GameObject ResolveGuid(System.Guid guid)
     {
         if (Instance == null)
-        {
             Instance = new GuidManager();
-        }
+
         return Instance.ResolveGuidInternal(guid, null, null);
     }
 
@@ -99,11 +86,11 @@ public class GuidManager
         guidToObjectMap = new Dictionary<System.Guid, GuidInfo>();
     }
 
-    private bool InternalAdd(SavableGameObject savableGameObject)
+    private bool InternalAdd(SavableGameObject guidComponent)
     {
-        Guid guid = savableGameObject.GetGuid();
+        Guid guid = guidComponent.GetGuid();
 
-        GuidInfo info = new GuidInfo(savableGameObject);
+        GuidInfo info = new GuidInfo(guidComponent);
 
         if (!guidToObjectMap.ContainsKey(guid))
         {
@@ -112,18 +99,18 @@ public class GuidManager
         }
 
         GuidInfo existingInfo = guidToObjectMap[guid];
-        if (existingInfo.go != null && existingInfo.go != savableGameObject.gameObject)
+        if (existingInfo.go != null && existingInfo.go != guidComponent.gameObject)
         {
             // normally, a duplicate GUID is a big problem, means you won't necessarily be referencing what you expect
             if (Application.isPlaying)
             {
-                Debug.AssertFormat(false, savableGameObject, "Guid Collision Detected between {0} and {1}.\nAssigning new Guid. Consider tracking runtime instances using a direct reference or other method.", (guidToObjectMap[guid].go != null ? guidToObjectMap[guid].go.name : "NULL"), (savableGameObject != null ? savableGameObject.name : "NULL"));
+                Debug.AssertFormat(false, guidComponent, "Guid Collision Detected between {0} and {1}.\nAssigning new Guid. Consider tracking runtime instances using a direct reference or other method.", (guidToObjectMap[guid].go != null ? guidToObjectMap[guid].go.name : "NULL"), (guidComponent != null ? guidComponent.name : "NULL"));
             }
             else
             {
                 // however, at editor time, copying an object with a GUID will duplicate the GUID resulting in a collision and repair.
                 // we warn about this just for pedantry reasons, and so you can detect if you are unexpectedly copying these components
-                Debug.LogWarningFormat(savableGameObject, "Guid Collision Detected while creating {0}.\nAssigning new Guid.", (savableGameObject != null ? savableGameObject.name : "NULL"));
+                Debug.LogWarningFormat(guidComponent, "Guid Collision Detected while creating {0}.\nAssigning new Guid.", (guidComponent != null ? guidComponent.name : "NULL"));
             }
             return false;
         }

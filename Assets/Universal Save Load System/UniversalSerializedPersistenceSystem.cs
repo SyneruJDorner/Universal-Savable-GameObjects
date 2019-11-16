@@ -102,7 +102,9 @@ class UniversalSerializedPersistenceSystem : MonoBehaviour
 
         serializableDataSet.data.Clear();
         CryptographyInfo.Decrypt(FilePath, fileFormat);
-        
+
+        Debug.Log(FilePath);
+
         JsonUtility.FromJsonOverwrite(File.ReadAllText(FilePath), serializableDataSet);
 
         for (int i = 0; i < serializableDataSet.data.Count; i++)
@@ -113,8 +115,12 @@ class UniversalSerializedPersistenceSystem : MonoBehaviour
 
                 string sID = (string)DataDeserialization.Deserialize(serializableDataSet.data[i].ID);
 
+                Debug.Log("Comparing ID: " + queuedItem.ID + " to sID: " + sID);
+
                 if (queuedItem.ID == sID)
                 {
+                    Debug.Log("Loading on item: " + queuedItem.saveObject.name + " with an ID of: " + queuedItem.ID);
+
                     #region Deserialize Unity classes and types
                     #region Deserialize transform
                     ((STransform)DataDeserialization.Deserialize(serializableDataSet.data[i].unitySerializableData.sTransform)).Deserialize(ref queuedItem.saveObject);
@@ -178,7 +184,6 @@ class UniversalSerializedPersistenceSystem : MonoBehaviour
 
                     if (serializableDataSet.data[i].unitySerializableData.sTrailRenderer.Length > 0)
                         ((STrailRenderer)DataDeserialization.Deserialize(serializableDataSet.data[i].unitySerializableData.sTrailRenderer)).Deserialize(ref queuedItem.saveObject);
-
                     #endregion
                     #endregion
 
