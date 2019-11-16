@@ -96,6 +96,7 @@ LightmapSettings:
     m_PVRFilteringAtrousPositionSigmaAO: 1
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
+    m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
   m_UseShadowmask: 1
 --- !u!196 &4
@@ -145,8 +146,9 @@ Light:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 182825983}
   m_Enabled: 1
-  serializedVersion: 9
+  serializedVersion: 10
   m_Type: 1
+  m_Shape: 0
   m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
   m_Intensity: 1
   m_Range: 10
@@ -271,6 +273,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -349,7 +352,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dba5c64e01847da418d1f1c3ee129439, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serializedGuid: a62d953f-8dda-46a6-af7c-4a669254668f
+  serializedGuid: 976b5333-3d83-4402-94d6-53cd46b12e96
   monoScripts: []
 --- !u!65 &234825399
 BoxCollider:
@@ -378,6 +381,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -454,6 +458,8 @@ VisualEffect:
   m_GameObject: {fileID: 652861274}
   m_Enabled: 1
   m_Asset: {fileID: 0}
+  m_InitialEventName: OnPlay
+  m_InitialEventNameOverriden: 0
   m_StartSeed: 0
   m_ResetSeedOnPlay: 1
   m_PropertySheet:
@@ -558,6 +564,7 @@ VFXRenderer:
   m_MotionVectors: 0
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials: []
@@ -596,6 +603,7 @@ TrailRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -5369,6 +5377,7 @@ ParticleSystemRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -5431,6 +5440,7 @@ LineRenderer:
   m_MotionVectors: 0
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -5541,7 +5551,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dba5c64e01847da418d1f1c3ee129439, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serializedGuid: 6c3606b8-e1df-4b3b-877d-421b33f1c693
+  serializedGuid: 49d123ee-4f19-4897-85a0-e0bc9655396f
   monoScripts: []
 --- !u!166 &652861287
 AudioChorusFilter:
@@ -5851,7 +5861,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dba5c64e01847da418d1f1c3ee129439, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serializedGuid: 07c13494-c788-4a6a-9fb5-85c3655f6b44
+  serializedGuid: f9fed774-3996-436f-97a5-e91f64aa18db
   monoScripts: []
 --- !u!65 &924688529
 BoxCollider:
@@ -5880,6 +5890,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -6038,7 +6049,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dba5c64e01847da418d1f1c3ee129439, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serializedGuid: bfc8bedb-babc-4527-b3c0-8857c2e12cf8
+  serializedGuid: 73e84b2a-c12f-4e22-9081-909181601ccd
   monoScripts: []
 --- !u!65 &1278597602
 BoxCollider:
@@ -6067,6 +6078,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:

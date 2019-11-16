@@ -35,7 +35,8 @@ class UniversalSerializedPersistenceSystem : MonoBehaviour
     public bool SaveData = false;
     public bool LoadData = false;
 
-    public static string fileName = "PersistentDataSave.json";
+    public static string fileName = "PersistentDataSave";
+    public static string fileFormat = "JDD";
     public static string streamingAssetPath = Application.streamingAssetsPath;
     private static string FilePath => Path.Combine(streamingAssetPath, fileName);
 
@@ -90,6 +91,8 @@ class UniversalSerializedPersistenceSystem : MonoBehaviour
 
         File.WriteAllText(FilePath, jsonData);
         serializableDataSet.data.Clear();
+        CryptographyInfo.Encrypt(FilePath, fileFormat);
+
         Debug.Log("Save was successful!");
     }
 
@@ -98,6 +101,8 @@ class UniversalSerializedPersistenceSystem : MonoBehaviour
         Debug.Log("Loading...");
 
         serializableDataSet.data.Clear();
+        CryptographyInfo.Decrypt(FilePath, fileFormat);
+        
         JsonUtility.FromJsonOverwrite(File.ReadAllText(FilePath), serializableDataSet);
 
         for (int i = 0; i < serializableDataSet.data.Count; i++)
@@ -213,6 +218,7 @@ class UniversalSerializedPersistenceSystem : MonoBehaviour
 
         serializableDataSet.data.Clear(); ;
         gameObjectsDataSet.Clear();
+        CryptographyInfo.Encrypt(FilePath, fileFormat);
 
         Debug.Log("Load was successful!");
     }
